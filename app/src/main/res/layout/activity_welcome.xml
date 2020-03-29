@@ -8,17 +8,13 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <ImageView
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:contentDescription="@string/app_name"
-        android:alpha="0.5"
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/ic_logo_wanandroid">
-
-    </ImageView>
+        android:layout_width="0dp"
+        android:layout_margin="1dp"
+        android:layout_height="180dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

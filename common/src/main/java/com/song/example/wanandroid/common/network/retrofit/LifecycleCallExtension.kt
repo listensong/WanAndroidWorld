@@ -1,11 +1,17 @@
 package com.song.example.wanandroid.common.network.retrofit
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import org.jetbrains.annotations.TestOnly
 import retrofit2.HttpException
 import retrofit2.Response
 import java.util.concurrent.TimeoutException
 import kotlin.coroutines.resume
+
+
+const val LifecycleCallExtensionKtPath = "com.song.example.wanandroid.common.network.retrofit.LifecycleCallExtensionKt"
 
 suspend fun <T : Any> ILifecycleCall<T>.awaitResult(): HttpResult<T> {
     return suspendCancellableCoroutine { cancellableContinuation ->
@@ -58,16 +64,18 @@ suspend fun <T : Any> ILifecycleCall<T>.awaitResult(): HttpResult<T> {
 suspend fun <T : Any> ILifecycleCall<T>.awaitWithTimeout(
         timeout: Long = 0L
 ): HttpResult<T> {
-    return if (timeout <= 100) {
-        awaitResult()
-    } else {
-        withTimeoutOrNull(timeout) {
+    return withContext(Dispatchers.IO) {
+        if (timeout <= 100) {
             awaitResult()
-        } ?: HttpResult.Error(
-                NetworkError(
-                        0, "Timeout: no response within $timeout",
-                        TimeoutException("Timeout: no response within $timeout")
-                )
-        )
+        } else {
+            withTimeoutOrNull(timeout) {
+                awaitResult()
+            } ?: HttpResult.Error(
+                    NetworkError(
+                            0, "Timeout: no response within $timeout",
+                            TimeoutException("Timeout: no response within $timeout")
+                    )
+            )
+        }
     }
 }

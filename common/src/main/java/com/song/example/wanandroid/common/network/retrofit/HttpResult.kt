@@ -58,6 +58,16 @@ inline fun <A: Any, V: Any> HttpResult<A>.onSuccess(
     }
 }
 
+inline fun <A: Any, V: Any> HttpResult<A>.onOkay(
+        action: (HttpResult.Okay<A>) -> HttpResult<V>?
+): HttpResult<V>? {
+    return if (this is HttpResult.Okay) {
+        action(this)
+    } else {
+        this as HttpResult<V>?
+    }
+}
+
 inline fun <T: Any> HttpResult<T>?.doFollow(
         action: (HttpResult<T>?) -> T
 ) : T {

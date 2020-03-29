@@ -2,6 +2,7 @@ package com.song.example.wanandroid.extend
 
 import android.util.Log
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 /**
  * @package com.song.example.wanandroid.extend
@@ -14,7 +15,11 @@ import com.squareup.moshi.Moshi
 fun <T> String?.moshi(clz: Class<T>) : T?{
     return this?.let {
         return try {
-            Moshi.Builder().build().adapter(clz).fromJson(it)
+            Moshi.Builder()
+                    .add(KotlinJsonAdapterFactory())
+                    .build()
+                    .adapter(clz)
+                    .fromJson(it)
         } catch (e: Exception) {
             Log.e("moshi", "e:$e")
             null
