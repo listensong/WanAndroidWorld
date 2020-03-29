@@ -1,0 +1,114 @@
+apply plugin: "com.android.library"
+
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    useLibrary "org.apache.http.legacy"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            debuggable false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+        debug {
+            testCoverageEnabled true
+            debuggable true
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    lintOptions {
+        abortOnError false
+        tasks.lint.enabled = false
+    }
+
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ["libs"]
+        }
+    }
+
+    packagingOptions {
+        exclude "META-INF/ASL2.0"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(path: ":common")
+    
+    kapt "androidx.room:room-compiler:$androidXRoomVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+
+    api "junit:junit:$junitVersion"
+    //testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.6.0"
+
+    //api "org.junit.jupiter:junit-jupiter:5.6.0"
+    //api "org.junit.jupiter:junit-jupiter-api:5.6.0"
+    //testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.0"
+    //api "org.junit.jupiter:junit-jupiter-params:5.6.0"
+
+    api "io.mockk:mockk:$mockkVersion"
+    //api "org.mockito:mockito-junit-jupiter:2.18.3"
+    api "org.mockito:mockito-core:$mockitoVersion"
+    api "org.mockito:mockito-inline:$mockitoVersion"
+    api "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+    //api "org.robolectric:robolectric:$robolectricVersion"
+    //api "org.powermock:powermock-module-junit5:1.6.4"
+    api "org.powermock:powermock-module-junit4:$powermockVersion"
+    api "org.powermock:powermock-module-junit4-rule:$powermockVersion"
+    api "org.powermock:powermock-api-mockito2:$powermockVersion"
+    api "org.powermock:powermock-classloading-xstream:$powermockVersion"
+
+    api "androidx.arch.core:core-testing:$androidXTestingVersion"
+    api "androidx.room:room-testing:$androidXRoomVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion"
+    api "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    //api "org.jetbrains.kotlin:kotlin-test-junit5:1.3.61"
+
+
+    // optional - Test helpers
+    api "androidx.work:work-testing:$androidXWorkVersion"
+    api "androidx.test:runner:$androidXTestRunnerVersion"
+    //api "org.junit.jupiter:junit-jupiter-api:5.6.0"
+    //api "de.mannodermaus.junit5:android-test-core:1.2.0"
+    //androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.2.0"
+    api "androidx.test.espresso:espresso-core:$androidXEspressoVersion"
+}
