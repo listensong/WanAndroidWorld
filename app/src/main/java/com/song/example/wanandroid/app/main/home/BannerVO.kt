@@ -11,6 +11,6 @@ package com.song.example.wanandroid.app.main.home
 data class BannerVO(
         val title: String,
         val type: Int,
-        val imageUrl: String,
-        val linkUrl: String
+        val imagePath: String,
+        val url: String
 )

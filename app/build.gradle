@@ -73,11 +73,12 @@ dependencies {
 
     implementation project(path: ":common")
 
-    kapt "com.google.dagger:dagger-compiler:$googleDaggerVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
     kapt "androidx.room:room-compiler:$androidXRoomVersion"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+    kapt "com.google.dagger:dagger-compiler:$googleDaggerVersion"
 
     testImplementation project(path: ":basetest")
-    androidTestImplementation project(path: ":basetest")
+    testImplementation project(path: ":basetest", configuration: 'unitTestDependencies')
+    androidTestImplementation project(path: ":basetest", configuration: 'androidUnitTestDependencies')
 }

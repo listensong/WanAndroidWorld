@@ -1,9 +1,6 @@
 package com.song.example.wanandroid.app.main.home
 
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -39,24 +36,34 @@ class HomeViewModelTest {
         Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
         mainThreadSurrogate.close()
         testScope.cleanupTestCoroutines()
+        unmockkAll()
     }
 
     @Test
-    fun getBanners() {
-        val homeViewModel = HomeViewModel(mockk())
-        assertNull(homeViewModel.banners.value?.size)
-    }
-
-    @Test
-    fun `loadBanner`() = runBlockingTest {
+    fun getBanners_thenHomeRepositoryGetBannerCalled() {
         val mockRepository = mockk<HomeRepository>()
+        every {
+            mockRepository.getBanners()
+        } returns mockk()
+        HomeViewModel(mockRepository)
+        verify {
+            mockRepository.getBanners()
+        }
+    }
+
+    @Test
+    fun loadBanner_thenHomeRepositoryRequestBannerCalled() = runBlockingTest {
+        val mockRepository = mockk<HomeRepository>()
+        every {
+            mockRepository.getBanners()
+        } returns mockk()
         val homeViewModel = HomeViewModel(mockRepository)
 
         coEvery {
             mockRepository.requestBanners()
         } returns emptyList()
 
-        homeViewModel.loadBanner()
+        homeViewModel.loadBanner(testScope)
         coVerify(exactly = 1) {
             mockRepository.requestBanners()
         }

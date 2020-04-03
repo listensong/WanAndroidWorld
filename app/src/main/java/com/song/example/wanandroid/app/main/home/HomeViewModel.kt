@@ -23,11 +23,11 @@ class HomeViewModel(
         const val TAG = "HomeViewModel"
     }
 
-    val banners = MutableLiveData<List<BannerVO>>()
+    val banners = homeRepository.getBanners()
 
     fun loadBanner(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {
-            banners.value = homeRepository.requestBanners()
+            homeRepository.requestBanners()
         }
     }
 }

@@ -1,11 +1,15 @@
 package com.song.example.wanandroid.app.main.home
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.song.example.wanandroid.app.network.WanApiCallImpl
 import com.song.example.wanandroid.app.network.WanService
 import com.song.example.wanandroid.base.job.BaseRepository
 import com.song.example.wanandroid.common.network.retrofit.*
 import com.song.example.wanandroid.extend.moshi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * @package com.song.example.wanandroid.app.main.home
@@ -16,12 +20,15 @@ import com.song.example.wanandroid.extend.moshi
  * @email No
  */
 class HomeRepository(
-        private val wanApiCallImpl: WanApiCallImpl
+        private val wanApiCallImpl: WanApiCallImpl,
+        private val bannerDataSource: BannerDAO
 ) : BaseRepository() {
 
     companion object {
         const val TAG = "HomeRepository"
     }
+
+    fun getBanners():  LiveData<List<BannerVO>> = bannerDataSource.getBanners()
 
     suspend fun requestBanners(): List<BannerVO> {
         return wanApiCallImpl.callWanApi(WanService::class.java)
@@ -33,6 +40,7 @@ class HomeRepository(
                 .onSuccess {
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(BannerDataDTO::class.java)
+                    saveBanners(list.toPOList())
                     HttpResult.Okay(list.toVOList(), it.response)
                 }
                 .doFollow {
@@ -42,5 +50,11 @@ class HomeRepository(
                         emptyList()
                     }
                 }
+    }
+
+    private suspend fun saveBanners(banners: List<BannerPO>) {
+        withContext(Dispatchers.IO) {
+            bannerDataSource.insertAll(banners)
+        }
     }
 }

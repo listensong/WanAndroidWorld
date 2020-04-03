@@ -1,27 +1,25 @@
 package com.song.example.wanandroid.app.main.home
 
-import com.song.example.wanandroid.BaseApplication
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.song.example.wanandroid.app.network.BaseWanApiCallMock
-import com.song.example.wanandroid.app.network.WanApiCallImpl
-import com.song.example.wanandroid.app.network.WanService
-import com.song.example.wanandroid.basetest.MockAssets
-import com.song.example.wanandroid.common.network.retrofit.*
+import com.song.example.wanandroid.common.network.retrofit.HttpResult
+import com.song.example.wanandroid.common.network.retrofit.LifecycleCallExtensionKtPath
+import com.song.example.wanandroid.common.network.retrofit.NetworkError
+import com.song.example.wanandroid.common.network.retrofit.awaitWithTimeout
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
-import okhttp3.Response
-import okhttp3.ResponseBody
-import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-
-import org.junit.Assert.*
-import org.mockito.Mock
 import java.util.concurrent.TimeoutException
 
 /**
@@ -34,6 +32,8 @@ import java.util.concurrent.TimeoutException
  */
 class HomeRepositoryTest: BaseWanApiCallMock() {
 
+    @get:Rule
+    val instantExecutorRule = InstantTaskExecutorRule()
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
     private val testScope = TestCoroutineScope()
 
@@ -49,10 +49,24 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
         mainThreadSurrogate.close()
         testScope.cleanupTestCoroutines()
+        unmockkAll()
     }
 
     @Test
-    fun getBannerList_whenNormalResponseThenParseSuccessfully() = runBlockingTest {
+    fun getBanner_whenRepositoryGetBannerThenBannerDaoGetBannerCalled() {
+        val mockBannerDataSource = mockk<BannerDAO>()
+        every {
+            mockBannerDataSource.getBanners()
+        } returns mockk()
+        homeRepository = HomeRepository(mockk(), mockBannerDataSource)
+        homeRepository?.getBanners()
+        verify(exactly = 1) {
+            mockBannerDataSource.getBanners()
+        }
+    }
+
+    @Test
+    fun getBannerList_whenNormalResponseThenParseSuccessfully() = runBlocking {
         val mockResponseBody = getMockResponseBody("$BASE_PATH/BannerJson.json")
         mockkStatic(LifecycleCallExtensionKtPath)
         val mockApiCallImpl = configWanApiCallMock(
@@ -69,24 +83,32 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
                 }
         )
 
-        homeRepository = HomeRepository(mockApiCallImpl)
+        val mockBannerDataSource = mockk<BannerDAO>()
+        every {
+            mockBannerDataSource.insertAll(any())
+        } just Runs
+
+        homeRepository = HomeRepository(mockApiCallImpl, mockBannerDataSource)
         val bannerData = homeRepository?.requestBanners()
+        verify(exactly = 1) {
+            mockBannerDataSource.insertAll(any())
+        }
         assertTrue(bannerData?.size == 4)
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/c4e5f86d-857a-41b9-a21a-316145cf3103.png",
-                bannerData?.get(0)?.imageUrl
+                bannerData?.get(0)?.imagePath
         )
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png",
-                bannerData?.get(1)?.imageUrl
+                bannerData?.get(1)?.imagePath
         )
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png",
-                bannerData?.get(2)?.imageUrl
+                bannerData?.get(2)?.imagePath
         )
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/90c6cc12-742e-4c9f-b318-b912f163b8d0.png",
-                bannerData?.get(3)?.imageUrl
+                bannerData?.get(3)?.imagePath
         )
     }
 
@@ -109,7 +131,7 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
                 }
         )
 
-        homeRepository = HomeRepository(mockApiCallImpl)
+        homeRepository = HomeRepository(mockApiCallImpl, mockk())
         val bannerData = homeRepository?.requestBanners()
         assertTrue(bannerData?.size == 0)
     }

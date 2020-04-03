@@ -1,6 +1,7 @@
 package com.song.example.wanandroid.app.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.song.example.wanandroid.app.R
+import com.song.example.wanandroid.app.data.AppDataBase
 import com.song.example.wanandroid.app.main.home.*
 import com.song.example.wanandroid.app.network.WanApiCallImpl
 import com.song.example.wanandroid.base.ui.BaseActivity
@@ -37,12 +39,14 @@ class WelcomeActivity : BaseActivity() {
         }
     }
 
-    private val homeViewModelFactory: HomeViewModelFactory = HomeViewModelFactory(
-            HomeRepository(WanApiCallImpl.getInstance())
-    )
-    private val viewModel: HomeViewModel by lazy(LazyThreadSafetyMode.NONE) {
-        homeViewModelFactory.create(HomeViewModel::class.java)
+    private fun provideRepository(): HomeRepository {
+        return HomeRepository(
+                WanApiCallImpl.getInstance(),
+                AppDataBase.getInstance().homeBannersDao()
+        )
     }
+
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +56,8 @@ class WelcomeActivity : BaseActivity() {
                 BannerVO(
                         title = "",
                         type = 0,
-                        imageUrl = "https://img.zcool.cn/community/013c7d5e27a174a80121651816e521.jpg",
-                        linkUrl = ""
+                        imagePath = "https://img.zcool.cn/community/013c7d5e27a174a80121651816e521.jpg",
+                        url = ""
                 )
         )
 
@@ -64,6 +68,10 @@ class WelcomeActivity : BaseActivity() {
             setOrientation(Banner.HORIZONTAL)
             indicator = CircleIndicator(this@WelcomeActivity)
         }
+
+        viewModel = ViewModelProvider(this, HomeViewModelFactory(
+                provideRepository()
+        ))[HomeViewModel::class.java]
 
         viewModel.banners.observe(this, Observer {
             bannerAdapter.setDatas(it)
