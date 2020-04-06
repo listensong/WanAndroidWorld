@@ -139,6 +139,11 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
     }
 
 
+    @Test
+    fun initArticlesPageList_whenInitZeroArticleCalledThenRequestArticlesCalled() {
+//TODO
+    }
+
 
     @Test
     fun getArticles_whenRepositoryGetArticleThenArticleDaoGetArticlesCalled() {

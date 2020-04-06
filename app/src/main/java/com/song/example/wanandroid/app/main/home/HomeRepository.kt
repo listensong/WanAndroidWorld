@@ -2,16 +2,17 @@ package com.song.example.wanandroid.app.main.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.song.example.wanandroid.app.main.home.article.*
 import com.song.example.wanandroid.app.main.home.banner.*
-import com.song.example.wanandroid.app.main.home.banner.toPOList
-import com.song.example.wanandroid.app.main.home.banner.toVOList
 import com.song.example.wanandroid.app.network.WanApiCallImpl
 import com.song.example.wanandroid.app.network.WanService
-import com.song.example.wanandroid.base.job.BaseRepository
+import com.song.example.wanandroid.base.job.PageBaseRepository
 import com.song.example.wanandroid.common.network.retrofit.*
 import com.song.example.wanandroid.extend.moshi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
@@ -26,10 +27,12 @@ class HomeRepository(
         private val wanApiCallImpl: WanApiCallImpl,
         private val bannerDataSource: BannerDAO,
         private val articleDataSource: ArticleDAO
-) : BaseRepository() {
+) : PageBaseRepository() {
 
     companion object {
         const val TAG = "HomeRepository"
+        const val HOME_ARTICLE_PAGE_SIZE = 20
+        const val HOME_ARTICLE_INIT_LOAD_SIZE = 20
     }
 
     fun getBanners():  LiveData<List<BannerVO>> = bannerDataSource.getBanners()
@@ -65,11 +68,35 @@ class HomeRepository(
         }
     }
 
+
+    /********************************** Article **************************************/
+
+    fun initArticlesPageList(workScope: CoroutineScope): LiveData<PagedList<ArticleVO>> {
+        return queryPagedList(
+                dataSourceFactory = articleDataSource.getArticleVOPage(),
+                pageSize = HOME_ARTICLE_PAGE_SIZE,
+                initialLoadSize = HOME_ARTICLE_INIT_LOAD_SIZE,
+                boundaryCallback = object : PagedList.BoundaryCallback<ArticleVO>() {
+                    override fun onZeroItemsLoaded() {
+                        workScope.launch {
+                            requestArticles(0)
+                        }
+                    }
+
+                    override fun onItemAtEndLoaded(itemAtEnd: ArticleVO) {
+                        workScope.launch {
+                            requestArticles(itemAtEnd.curPage + 1)
+                        }
+                    }
+                }
+        )
+    }
+
     fun getArticles():  LiveData<List<ArticleVO>> = articleDataSource.getArticles()
 
-    suspend fun requestArticles(): List<ArticleVO> {
+    suspend fun requestArticles(pageNum: Int = 0): List<ArticleVO> {
         return wanApiCallImpl.callWanApi(WanService::class.java)
-                .getArticleList()
+                .getArticleList(pageNum)
                 .awaitWithTimeout(10000)
                 .onFailure {
                     Log.e(TAG, "onFailure $it")

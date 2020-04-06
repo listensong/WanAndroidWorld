@@ -45,11 +45,13 @@ class HomeViewModelTest {
         every {
             mockRepository.getBanners()
             mockRepository.getArticles()
+            mockRepository.initArticlesPageList(any())
         } returns mockk()
         HomeViewModel(mockRepository)
         verify {
             mockRepository.getBanners()
             mockRepository.getArticles()
+            mockRepository.initArticlesPageList(any())
         }
     }
 
@@ -59,6 +61,7 @@ class HomeViewModelTest {
         every {
             mockRepository.getBanners()
             mockRepository.getArticles()
+            mockRepository.initArticlesPageList(any())
         } returns mockk()
         val homeViewModel = HomeViewModel(mockRepository)
 
@@ -78,6 +81,7 @@ class HomeViewModelTest {
         every {
             mockRepository.getBanners()
             mockRepository.getArticles()
+            mockRepository.initArticlesPageList(any())
         } returns mockk()
         val homeViewModel = HomeViewModel(mockRepository)
 

@@ -1,6 +1,7 @@
 package com.song.example.wanandroid.app.main.home.article
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 
 /**
@@ -23,6 +24,10 @@ interface ArticleDAO {
 
     @Query("SELECT * FROM $WAN_HOME_ARTICLE_TABLE_NAME")
     fun getArticles(): LiveData<List<ArticleVO>>
+
+
+    @Query("SELECT * FROM $WAN_HOME_ARTICLE_TABLE_NAME order by _index")
+    fun getArticleVOPage(): DataSource.Factory<Int, ArticleVO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(articles: List<ArticlePO>)

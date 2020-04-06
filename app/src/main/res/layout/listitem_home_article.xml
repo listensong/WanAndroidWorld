@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="itemClickedListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="articleVo"
+            type="com.song.example.wanandroid.app.main.home.article.ArticleVO"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:transitionName="share_image"
+        tools:background="@drawable/ripple_listitem_article"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:onClick="@{itemClickedListener}"
+        android:descendantFocusability="afterDescendants"
+        android:layout_height="90dp">
+
+        <ImageView
+            android:id="@+id/pinned_image_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="12dp"
+            android:src="@mipmap/ic_article_pin_nail"
+            android:tint="@color/colorAccent"
+            android:layout_width="18dp"
+            android:layout_height="18dp"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            app:formatText="@{articleVo.title}"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            tools:text="Titletitle_text_view"
+            app:layout_constraintStart_toEndOf="@id/pinned_image_view"
+            app:layout_constraintTop_toTopOf="@id/pinned_image_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -33,6 +33,8 @@ class HomeViewModel(
 
     val articles = homeRepository.getArticles()
 
+    val pagedArticles = homeRepository.initArticlesPageList(viewModelScope)
+
     fun loadArticle(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {
             homeRepository.requestArticles()
