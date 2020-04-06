@@ -1,4 +1,4 @@
-package com.song.example.wanandroid.app.main.home
+package com.song.example.wanandroid.app.main.home.banner
 
 
 import android.content.Context
@@ -9,7 +9,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.song.example.wanandroid.app.data.AppDataBase
-import org.hamcrest.CoreMatchers.equalTo
+import com.song.example.wanandroid.app.main.home.TestUtils
+import com.song.example.wanandroid.app.main.home.article.ArticleDataDTO
+import com.song.example.wanandroid.app.main.home.article.toPOList
+import com.song.example.wanandroid.extend.moshi
 import org.junit.After
 import org.junit.Before
 
@@ -53,38 +56,9 @@ class BannerDAOTest {
     }
 
     private fun getBannerPOList(): List<BannerPO> {
-        return listOf(
-                BannerPO(
-                        id = 0,
-                        desc = "desc0",
-                        imagePath = "imagePath0",
-                        isVisible = 0,
-                        order =  0,
-                        title = "title0",
-                        type = 0,
-                        url = "url"
-                ),
-                BannerPO(
-                        id = 1,
-                        desc = "desc1",
-                        imagePath = "imagePath1",
-                        isVisible = 1,
-                        order =  1,
-                        title = "title1",
-                        type = 1,
-                        url = "url1"
-                ),
-                BannerPO(
-                        id = 2,
-                        desc = "desc2",
-                        imagePath = "imagePath2",
-                        isVisible = 2,
-                        order =  2,
-                        title = "title2",
-                        type = 2,
-                        url = "url2"
-                )
-        )
+        val json = TestUtils.readFile("BannerJson.json")
+        val list = json.moshi(BannerDataDTO::class.java)
+        return list.toPOList()
     }
 
     private fun <T> LiveData<T>.blockingObserver(): T? {
@@ -110,7 +84,7 @@ class BannerDAOTest {
         bannerDao.insertAll(bannerPOList)
         bannerSavedPOs = bannerDao.getBanners().blockingObserver()
         assertNotNull(bannerSavedPOs)
-        assertEquals(3, bannerSavedPOs?.size)
+        assertEquals(4, bannerSavedPOs?.size)
         bannerSavedPOs?.forEachIndexed { index, bannerVO ->
             assertEquals(bannerVO.title, bannerPOList[index].title)
             assertEquals(bannerVO.type, bannerPOList[index].type)

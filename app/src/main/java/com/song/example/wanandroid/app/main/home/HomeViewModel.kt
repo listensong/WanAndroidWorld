@@ -30,4 +30,12 @@ class HomeViewModel(
             homeRepository.requestBanners()
         }
     }
+
+    val articles = homeRepository.getArticles()
+
+    fun loadArticle(workScope: CoroutineScope = viewModelScope) {
+        workScope.launch {
+            homeRepository.requestArticles()
+        }
+    }
 }

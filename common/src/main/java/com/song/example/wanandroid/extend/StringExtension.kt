@@ -22,6 +22,7 @@ fun <T> String?.moshi(clz: Class<T>) : T?{
                     .fromJson(it)
         } catch (e: Exception) {
             Log.e("moshi", "e:$e")
+            println("moshi" + "e:$e")
             null
         }
     }

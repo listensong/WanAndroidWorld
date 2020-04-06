@@ -1,6 +1,8 @@
 package com.song.example.wanandroid.app.main.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.song.example.wanandroid.app.main.home.article.ArticleDAO
+import com.song.example.wanandroid.app.main.home.banner.BannerDAO
 import com.song.example.wanandroid.app.network.BaseWanApiCallMock
 import com.song.example.wanandroid.common.network.retrofit.HttpResult
 import com.song.example.wanandroid.common.network.retrofit.LifecycleCallExtensionKtPath
@@ -58,7 +60,7 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         every {
             mockBannerDataSource.getBanners()
         } returns mockk()
-        homeRepository = HomeRepository(mockk(), mockBannerDataSource)
+        homeRepository = HomeRepository(mockk(), mockBannerDataSource, mockk())
         homeRepository?.getBanners()
         verify(exactly = 1) {
             mockBannerDataSource.getBanners()
@@ -88,27 +90,27 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
             mockBannerDataSource.insertAll(any())
         } just Runs
 
-        homeRepository = HomeRepository(mockApiCallImpl, mockBannerDataSource)
-        val bannerData = homeRepository?.requestBanners()
+        homeRepository = HomeRepository(mockApiCallImpl, mockBannerDataSource, mockk())
+        val bannerVOList = homeRepository?.requestBanners()
         verify(exactly = 1) {
             mockBannerDataSource.insertAll(any())
         }
-        assertTrue(bannerData?.size == 4)
+        assertTrue(bannerVOList?.size == 4)
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/c4e5f86d-857a-41b9-a21a-316145cf3103.png",
-                bannerData?.get(0)?.imagePath
+                bannerVOList?.get(0)?.imagePath
         )
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png",
-                bannerData?.get(1)?.imagePath
+                bannerVOList?.get(1)?.imagePath
         )
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png",
-                bannerData?.get(2)?.imagePath
+                bannerVOList?.get(2)?.imagePath
         )
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/90c6cc12-742e-4c9f-b318-b912f163b8d0.png",
-                bannerData?.get(3)?.imagePath
+                bannerVOList?.get(3)?.imagePath
         )
     }
 
@@ -131,8 +133,79 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
                 }
         )
 
-        homeRepository = HomeRepository(mockApiCallImpl, mockk())
-        val bannerData = homeRepository?.requestBanners()
-        assertTrue(bannerData?.size == 0)
+        homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockk())
+        val bannerVOList = homeRepository?.requestBanners()
+        assertTrue(bannerVOList?.size == 0)
+    }
+
+
+
+    @Test
+    fun getArticles_whenRepositoryGetArticleThenArticleDaoGetArticlesCalled() {
+        val mockArticleDataSource = mockk<ArticleDAO>()
+        every {
+            mockArticleDataSource.getArticles()
+        } returns mockk()
+        homeRepository = HomeRepository(mockk(), mockk(), mockArticleDataSource)
+        homeRepository?.getArticles()
+        verify(exactly = 1) {
+            mockArticleDataSource.getArticles()
+        }
+    }
+
+    @Test
+    fun getArticlesList_whenNormalResponseThenParseSuccessfully() = runBlocking {
+        val mockResponseBody = getMockResponseBody("$BASE_PATH/HomeArticleJson.json")
+        mockkStatic(LifecycleCallExtensionKtPath)
+        val mockApiCallImpl = configWanApiCallMock(
+                wanServiceAction = {
+                    getArticleList()
+                },
+                lifecycleCallActionMock = {
+                    coEvery {
+                        it.awaitWithTimeout(10000)
+                    } returns HttpResult.Okay(
+                            mockResponseBody,
+                            mockk()
+                    )
+                }
+        )
+
+        val mockArticleDataSource = mockk<ArticleDAO>()
+        every {
+            mockArticleDataSource.insertAll(any())
+        } just Runs
+
+        homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockArticleDataSource)
+        val articleVOList = homeRepository?.requestArticles()
+        verify(exactly = 1) {
+            mockArticleDataSource.insertAll(any())
+        }
+        assertEquals(20, articleVOList?.size)
+        assertEquals("https://www.jianshu.com/p/756863740988", articleVOList?.get(0)?.link)
+    }
+
+    @Test
+    fun getArticleList_whenTimeoutThenReturnEmptyList() = runBlockingTest {
+        mockkStatic(LifecycleCallExtensionKtPath)
+        val mockApiCallImpl = configWanApiCallMock(
+                wanServiceAction = {
+                    getArticleList()
+                },
+                lifecycleCallActionMock = {
+                    coEvery {
+                        it.awaitWithTimeout(10000)
+                    } returns HttpResult.Error(
+                            NetworkError(
+                                    0, "Timeout: no response within 10000",
+                                    TimeoutException("Timeout: no response within 10000")
+                            )
+                    )
+                }
+        )
+
+        homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockk())
+        val articleVOList = homeRepository?.requestArticles()
+        assertTrue(articleVOList?.size == 0)
     }
 }

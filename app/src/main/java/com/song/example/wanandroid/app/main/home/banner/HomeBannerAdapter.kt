@@ -1,4 +1,4 @@
-package com.song.example.wanandroid.app.main.home
+package com.song.example.wanandroid.app.main.home.banner
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.song.example.wanandroid.app.R
-import com.song.example.wanandroid.app.main.home.HomeBannerAdapter.BannerViewHolder
+import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter.BannerViewHolder
 import com.youth.banner.adapter.BannerAdapter
 
 /**

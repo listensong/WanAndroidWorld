@@ -1,4 +1,4 @@
-package com.song.example.wanandroid.app.main.home
+package com.song.example.wanandroid.app.main.home.banner
 
 import com.squareup.moshi.JsonClass
 
@@ -37,7 +37,7 @@ fun BannerDataDTO?.toVOList(): List<BannerVO> {
 }
 
 fun BannerDTO.toVO() : BannerVO {
-    return  BannerVO(
+    return BannerVO(
             title = this.title ?: "",
             type = this.type ?: 0,
             imagePath = this.imagePath ?: "",
@@ -54,7 +54,7 @@ fun BannerDataDTO?.toPOList(): List<BannerPO> {
 }
 
 fun BannerDTO.toPO() : BannerPO {
-    return  BannerPO(
+    return BannerPO(
             id = this.id,
             desc = this.desc ?: "",
             imagePath = this.imagePath ?: "",

@@ -6,8 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.song.example.wanandroid.BaseApplication
-import com.song.example.wanandroid.app.main.home.BannerDAO
-import com.song.example.wanandroid.app.main.home.BannerPO
+import com.song.example.wanandroid.app.main.home.article.ArticleDAO
+import com.song.example.wanandroid.app.main.home.article.ArticlePO
+import com.song.example.wanandroid.app.main.home.banner.BannerDAO
+import com.song.example.wanandroid.app.main.home.banner.BannerPO
 
 /**
  * @package com.song.example.wanandroid.app.data
@@ -19,7 +21,8 @@ import com.song.example.wanandroid.app.main.home.BannerPO
  */
 @Database(
         entities = [
-            BannerPO::class
+            BannerPO::class,
+            ArticlePO::class
         ],
         version = 1,
         exportSchema = false
@@ -27,6 +30,7 @@ import com.song.example.wanandroid.app.main.home.BannerPO
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun homeBannersDao(): BannerDAO
+    abstract fun homeArticleDao(): ArticleDAO
 
     companion object {
         @Volatile private var instance: AppDataBase? = null

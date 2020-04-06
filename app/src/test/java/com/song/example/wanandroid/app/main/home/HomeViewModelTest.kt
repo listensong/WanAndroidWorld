@@ -44,10 +44,12 @@ class HomeViewModelTest {
         val mockRepository = mockk<HomeRepository>()
         every {
             mockRepository.getBanners()
+            mockRepository.getArticles()
         } returns mockk()
         HomeViewModel(mockRepository)
         verify {
             mockRepository.getBanners()
+            mockRepository.getArticles()
         }
     }
 
@@ -56,6 +58,7 @@ class HomeViewModelTest {
         val mockRepository = mockk<HomeRepository>()
         every {
             mockRepository.getBanners()
+            mockRepository.getArticles()
         } returns mockk()
         val homeViewModel = HomeViewModel(mockRepository)
 
@@ -67,6 +70,24 @@ class HomeViewModelTest {
         coVerify(exactly = 1) {
             mockRepository.requestBanners()
         }
-        //assertTrue(homeViewModel.banners.value?.size == 0)
+    }
+
+    @Test
+    fun loadArticle_thenHomeRepositoryRequestArticleCalled() = runBlockingTest {
+        val mockRepository = mockk<HomeRepository>()
+        every {
+            mockRepository.getBanners()
+            mockRepository.getArticles()
+        } returns mockk()
+        val homeViewModel = HomeViewModel(mockRepository)
+
+        coEvery {
+            mockRepository.requestArticles()
+        } returns emptyList()
+
+        homeViewModel.loadArticle(testScope)
+        coVerify(exactly = 1) {
+            mockRepository.requestArticles()
+        }
     }
 }

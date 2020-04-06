@@ -20,7 +20,9 @@ import okhttp3.ResponseBody.Companion.toResponseBody
  */
 abstract class BaseWanApiCallMock {
 
-    protected val BASE_PATH = "../app/src/test/java/com/song/example/wanandroid/app/mockdata"
+    companion object {
+        const val BASE_PATH = "../app/src/androidTest/assets"
+    }
 
     suspend fun configWanApiCallMock(
             wanServiceAction: WanService.() -> ILifecycleCall<ResponseBody>,

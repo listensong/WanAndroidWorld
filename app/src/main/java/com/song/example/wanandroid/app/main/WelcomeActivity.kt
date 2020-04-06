@@ -13,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.song.example.wanandroid.app.R
 import com.song.example.wanandroid.app.data.AppDataBase
 import com.song.example.wanandroid.app.main.home.*
+import com.song.example.wanandroid.app.main.home.banner.BannerVO
+import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter
 import com.song.example.wanandroid.app.network.WanApiCallImpl
 import com.song.example.wanandroid.base.ui.BaseActivity
 import com.youth.banner.Banner
@@ -42,7 +44,8 @@ class WelcomeActivity : BaseActivity() {
     private fun provideRepository(): HomeRepository {
         return HomeRepository(
                 WanApiCallImpl.getInstance(),
-                AppDataBase.getInstance().homeBannersDao()
+                AppDataBase.getInstance().homeBannersDao(),
+                AppDataBase.getInstance().homeArticleDao()
         )
     }
 
@@ -76,9 +79,13 @@ class WelcomeActivity : BaseActivity() {
         viewModel.banners.observe(this, Observer {
             bannerAdapter.setDatas(it)
         })
+        viewModel.articles.observe(this, Observer {
+            Log.e("helloWorld", "$it")
+        })
 
         lifecycleScope.launchWhenResumed {
             viewModel.loadBanner()
+            viewModel.loadArticle()
         }
     }
 

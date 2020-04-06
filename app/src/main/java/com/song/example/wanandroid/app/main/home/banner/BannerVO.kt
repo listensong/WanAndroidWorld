@@ -1,4 +1,4 @@
-package com.song.example.wanandroid.app.main.home
+package com.song.example.wanandroid.app.main.home.banner
 
 /**
  * @package com.song.example.wanandroid.app.main.home
