@@ -22,8 +22,8 @@ import org.mockito.MockitoAnnotations
 class ArticleDataDTOTest {
 
     companion object {
-        private fun getTestArticleDTO(index: Int): ArticleDTO {
-            return ArticleDTO(
+        private fun getTestArticleDTO(index: Int): ArticleItemDTO {
+            return ArticleItemDTO(
                     apkLink = "getTestArticleDTO_apkLink_$index",
                     audit = 0,
                     author = "getTestArticleDTO_author_$index",
@@ -58,16 +58,16 @@ class ArticleDataDTOTest {
             )
         }
 
-        private fun getTestArticleDTOList(): List<ArticleDTO> {
-            val list = mutableListOf<ArticleDTO>()
+        private fun getTestArticleDTOList(): List<ArticleItemDTO> {
+            val list = mutableListOf<ArticleItemDTO>()
             for (i in 0..20) {
                 list.add(i, getTestArticleDTO(i))
             }
             return list
         }
 
-        private fun getTestArticleDataDTOWrapper(emptyCase: Boolean): ArticleDTOWrapper {
-            return ArticleDTOWrapper(
+        private fun getTestArticleDataDTOWrapper(emptyCase: Boolean): ArticleDataItemDTO {
+            return ArticleDataItemDTO(
                     curPage = 0,
                     datas = if (emptyCase) {
                         emptyList()
@@ -83,11 +83,11 @@ class ArticleDataDTOTest {
         }
 
         private fun getTestArticleDataDTO(emptyCase: Boolean): ArticleDataDTO {
-            return ArticleDataDTO().apply {
-                data = getTestArticleDataDTOWrapper(emptyCase)
-                errorCode = 110
+            return ArticleDataDTO(
+                data = getTestArticleDataDTOWrapper(emptyCase),
+                errorCode = 110,
                 errorMsg = "getTestArticleDataDTO"
-            }
+            )
         }
 
         lateinit var validTestDTO: ArticleDataDTO

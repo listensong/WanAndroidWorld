@@ -32,11 +32,6 @@ import org.kodein.di.generic.instance
  */
 class WelcomeActivity : BaseActivity() {
 
-//    override val kodein: Kodein = Kodein.lazy {
-////        //extend(_parentKodein, copy = Copy.All)
-////        import(homeKodeinModule)
-////    }
-
     override fun activityCustomDiModule() = Kodein.Module("WelcomeActivity") {
         import(homeKodeinModule)
     }

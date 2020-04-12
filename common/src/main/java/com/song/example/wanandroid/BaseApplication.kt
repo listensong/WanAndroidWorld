@@ -27,6 +27,11 @@ open class BaseApplication: Application(), KodeinAware {
 
     override val kodein = Kodein.lazy {
         import(appWideModule(this@BaseApplication))
+        import(wideModuleConfig())
+    }
+
+    protected open fun wideModuleConfig() = Kodein.Module("baseApplicationModule") {
+
     }
 
     companion object {

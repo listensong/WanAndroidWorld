@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import com.song.example.wanandroid.BaseApplication
+import com.song.example.wanandroid.common.network.retrofit.commonNetworkModule
 import org.kodein.di.Kodein
 import org.kodein.di.android.androidCoreModule
 import org.kodein.di.android.x.androidXModule
@@ -20,10 +21,10 @@ import org.kodein.di.generic.singleton
  * @email No
  */
 const val APP_WIDE_MODULE = "APP_WIDE_MODULE"
-fun appWideModule(app: Application) = Kodein.Module(APP_WIDE_MODULE) {
-    bind<Context>() with singleton { app }
-    import(androidCoreModule(app))
-    import(androidXModule(app))
-
+fun appWideModule(application: Application) = Kodein.Module(APP_WIDE_MODULE) {
+    bind<Context>() with singleton { application }
     bind<Resources>() with singleton { instance<BaseApplication>().resources }
+    import(androidCoreModule(application))
+    import(androidXModule(application))
+    import(commonNetworkModule)
 }

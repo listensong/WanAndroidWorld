@@ -1,5 +1,6 @@
 package com.song.example.wanandroid.app.main.home.article
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 /**
@@ -11,66 +12,31 @@ import com.squareup.moshi.JsonClass
  * @email No
  */
 @JsonClass(generateAdapter = true)
-class ArticleDataDTO {
-    var data: ArticleDTOWrapper? = null
-    var errorCode: Int? = 0
-    var errorMsg: String? = ""
-}
+data class ArticleDataDTO(
+    @Json(name="data")
+    val data: ArticleDataItemDTO? = null,
 
-data class ArticleDTOWrapper(
-        var curPage: Int? = 0,
-        var datas: List<ArticleDTO>? = null,
-        var offset: Int = 0,
-        var over: Boolean? = false,
-        var pageCount: Int? = 0,
-        var size: Int? = 0,
-        var total: Int? = 0
-)
+    @Json(name="errorCode")
+    val errorCode: Int? = null,
 
-data class ArticleDTO(
-        var apkLink: String? = "",
-        var audit: Int? = 0,
-        var author: String? = "",
-        var canEdit: Boolean? = false,
-        var chapterId: Int? = 0,
-        var chapterName: String? = "",
-        var collect: Boolean? = false,
-        var courseId: Int? = 0,
-        var desc: String? = "",
-        var descMd: String? = "",
-        var envelopePic: String? = "",
-        var fresh: Boolean? = false,
-        var id: Int? = 0,
-        var link: String? = "",
-        var niceDate: String? = "",
-        var niceShareDate: String? = "",
-        var origin: String? = "",
-        var prefix: String? = "",
-        var projectLink: String? = "",
-        var publishTime: Long? = 0,
-        var selfVisible: Int? = 0,
-        var shareDate: Long? = 0,
-        var shareUser: String? = "",
-        var superChapterId: Int? = 0,
-        var superChapterName: String? = "",
-        var tags: List<Tag>? = emptyList(),
-        var title: String? = "",
-        var type: Int? = 0,
-        var userId: Int? = 0,
-        var visible: Int? = 0,
-        var zan: Int? = 0
+    @Json(name="errorMsg")
+    val errorMsg: String? = null
 )
 
 fun ArticleDataDTO?.toVOList(): List<ArticleVO> {
     return this?.run {
         val currentPage = this.data?.curPage ?: 0
-        this.data?.datas?.map {
-            it.toVO(currentPage)
-        } ?: emptyList()
+        val voList = mutableListOf<ArticleVO>()
+        this.data?.datas?.forEach {
+            if (it != null) {
+                voList.add(it.toVO(currentPage))
+            }
+        }
+        voList
     } ?: emptyList()
 }
 
-fun ArticleDTO.toVO(currentPage: Int) : ArticleVO {
+fun ArticleItemDTO.toVO(currentPage: Int) : ArticleVO {
     return ArticleVO(
             curPage = currentPage,
             apkLink = this.apkLink ?: "",
@@ -97,13 +63,17 @@ fun ArticleDTO.toVO(currentPage: Int) : ArticleVO {
 fun ArticleDataDTO?.toPOList(): List<ArticlePO> {
     return this?.run {
         val currentPage = this.data?.curPage ?: 0
-        this.data?.datas?.map {
-            it.toPO(currentPage)
-        } ?: emptyList()
+        val poList = mutableListOf<ArticlePO>()
+        this.data?.datas?.forEach {
+            if (it != null) {
+                poList.add(it.toPO(currentPage))
+            }
+        }
+        poList
     } ?: emptyList()
 }
 
-fun ArticleDTO.toPO(currentPage: Int) : ArticlePO {
+fun ArticleItemDTO.toPO(currentPage: Int) : ArticlePO {
     return ArticlePO(
             curPage = currentPage,
             apkLink = this.apkLink ?: "",

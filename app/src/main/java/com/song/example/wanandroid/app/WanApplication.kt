@@ -13,7 +13,7 @@ import org.kodein.di.Kodein
  */
 class WanApplication : BaseApplication() {
 
-    override val kodein = Kodein.lazy {
+    override fun wideModuleConfig() = Kodein.Module("WelcomeActivity") {
         import(wanAppHttpClientModule)
         import(appDbModule)
     }

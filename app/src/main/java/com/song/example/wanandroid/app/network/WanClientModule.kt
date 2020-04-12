@@ -1,18 +1,15 @@
 package com.song.example.wanandroid.app.network
 
-import com.song.example.wanandroid.BuildConfig
-import com.song.example.wanandroid.common.network.retrofit.HttpLoggingInterceptorConfiguration
-import com.song.example.wanandroid.common.network.retrofit.LifecycleCallAdapterFactoryCreator
+import com.song.example.wanandroid.common.network.retrofit._HTTP_DEFAULT_HEADER_INTERCEPTOR
+import com.song.example.wanandroid.common.network.retrofit._HTTP_DEFAULT_LOG_INTERCEPTOR
+import com.song.example.wanandroid.common.network.retrofit._HTTP_LIFECYCLE_CALL_ADAPTER
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
@@ -26,51 +23,38 @@ import java.util.concurrent.TimeUnit
  * @email No
  */
 private const val APP_WAN_CLIENT_MODULE = "APP_WAN_CLIENT_MODULE"
-private const val APP_WAN_HTTP_CLIENT_MODULE_LOG_INTERCEPTOR = "APP_WAN_HTTP_CLIENT_MODULE_LOG_INTERCEPTOR"
 
 const val APP_WAN_BASE_URL = "https://www.wanandroid.com/"
-//const val APP_WAN_SERVICE = "APP_WAN_SERVICE"
+const val APP_WAN_CLIENT_WITH_DEFAULT_INTERCEPTOR = "APP_WAN_CLIENT_WITH_DEFAULT_INTERCEPTOR"
+const val APP_WAN_RETROFIT = "APP_WAN_RETROFIT"
 
 val wanAppHttpClientModule = Kodein.Module(APP_WAN_CLIENT_MODULE) {
 
     bind<WanService>() with singleton {
-        //instance<Retrofit>().create(WanService::class.java)
-        Retrofit.Builder()
-                .client(instance())
-                .baseUrl(APP_WAN_BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(LifecycleCallAdapterFactoryCreator.create())
-                .build()
-                .create(WanService::class.java)
+        instance<Retrofit>(APP_WAN_RETROFIT).create(WanService::class.java)
     }
 
-    bind<Retrofit.Builder>() with provider { Retrofit.Builder() }
-
-    bind<OkHttpClient.Builder>() with provider { OkHttpClient.Builder() }
-
-    bind<Retrofit>() with singleton {
+    bind<Retrofit>(APP_WAN_RETROFIT) with singleton {
         instance<Retrofit.Builder>()
                 .baseUrl(APP_WAN_BASE_URL)
-                .client(instance())
+                .client(instance(APP_WAN_CLIENT_WITH_DEFAULT_INTERCEPTOR))
                 .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(LifecycleCallAdapterFactoryCreator.create())
+                .addCallAdapterFactory(instance(_HTTP_LIFECYCLE_CALL_ADAPTER))
                 .build()
     }
 
-    bind<Interceptor>(APP_WAN_HTTP_CLIENT_MODULE_LOG_INTERCEPTOR) with singleton {
-        HttpLoggingInterceptorConfiguration.createLoggingInterceptor(BuildConfig.DEBUG)
-    }
-
-    bind<OkHttpClient>() with singleton {
+    bind<OkHttpClient>(tag = APP_WAN_CLIENT_WITH_DEFAULT_INTERCEPTOR) with singleton {
         instance<OkHttpClient.Builder>()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .proxy(Proxy.NO_PROXY)
-//                .addInterceptor(instance<Interceptor>(HTTP_CLIENT_MODULE_INTERCEPTOR_LOG_TAG))
                 .addInterceptor(
-                        instance<Interceptor>(APP_WAN_HTTP_CLIENT_MODULE_LOG_INTERCEPTOR)
+                        instance<Interceptor>(_HTTP_DEFAULT_HEADER_INTERCEPTOR)
+                )
+                .addInterceptor(
+                        instance<Interceptor>(_HTTP_DEFAULT_LOG_INTERCEPTOR)
                 )
                 .build()
     }

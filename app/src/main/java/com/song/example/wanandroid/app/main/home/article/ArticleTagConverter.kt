@@ -3,6 +3,7 @@ package com.song.example.wanandroid.app.main.home.article
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Json
 
 /**
  * @package com.song.example.wanandroid.app.main.home.article
@@ -25,6 +26,9 @@ class ArticleTagConverter {
 }
 
 data class Tag(
-        val name: String,
-        val url: String
+        @Json(name="name")
+        val name: String? = null,
+
+        @Json(name="url")
+        val url: String? = null
 )
