@@ -6,12 +6,12 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Handler
 import android.util.DisplayMetrics
-import android.util.Log
 import android.util.TypedValue
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.core.content.ContextCompat
+import com.song.example.wanandroid.util.WanLog
 
 /**
  * @author song
@@ -131,7 +131,7 @@ fun Context.getAndroidAttrPX(@AttrRes attrResId: Int): Int {
         actionBarHeight = TypedValue.complexToDimensionPixelSize(value.data, resources.displayMetrics)
         actionBarHeight2 = TypedValue.complexToDimensionPixelOffset(value.data, resources.displayMetrics)
     }
-    Log.v("getAndroidAttrPX", "value " + value.toString() + " " + value.data + " " + actionBarHeight + " " + actionBarHeight2)
+    WanLog.v("getAndroidAttrPX", "value " + value.toString() + " " + value.data + " " + actionBarHeight + " " + actionBarHeight2)
     return actionBarHeight
 }
 

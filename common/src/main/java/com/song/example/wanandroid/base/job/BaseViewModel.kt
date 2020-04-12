@@ -1,8 +1,8 @@
 package com.song.example.wanandroid.base.job
 
-import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
+import com.song.example.wanandroid.util.WanLog
 
 /**
  * @author: Listensong
@@ -13,7 +13,7 @@ abstract class BaseViewModel : ViewModel() {
 
     @CallSuper
     override fun onCleared() {
-        Log.i("BaseViewModel", "onCleared")
+        WanLog.i("BaseViewModel", "onCleared")
         super.onCleared()
     }
 }

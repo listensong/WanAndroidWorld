@@ -3,21 +3,19 @@ package com.song.example.wanandroid.base.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.song.example.wanandroid.R
+import com.song.example.wanandroid.util.WanLog
 import org.kodein.di.Copy
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.android.retainedKodein
 import org.kodein.di.generic.kcontext
-import java.lang.IllegalStateException
-import java.lang.NullPointerException
 
 /**
  *  @author song
@@ -101,9 +99,9 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
         try {
             supportFragmentManager.popBackStackImmediate()
         } catch (e: IllegalStateException) {
-            Log.e(TAG, "popFragment: e:$e")
+            WanLog.e(TAG, "popFragment: e:$e")
         } catch (e: NullPointerException) {
-            Log.e(TAG, "popFragment: e:$e")
+            WanLog.e(TAG, "popFragment: e:$e")
         }
     }
 

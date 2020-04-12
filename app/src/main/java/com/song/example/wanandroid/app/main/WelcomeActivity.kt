@@ -1,7 +1,6 @@
 package com.song.example.wanandroid.app.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -19,11 +18,10 @@ import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter
 import com.song.example.wanandroid.app.main.home.homeKodeinModule
 import com.song.example.wanandroid.base.ui.BaseActivity
+import com.song.example.wanandroid.util.WanLog
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
-import org.kodein.di.Copy
 import org.kodein.di.Kodein
-import org.kodein.di.android.retainedKodein
 import org.kodein.di.generic.instance
 
 
@@ -88,7 +86,7 @@ class WelcomeActivity : BaseActivity() {
         })
         viewModel.articles.observe(this, Observer {
             refreshSwipe.isRefreshing = false
-            Log.e("HelloWorld", "$it")
+            WanLog.e("HelloWorld", "$it")
         })
 
         viewModel.pagedArticles.observe(this, Observer {

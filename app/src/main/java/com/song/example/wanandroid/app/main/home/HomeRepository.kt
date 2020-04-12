@@ -1,18 +1,15 @@
 package com.song.example.wanandroid.app.main.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import com.song.example.wanandroid.app.main.home.article.*
 import com.song.example.wanandroid.app.main.home.banner.*
-import com.song.example.wanandroid.app.network.WanApiCallImpl
 import com.song.example.wanandroid.app.network.WanService
 import com.song.example.wanandroid.base.job.PageBaseRepository
 import com.song.example.wanandroid.common.network.retrofit.*
 import com.song.example.wanandroid.extend.moshi
-import kotlinx.coroutines.CoroutineScope
+import com.song.example.wanandroid.util.WanLog
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
@@ -42,7 +39,7 @@ class HomeRepository(
                 .getBannerList()
                 .awaitWithTimeout(10000)
                 .onFailure {
-                    Log.e(TAG, "onFailure $it")
+                    WanLog.e(TAG, "onFailure $it")
                 }
                 .onSuccess {
                     val jsonString = it.value.string()
@@ -88,7 +85,7 @@ class HomeRepository(
                 .getArticleList(pageNum)
                 .awaitWithTimeout(10000)
                 .onFailure {
-                    Log.e(TAG, "onFailure $it")
+                    WanLog.e(TAG, "onFailure $it")
                 }
                 .onSuccess {
                     val jsonString = it.value.string()
