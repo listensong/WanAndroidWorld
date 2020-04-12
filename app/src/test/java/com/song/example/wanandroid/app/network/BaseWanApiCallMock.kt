@@ -27,7 +27,7 @@ abstract class BaseWanApiCallMock {
     suspend fun configWanApiCallMock(
             wanServiceAction: WanService.() -> ILifecycleCall<ResponseBody>,
             lifecycleCallActionMock: (ILifecycleCall<ResponseBody>) -> Unit
-    ): WanApiCallImpl {
+    ): WanService {
         mockkObject(BaseApplication)
         mockkClass(InterceptorModifyRequest::class)
         mockkConstructor(InterceptorModifyRequest::class)
@@ -45,7 +45,7 @@ abstract class BaseWanApiCallMock {
         } returns mockILifecycleCall
 
         lifecycleCallActionMock(mockILifecycleCall)
-        return mockApiCallImpl
+        return mockWanService
     }
 
     protected fun getMockResponseBody(filePath: String): ResponseBody {

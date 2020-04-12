@@ -31,27 +31,4 @@ abstract class AppDataBase : RoomDatabase() {
 
     abstract fun homeBannersDao(): BannerDAO
     abstract fun homeArticleDao(): ArticleDAO
-
-    companion object {
-        @Volatile private var instance: AppDataBase? = null
-
-        private const val DB_NAME = "HelloWorld.db"
-
-        fun getInstance(): AppDataBase {
-            return instance ?: synchronized(this) {
-                instance ?: buildDataBase(BaseApplication.instance).also { instance = it }
-            }
-        }
-
-        private fun buildDataBase(context: Context): AppDataBase {
-            return Room.databaseBuilder(context, AppDataBase::class.java, DB_NAME)
-                    .addCallback(object : RoomDatabase.Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            //val request = OneTimeWorkRequestBuilder<>()
-                        }
-                    })
-                    .build()
-        }
-    }
 }

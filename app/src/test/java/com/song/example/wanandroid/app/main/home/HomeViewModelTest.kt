@@ -45,13 +45,11 @@ class HomeViewModelTest {
         every {
             mockRepository.getBanners()
             mockRepository.getArticles()
-            mockRepository.initArticlesPageList(any())
         } returns mockk()
-        HomeViewModel(mockRepository)
+        HomeViewModel(mockRepository).banners
         verify {
             mockRepository.getBanners()
             mockRepository.getArticles()
-            mockRepository.initArticlesPageList(any())
         }
     }
 

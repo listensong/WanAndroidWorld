@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.song.example.wanandroid.app.main.home.article.ArticleDAO
 import com.song.example.wanandroid.app.main.home.banner.BannerDAO
 import com.song.example.wanandroid.app.network.BaseWanApiCallMock
+import com.song.example.wanandroid.app.network.WanService
 import com.song.example.wanandroid.common.network.retrofit.HttpResult
 import com.song.example.wanandroid.common.network.retrofit.LifecycleCallExtensionKtPath
 import com.song.example.wanandroid.common.network.retrofit.NetworkError
@@ -71,7 +72,7 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
     fun getBannerList_whenNormalResponseThenParseSuccessfully() = runBlocking {
         val mockResponseBody = getMockResponseBody("$BASE_PATH/BannerJson.json")
         mockkStatic(LifecycleCallExtensionKtPath)
-        val mockApiCallImpl = configWanApiCallMock(
+        val mockApiService = configWanApiCallMock(
                 wanServiceAction = {
                     getBannerList()
                 },
@@ -90,7 +91,7 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
             mockBannerDataSource.insertAll(any())
         } just Runs
 
-        homeRepository = HomeRepository(mockApiCallImpl, mockBannerDataSource, mockk())
+        homeRepository = HomeRepository(mockApiService, mockBannerDataSource, mockk())
         val bannerVOList = homeRepository?.requestBanners()
         verify(exactly = 1) {
             mockBannerDataSource.insertAll(any())
@@ -117,7 +118,7 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
     @Test
     fun getBannerList_whenTimeoutThenReturnEmptyList() = runBlockingTest {
         mockkStatic(LifecycleCallExtensionKtPath)
-        val mockApiCallImpl = configWanApiCallMock(
+        val mockApiService = configWanApiCallMock(
                 wanServiceAction = {
                     getBannerList()
                 },
@@ -133,7 +134,7 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
                 }
         )
 
-        homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockk())
+        homeRepository = HomeRepository(mockApiService, mockk(), mockk())
         val bannerVOList = homeRepository?.requestBanners()
         assertTrue(bannerVOList?.size == 0)
     }

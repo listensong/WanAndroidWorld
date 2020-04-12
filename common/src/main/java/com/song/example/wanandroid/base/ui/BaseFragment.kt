@@ -15,13 +15,20 @@ import com.song.example.wanandroid.base.job.CompositeJob
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Job
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.kcontext
 
 /**
  * @author: Listensong
  * Time: 19-10-21 下午8:20
  * Desc: com.song.example.wanandroid.base.ui.BaseFragment
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment(), KodeinAware {
+
+    //protected val _parentKodein by closestKodein()
+
+    override val kodeinContext = kcontext<Fragment>(this)
 
     protected var TAG = "BaseFragment"
 

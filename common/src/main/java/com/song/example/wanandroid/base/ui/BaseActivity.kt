@@ -10,6 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.song.example.wanandroid.R
+import org.kodein.di.Copy
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.closestKodein
+import org.kodein.di.android.retainedKodein
+import org.kodein.di.generic.kcontext
 import java.lang.IllegalStateException
 import java.lang.NullPointerException
 
@@ -18,10 +24,19 @@ import java.lang.NullPointerException
  * Time: 19-8-21 下午9:14
  * Desc: com.song.example.wanandroid.app.base.BaseActivity
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     protected lateinit var TAG : String
     protected var toolbar: Toolbar? = null
     protected val handler = Handler(Looper.getMainLooper())
+
+    protected val parentKodein by closestKodein()
+    override val kodeinContext = kcontext<AppCompatActivity>(this)
+    override val kodein: Kodein by retainedKodein {
+        extend(parentKodein, copy = Copy.All)
+        import(activityCustomDiModule())
+    }
+    protected open fun activityCustomDiModule() = Kodein.Module("activityModule") {
+    }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {

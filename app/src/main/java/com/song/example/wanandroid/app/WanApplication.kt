@@ -2,6 +2,9 @@ package com.song.example.wanandroid.app
 
 import androidx.annotation.CallSuper
 import com.song.example.wanandroid.BaseApplication
+import com.song.example.wanandroid.app.data.appDbModule
+import com.song.example.wanandroid.app.network.wanAppHttpClientModule
+import org.kodein.di.Kodein
 
 /**
  * @author song
@@ -9,6 +12,11 @@ import com.song.example.wanandroid.BaseApplication
  * Desc: com.song.example.wanandroid.app.BoreApplication
  */
 class WanApplication : BaseApplication() {
+
+    override val kodein = Kodein.lazy {
+        import(wanAppHttpClientModule)
+        import(appDbModule)
+    }
 
     @CallSuper
     override fun onCreate() {

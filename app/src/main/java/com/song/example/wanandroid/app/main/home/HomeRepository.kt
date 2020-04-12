@@ -24,7 +24,7 @@ import kotlinx.coroutines.withContext
  * @email No
  */
 class HomeRepository(
-        private val wanApiCallImpl: WanApiCallImpl,
+        private val wanApiService: WanService,
         private val bannerDataSource: BannerDAO,
         private val articleDataSource: ArticleDAO
 ) : PageBaseRepository() {
@@ -38,7 +38,7 @@ class HomeRepository(
     fun getBanners():  LiveData<List<BannerVO>> = bannerDataSource.getBanners()
 
     suspend fun requestBanners(): List<BannerVO> {
-        return wanApiCallImpl.callWanApi(WanService::class.java)
+        return wanApiService
                 .getBannerList()
                 .awaitWithTimeout(10000)
                 .onFailure {
@@ -70,32 +70,21 @@ class HomeRepository(
 
 
     /********************************** Article **************************************/
-
-    fun initArticlesPageList(workScope: CoroutineScope): LiveData<PagedList<ArticleVO>> {
+    fun initArticlesPageList(
+            pagedBoundaryCallback:  PagedList.BoundaryCallback<ArticleVO>
+    ): LiveData<PagedList<ArticleVO>> {
         return queryPagedList(
                 dataSourceFactory = articleDataSource.getArticleVOPage(),
                 pageSize = HOME_ARTICLE_PAGE_SIZE,
                 initialLoadSize = HOME_ARTICLE_INIT_LOAD_SIZE,
-                boundaryCallback = object : PagedList.BoundaryCallback<ArticleVO>() {
-                    override fun onZeroItemsLoaded() {
-                        workScope.launch {
-                            requestArticles(0)
-                        }
-                    }
-
-                    override fun onItemAtEndLoaded(itemAtEnd: ArticleVO) {
-                        workScope.launch {
-                            requestArticles(itemAtEnd.curPage + 1)
-                        }
-                    }
-                }
+                boundaryCallback = pagedBoundaryCallback
         )
     }
 
     fun getArticles():  LiveData<List<ArticleVO>> = articleDataSource.getArticles()
 
     suspend fun requestArticles(pageNum: Int = 0): List<ArticleVO> {
-        return wanApiCallImpl.callWanApi(WanService::class.java)
+        return wanApiService
                 .getArticleList(pageNum)
                 .awaitWithTimeout(10000)
                 .onFailure {

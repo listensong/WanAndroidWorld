@@ -141,21 +141,22 @@ dependencies {
     api "com.github.bumptech.glide:okhttp3-integration:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
-    api("com.squareup.okhttp3:okhttp:4.0.0") {
+    api("com.squareup.okhttp3:okhttp:4.3.0") {
         exclude group: "com.squareup.okio"
     }
 
-    api "com.squareup.okhttp3:logging-interceptor:4.0.0"
-    api "com.squareup.okio:okio:2.2.2"
+    api "com.squareup.okhttp3:logging-interceptor:4.3.0"
+    api "com.squareup.okio:okio:2.4.1"
 
     api "io.reactivex.rxjava2:rxjava:2.2.14"
     //api "io.reactivex.rxjava3:rxjava:3.0.0-RC2"
     api "io.reactivex.rxjava2:rxandroid:2.1.1"
 
-    api("com.squareup.retrofit2:retrofit:2.6.0") {
+    api("com.squareup.retrofit2:retrofit:2.7.1") {
         exclude module: "okhttp"
     }
-    api "com.squareup.retrofit2:converter-gson:2.6.0"
+    api "com.squareup.retrofit2:converter-gson:2.7.1"
+    api "com.squareup.retrofit2:converter-moshi:2.7.1"
 
     //轮播库
     api "com.youth.banner:banner:2.0.1"
@@ -170,10 +171,17 @@ dependencies {
     api "org.codehaus.jackson:jackson-core-asl:1.9.13"
 
     api "com.alibaba:fastjson:1.1.71.android"
+    api "com.squareup.moshi:moshi:$moshiVersion"
     api "com.squareup.moshi:moshi-kotlin:$moshiVersion"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
 
     api "com.google.android:flexbox:1.1.1"
+
+    api 'com.jakewharton.timber:timber:4.7.1'
+
+    api "org.kodein.di:kodein-di-generic-jvm:$kodeinVersion"
+    api "org.kodein.di:kodein-di-framework-android-core:$kodeinVersion"
+    api "org.kodein.di:kodein-di-framework-android-x:$kodeinVersion"
 
     //api "com.github.pqpo:Log4a:1.5.0"
 

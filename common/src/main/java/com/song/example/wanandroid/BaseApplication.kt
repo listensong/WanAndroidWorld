@@ -7,8 +7,12 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.song.example.wanandroid.base.ui.ApplicationLifecycleObserver
+import com.song.example.wanandroid.di.appWideModule
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
 import kotlin.properties.Delegates
 
 /**
@@ -16,7 +20,15 @@ import kotlin.properties.Delegates
  * Time: 19-8-22 上午10:27
  * Desc: com.song.example.wanandroid.BaseApplication
  */
-open class BaseApplication: Application() {
+open class BaseApplication: Application(), KodeinAware {
+
+    @VisibleForTesting
+    var overrideBindings: Kodein.MainBuilder.() -> Unit = {}
+
+    override val kodein = Kodein.lazy {
+        import(appWideModule(this@BaseApplication))
+    }
+
     companion object {
         const val TAG = "BaseApplication"
 
