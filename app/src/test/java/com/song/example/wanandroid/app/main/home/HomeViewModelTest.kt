@@ -18,7 +18,7 @@ import org.junit.Assert.*
  * @package com.song.example.wanandroid.app.main.home
  * @fileName HomeViewModelTest
  * @date on 3/29/2020 6:45 PM
- * @desc: TODO
+ * @desc HomeViewModel Unit test
  * @email No
  */
 class HomeViewModelTest {
@@ -45,11 +45,25 @@ class HomeViewModelTest {
         every {
             mockRepository.getBanners()
             mockRepository.getArticles()
+            mockRepository.requestStatus
         } returns mockk()
         HomeViewModel(mockRepository).banners
         verify {
             mockRepository.getBanners()
+        }
+    }
+
+    @Test
+    fun requestStatus_thenHomeRepositoryRequestStatusCalled() {
+        val mockRepository = mockk<HomeRepository>()
+        every {
+            mockRepository.getBanners()
             mockRepository.getArticles()
+            mockRepository.requestStatus
+        } returns mockk()
+        HomeViewModel(mockRepository).requestState
+        verify {
+            mockRepository.requestStatus
         }
     }
 
@@ -59,7 +73,7 @@ class HomeViewModelTest {
         every {
             mockRepository.getBanners()
             mockRepository.getArticles()
-            //mockRepository.initArticlesPageList(any())
+            mockRepository.requestStatus
         } returns mockk()
         val homeViewModel = HomeViewModel(mockRepository)
 
@@ -79,7 +93,7 @@ class HomeViewModelTest {
         every {
             mockRepository.getBanners()
             mockRepository.getArticles()
-            //mockRepository.initArticlesPageList(any())
+            mockRepository.requestStatus
         } returns mockk()
         val homeViewModel = HomeViewModel(mockRepository)
 

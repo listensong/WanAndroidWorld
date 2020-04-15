@@ -5,6 +5,7 @@ import com.song.example.wanandroid.app.main.home.article.ArticleDAO
 import com.song.example.wanandroid.app.main.home.banner.BannerDAO
 import com.song.example.wanandroid.app.network.BaseWanApiCallMock
 import com.song.example.wanandroid.app.network.WanService
+import com.song.example.wanandroid.common.network.RequestStatus
 import com.song.example.wanandroid.common.network.retrofit.HttpResult
 import com.song.example.wanandroid.common.network.retrofit.LifecycleCallExtensionKtPath
 import com.song.example.wanandroid.common.network.retrofit.NetworkError
@@ -24,6 +25,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.TimeoutException
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 /**
  * @author Listensong
@@ -96,6 +99,9 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         verify(exactly = 1) {
             mockBannerDataSource.insertAll(any())
         }
+        val requestStatusValue = homeRepository?.requestStatus?.value
+        assertTrue(requestStatusValue is RequestStatus.Complete)
+        assertNull((requestStatusValue as RequestStatus.Complete).err)
         assertTrue(bannerVOList?.size == 4)
         assertEquals(
                 "https://www.wanandroid.com/blogimgs/c4e5f86d-857a-41b9-a21a-316145cf3103.png",
@@ -118,17 +124,18 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
     @Test
     fun getBannerList_whenTimeoutThenReturnEmptyList() = runBlockingTest {
         mockkStatic(LifecycleCallExtensionKtPath)
+        val timeoutMillis = 10000L
         val mockApiService = configWanApiCallMock(
                 wanServiceAction = {
                     getBannerList()
                 },
                 lifecycleCallActionMock = {
                     coEvery {
-                        it.awaitWithTimeout(10000)
+                        it.awaitWithTimeout(timeoutMillis)
                     } returns HttpResult.Error(
                             NetworkError(
-                                    0, "Timeout: no response within 10000",
-                                    TimeoutException("Timeout: no response within 10000")
+                                    0, "Timeout: no response within $timeoutMillis",
+                                    TimeoutException("Timeout: no response within $timeoutMillis")
                             )
                     )
                 }
@@ -137,6 +144,11 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         homeRepository = HomeRepository(mockApiService, mockk(), mockk())
         val bannerVOList = homeRepository?.requestBanners()
         assertTrue(bannerVOList?.size == 0)
+        val requestStatusValue = homeRepository?.requestStatus?.value
+        assertTrue(requestStatusValue is RequestStatus.Complete)
+        assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
+        assertEquals(0, requestStatusValue.err?.errorCode)
+        assertEquals("Timeout: no response within $timeoutMillis", requestStatusValue.err?.errorMessage)
     }
 
 

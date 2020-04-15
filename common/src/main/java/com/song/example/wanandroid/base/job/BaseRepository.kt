@@ -1,11 +1,14 @@
 package com.song.example.wanandroid.base.job
 
+import androidx.lifecycle.MutableLiveData
+import com.song.example.wanandroid.common.network.RequestStatus
+
 
 /**
  * @author: Listensong
- * Time: 19-10-8 下午4:40
- * Desc: com.song.example.wanandroid.base.job.BaseRepository
+ * @time: 19-10-8 下午4:40
+ * @desc: com.song.example.wanandroid.base.job.BaseRepository
  */
 abstract class BaseRepository {
-
+    var requestStatus: MutableLiveData<RequestStatus> = MutableLiveData(RequestStatus.initial())
 }

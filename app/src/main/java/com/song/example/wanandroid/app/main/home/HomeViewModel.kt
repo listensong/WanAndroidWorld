@@ -10,6 +10,7 @@ import androidx.paging.PagedList
 import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.base.job.BaseViewModel
+import com.song.example.wanandroid.common.network.RequestStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
  * @email No
  */
 class HomeViewModel(
-        private val homeRepository: HomeRepository
+        private val repository: HomeRepository
 ) : BaseViewModel() {
 
     companion object {
@@ -36,11 +37,11 @@ class HomeViewModel(
 
         @Suppress("UNCHECKED_CAST")
         class HomeViewModelFactory(
-                private val homeRepository: HomeRepository
+                private val repository: HomeRepository
         ): ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-                    return HomeViewModel(homeRepository) as T
+                    return HomeViewModel(repository) as T
                 }
                 throw IllegalArgumentException("Unknown ViewModel class")
             }
@@ -48,23 +49,23 @@ class HomeViewModel(
     }
 
     val banners:  LiveData<List<BannerVO>>
-            get() = homeRepository.getBanners()
+            get() = repository.getBanners()
 
     fun loadBanner(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {
-            homeRepository.requestBanners()
+            repository.requestBanners()
         }
     }
 
-    val articles = homeRepository.getArticles()
+    val articles = repository.getArticles()
 
 //    @Deprecated("use articles instead")
 //    val pagedArticles: LiveData<PagedList<ArticleVO>>
-//        get() = homeRepository.initArticlesPageList(boundaryCallback)
+//        get() = repository.initArticlesPageList(boundaryCallback)
 
     fun loadArticle(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {
-            homeRepository.requestArticles()
+            repository.requestArticles()
         }
     }
 
@@ -74,7 +75,7 @@ class HomeViewModel(
             return
         }
         workScope.launch {
-            homeRepository.requestArticles(currentPage + 1)
+            repository.requestArticles(currentPage + 1)
         }
     }
 
@@ -82,14 +83,16 @@ class HomeViewModel(
 //            object : PagedList.BoundaryCallback<ArticleVO>() {
 //                override fun onZeroItemsLoaded() {
 //                    viewModelScope.launch {
-//                        homeRepository.requestArticles(0)
+//                        repository.requestArticles(0)
 //                    }
 //                }
 //
 //                override fun onItemAtEndLoaded(itemAtEnd: ArticleVO) {
 //                    viewModelScope.launch {
-//                        homeRepository.requestArticles(itemAtEnd.curPage + 1)
+//                        repository.requestArticles(itemAtEnd.curPage + 1)
 //                    }
 //                }
 //            }
+
+    val requestState: LiveData<RequestStatus> = repository.requestStatus
 }

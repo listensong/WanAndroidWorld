@@ -1,7 +1,6 @@
 package com.song.example.wanandroid.app.main.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +8,19 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.*
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.song.example.wanandroid.Global
 import com.song.example.wanandroid.app.BR
-
-import com.song.example.wanandroid.app.R
 import com.song.example.wanandroid.app.databinding.FragmentHomeBinding
 import com.song.example.wanandroid.app.databinding.ListitemHomeArticleBinding
 import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter
 import com.song.example.wanandroid.base.ui.BaseFragment
+import com.song.example.wanandroid.common.network.RequestStatus
 import com.song.example.wanandroid.common.widget.LoadMoreScrollListener
 import com.song.example.wanandroid.common.widget.MixedTypeAdapter
 import com.song.example.wanandroid.util.WanLog
@@ -129,8 +129,14 @@ class HomeFragment : BaseFragment() {
 
         viewModel.articles.observe(viewLifecycleOwner, Observer {
             binding.srlRefresh.isRefreshing = false
-            WanLog.e("HelloWorld", "$it")
             onRefresh(articleAdapter, articleAdapter?.getDataList(), it as MutableList<ArticleVO>?)
+        })
+
+        viewModel.requestState.observe(viewLifecycleOwner, Observer {
+            binding.srlRefresh.isRefreshing = false
+            if (it is RequestStatus.Complete && it.err != null) {
+                WanLog.e(TAG, "RequestStatus " + it.err)
+            }
         })
 
         lifecycleScope.launchWhenResumed {

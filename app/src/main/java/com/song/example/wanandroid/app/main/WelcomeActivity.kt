@@ -6,19 +6,13 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.song.example.wanandroid.app.R
 import com.song.example.wanandroid.app.main.home.HomeFragment
-import com.song.example.wanandroid.app.main.home.homeKodeinModule
 import com.song.example.wanandroid.base.ui.BaseActivity
-import org.kodein.di.Kodein
 
 
 /**
  * @author song
  */
 class WelcomeActivity : BaseActivity() {
-
-    override fun activityCustomDiModule() = Kodein.Module("WelcomeActivity") {
-        import(homeKodeinModule)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

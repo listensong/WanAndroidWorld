@@ -1,11 +1,11 @@
 package com.song.example.wanandroid.app.main.home
 
 import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
 import com.song.example.wanandroid.app.main.home.article.*
 import com.song.example.wanandroid.app.main.home.banner.*
 import com.song.example.wanandroid.app.network.WanService
-import com.song.example.wanandroid.base.job.PageBaseRepository
+import com.song.example.wanandroid.base.job.BaseRepository
+import com.song.example.wanandroid.common.network.RequestStatus
 import com.song.example.wanandroid.common.network.retrofit.*
 import com.song.example.wanandroid.extend.moshi
 import com.song.example.wanandroid.util.WanLog
@@ -24,7 +24,7 @@ class HomeRepository(
         private val wanApiService: WanService,
         private val bannerDataSource: BannerDAO,
         private val articleDataSource: ArticleDAO
-) : PageBaseRepository() {
+) : BaseRepository() {
 
     companion object {
         const val TAG = "HomeRepository"
@@ -40,8 +40,10 @@ class HomeRepository(
                 .awaitWithTimeout(10000)
                 .onFailure {
                     WanLog.e(TAG, "onFailure $it")
+                    requestStatus.value = RequestStatus.Complete(it.error)
                 }
                 .onSuccess {
+                    requestStatus.value = RequestStatus.Complete()
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(BannerDataDTO::class.java)
                     saveBanners(list.toPOList())
@@ -86,8 +88,10 @@ class HomeRepository(
                 .awaitWithTimeout(10000)
                 .onFailure {
                     WanLog.e(TAG, "onFailure $it")
+                    requestStatus.value = RequestStatus.Complete(it.error)
                 }
                 .onSuccess {
+                    requestStatus.value = RequestStatus.Complete()
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(ArticleDataDTO::class.java)
                     saveArticles(list.toPOList())
