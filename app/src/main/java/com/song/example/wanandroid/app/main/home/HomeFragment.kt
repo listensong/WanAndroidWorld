@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.song.example.wanandroid.Global
@@ -20,6 +21,8 @@ import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter
 import com.song.example.wanandroid.base.ui.BaseFragment
+import com.song.example.wanandroid.common.widget.LoadMoreScrollListener
+import com.song.example.wanandroid.common.widget.MixedTypeAdapter
 import com.song.example.wanandroid.util.WanLog
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
@@ -42,20 +45,10 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private var bannerAdapter: HomeBannerAdapter? = null
-    private var articleAdapter: ArticlePagedAdapter? = null
+    private var articleAdapter: MixedTypeAdapter<ArticleVO>? = null
 
     companion object {
         fun newInstance() = HomeFragment()
-
-        private class ArticleVoDiffCallback: DiffUtil.ItemCallback<ArticleVO>() {
-            override fun areItemsTheSame(oldItem: ArticleVO, newItem: ArticleVO): Boolean {
-                return oldItem.link == newItem.link || oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: ArticleVO, newItem: ArticleVO): Boolean {
-                return oldItem == newItem
-            }
-        }
     }
 
     private val viewModel: HomeViewModel by instance()
@@ -70,27 +63,43 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        articleAdapter = ArticlePagedAdapter(
-                ArticleVoDiffCallback(),
+        articleAdapter = createAdapter(binding.rvArticle)
+    }
+
+    private fun createAdapter(recyclerView: RecyclerView?): MixedTypeAdapter<ArticleVO> {
+        return MixedTypeAdapter<ArticleVO>(
+                mutableListOf(),
                 BR.articleVo,
-                viewDataBinding = { parent, viewType -> createViewDataBinding(parent, viewType)
-                })
-
-        binding.srlRefresh.setOnRefreshListener {
-            viewModel.loadArticle()
-        }
-
-        binding.rvArticle.apply {
-            hasFixedSize()
-            addItemDecoration(DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL))
-            layoutManager = LinearLayoutManager(context)
-            itemAnimator = DefaultItemAnimator()
-            adapter = articleAdapter
+                viewType = { 0 },
+                spanSize = { 0 },
+                viewDataBinding = { parent, viewType ->
+                    createViewDataBinding(parent, viewType)
+                }
+        ).also { mixedAdapter ->
+            recyclerView?.apply {
+                hasFixedSize()
+                addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+                layoutManager = GridLayoutManager(context, 2).apply {
+                    spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                        override fun getSpanSize(position: Int): Int {
+                            return 2
+                        }
+                    }
+                }
+                itemAnimator = DefaultItemAnimator()
+                adapter = mixedAdapter
+                addOnScrollListener(loadMoreScrollListener)
+            }
         }
     }
 
-    private fun initBanner() {
+    private val loadMoreScrollListener: LoadMoreScrollListener =
+            object : LoadMoreScrollListener(callback = { lastPos ->
+        viewModel.loadNextPage(viewModel.viewModelScope,
+                articleAdapter?.getItem(lastPos)?.curPage ?: -1)
+    }) {}
 
+    private fun initBanner() {
         val list = listOf(
                 BannerVO(
                         title = "",
@@ -121,18 +130,22 @@ class HomeFragment : BaseFragment() {
         viewModel.articles.observe(viewLifecycleOwner, Observer {
             binding.srlRefresh.isRefreshing = false
             WanLog.e("HelloWorld", "$it")
-        })
-
-        viewModel.pagedArticles.observe(viewLifecycleOwner, Observer {
-            binding.srlRefresh.isRefreshing = false
-            if (it.isNotEmpty()) {
-                articleAdapter?.submitList(it)
-            }
+            onRefresh(articleAdapter, articleAdapter?.getDataList(), it as MutableList<ArticleVO>?)
         })
 
         lifecycleScope.launchWhenResumed {
             viewModel.loadBanner()
         }
+    }
+
+    private fun onRefresh(adapter: MixedTypeAdapter<ArticleVO>?,
+                          oldList: List<ArticleVO>?,
+                          newList: MutableList<ArticleVO>?) {
+        binding.srlRefresh.isRefreshing = false
+        if (adapter == null) {
+            return
+        }
+        adapter.diffUpdate(lifecycleScope, newList, ArticleDiffCallback(oldList, newList))
     }
 
     @Suppress("UNUSED_PARAMETER")

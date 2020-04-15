@@ -67,16 +67,16 @@ class HomeRepository(
 
 
     /********************************** Article **************************************/
-    fun initArticlesPageList(
-            pagedBoundaryCallback:  PagedList.BoundaryCallback<ArticleVO>
-    ): LiveData<PagedList<ArticleVO>> {
-        return queryPagedList(
-                dataSourceFactory = articleDataSource.getArticleVOPage(),
-                pageSize = HOME_ARTICLE_PAGE_SIZE,
-                initialLoadSize = HOME_ARTICLE_INIT_LOAD_SIZE,
-                boundaryCallback = pagedBoundaryCallback
-        )
-    }
+//    fun initArticlesPageList(
+//            pagedBoundaryCallback:  PagedList.BoundaryCallback<ArticleVO>
+//    ): LiveData<PagedList<ArticleVO>> {
+//        return queryPagedList(
+//                dataSourceFactory = articleDataSource.getArticleVOPage(),
+//                pageSize = HOME_ARTICLE_PAGE_SIZE,
+//                initialLoadSize = HOME_ARTICLE_INIT_LOAD_SIZE,
+//                boundaryCallback = pagedBoundaryCallback
+//        )
+//    }
 
     fun getArticles():  LiveData<List<ArticleVO>> = articleDataSource.getArticles()
 

@@ -58,8 +58,9 @@ class HomeViewModel(
 
     val articles = homeRepository.getArticles()
 
-    val pagedArticles: LiveData<PagedList<ArticleVO>>
-        get() = homeRepository.initArticlesPageList(boundaryCallback)
+//    @Deprecated("use articles instead")
+//    val pagedArticles: LiveData<PagedList<ArticleVO>>
+//        get() = homeRepository.initArticlesPageList(boundaryCallback)
 
     fun loadArticle(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {
@@ -67,18 +68,28 @@ class HomeViewModel(
         }
     }
 
-    private val boundaryCallback: PagedList.BoundaryCallback<ArticleVO> =
-            object : PagedList.BoundaryCallback<ArticleVO>() {
-                override fun onZeroItemsLoaded() {
-                    viewModelScope.launch {
-                        homeRepository.requestArticles(0)
-                    }
-                }
+    fun loadNextPage(workScope: CoroutineScope = viewModelScope,
+                     currentPage: Int) {
+        if (currentPage < 0) {
+            return
+        }
+        workScope.launch {
+            homeRepository.requestArticles(currentPage + 1)
+        }
+    }
 
-                override fun onItemAtEndLoaded(itemAtEnd: ArticleVO) {
-                    viewModelScope.launch {
-                        homeRepository.requestArticles(itemAtEnd.curPage + 1)
-                    }
-                }
-            }
+//    private val boundaryCallback: PagedList.BoundaryCallback<ArticleVO> =
+//            object : PagedList.BoundaryCallback<ArticleVO>() {
+//                override fun onZeroItemsLoaded() {
+//                    viewModelScope.launch {
+//                        homeRepository.requestArticles(0)
+//                    }
+//                }
+//
+//                override fun onItemAtEndLoaded(itemAtEnd: ArticleVO) {
+//                    viewModelScope.launch {
+//                        homeRepository.requestArticles(itemAtEnd.curPage + 1)
+//                    }
+//                }
+//            }
 }
