@@ -16,16 +16,16 @@ const val WAN_HOME_BANNER_TABLE_NAME = "wan_world_banner"
 interface BannerDAO {
 
     @Transaction
-    fun updateBanners(banners: List<BannerPO>) {
+    fun clearAndInsert(banners: List<BannerPO>) {
         clear()
-        insertAll(banners)
+        insert(banners)
     }
 
     @Query("SELECT * FROM $WAN_HOME_BANNER_TABLE_NAME")
     fun getBanners(): LiveData<List<BannerVO>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(banners: List<BannerPO>)
+    fun insert(banners: List<BannerPO>)
 
     @Query("DELETE from $WAN_HOME_BANNER_TABLE_NAME")
     fun clear()

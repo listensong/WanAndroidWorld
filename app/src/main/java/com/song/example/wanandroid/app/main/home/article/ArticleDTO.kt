@@ -1,5 +1,6 @@
 package com.song.example.wanandroid.app.main.home.article
 
+import com.song.example.wanandroid.app.main.home.HomeConst
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -13,14 +14,14 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class ArticleDataDTO(
-    @Json(name="data")
-    val data: ArticleDataItemDTO? = null,
+        @Json(name="data")
+        val data: ArticleDataItemDTO? = null,
 
-    @Json(name="errorCode")
-    val errorCode: Int? = null,
+        @Json(name="errorCode")
+        val errorCode: Int? = null,
 
-    @Json(name="errorMsg")
-    val errorMsg: String? = null
+        @Json(name="errorMsg")
+        val errorMsg: String? = null
 )
 
 fun ArticleDataDTO?.toVOList(): List<ArticleVO> {
@@ -39,6 +40,7 @@ fun ArticleDataDTO?.toVOList(): List<ArticleVO> {
 fun ArticleItemDTO.toVO(currentPage: Int) : ArticleVO {
     return ArticleVO(
             curPage = currentPage,
+            itemType = HomeConst.ITEM_TYPE_ARTICLE,
             apkLink = this.apkLink ?: "",
             audit = this.audit ?:  0,
             author = this.author ?:  "",
@@ -75,6 +77,7 @@ fun ArticleDataDTO?.toPOList(): List<ArticlePO> {
 
 fun ArticleItemDTO.toPO(currentPage: Int) : ArticlePO {
     return ArticlePO(
+            itemType = HomeConst.ITEM_TYPE_ARTICLE,
             curPage = currentPage,
             apkLink = this.apkLink ?: "",
             audit = this.audit ?:  0,

@@ -2,6 +2,7 @@ package com.song.example.wanandroid.app.main.home.article
 
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.song.example.wanandroid.app.main.home.HomeConst
 
 /**
  * @package com.song.example.wanandroid.app.main.home.article
@@ -14,6 +15,7 @@ import androidx.room.TypeConverters
 data class ArticleVO(
         var id: Int,
         val curPage: Int,
+        val itemType: Int,
         var apkLink: String = "",
         var audit: Int,
         var author: String,

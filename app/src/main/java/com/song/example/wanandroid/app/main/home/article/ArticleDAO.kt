@@ -17,9 +17,9 @@ const val WAN_HOME_ARTICLE_TABLE_NAME = "wan_world_home_article"
 interface ArticleDAO {
 
     @Transaction
-    fun updateArticles(articles: List<ArticlePO>) {
+    fun clearAndInsert(articles: List<ArticlePO>) {
         clear()
-        insertAll(articles)
+        insert(articles)
     }
 
     @Query("SELECT * FROM $WAN_HOME_ARTICLE_TABLE_NAME")
@@ -30,7 +30,7 @@ interface ArticleDAO {
     fun getArticleVOPage(): DataSource.Factory<Int, ArticleVO>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(articles: List<ArticlePO>)
+    fun insert(articles: List<ArticlePO>)
 
     @Query("DELETE from $WAN_HOME_ARTICLE_TABLE_NAME")
     fun clear()

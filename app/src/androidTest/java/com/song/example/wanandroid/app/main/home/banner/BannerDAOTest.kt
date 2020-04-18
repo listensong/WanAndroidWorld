@@ -81,7 +81,7 @@ class BannerDAOTest {
         var bannerSavedPOs = bannerDao.getBanners().blockingObserver()
         assertEquals(0, bannerSavedPOs?.size)
 
-        bannerDao.insertAll(bannerPOList)
+        bannerDao.insert(bannerPOList)
         bannerSavedPOs = bannerDao.getBanners().blockingObserver()
         assertNotNull(bannerSavedPOs)
         assertEquals(4, bannerSavedPOs?.size)

@@ -91,13 +91,13 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
 
         val mockBannerDataSource = mockk<BannerDAO>()
         every {
-            mockBannerDataSource.insertAll(any())
+            mockBannerDataSource.clearAndInsert(any())
         } just Runs
 
         homeRepository = HomeRepository(mockApiService, mockBannerDataSource, mockk())
         val bannerVOList = homeRepository?.requestBanners()
         verify(exactly = 1) {
-            mockBannerDataSource.insertAll(any())
+            mockBannerDataSource.clearAndInsert(any())
         }
         val requestStatusValue = homeRepository?.requestStatus?.value
         assertTrue(requestStatusValue is RequestStatus.Complete)
@@ -172,12 +172,12 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
     }
 
     @Test
-    fun getArticlesList_whenNormalResponseThenParseSuccessfully() = runBlocking {
+    fun getArticlesList_whenPageNum0NormalResponseThenParseDoClearAndInsert() = runBlocking {
         val mockResponseBody = getMockResponseBody("$BASE_PATH/HomeArticleJson.json")
         mockkStatic(LifecycleCallExtensionKtPath)
         val mockApiCallImpl = configWanApiCallMock(
                 wanServiceAction = {
-                    getArticleList()
+                    getArticleList(0)
                 },
                 lifecycleCallActionMock = {
                     coEvery {
@@ -191,14 +191,49 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
 
         val mockArticleDataSource = mockk<ArticleDAO>()
         every {
-            mockArticleDataSource.insertAll(any())
+            mockArticleDataSource.clearAndInsert(any())
         } just Runs
 
         homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockArticleDataSource)
-        val articleVOList = homeRepository?.requestArticles()
+        val articleVOList = homeRepository?.requestArticles(0)
         verify(exactly = 1) {
-            mockArticleDataSource.insertAll(any())
+            mockArticleDataSource.clearAndInsert(any())
         }
+
+        assertEquals(20, articleVOList?.size)
+        assertEquals("https://www.jianshu.com/p/756863740988", articleVOList?.get(0)?.link)
+    }
+
+
+    @Test
+    fun getArticlesList_whenPageNum1NormalResponseThenParseDoInsert() = runBlocking {
+        val mockResponseBody = getMockResponseBody("$BASE_PATH/HomeArticleJson.json")
+        mockkStatic(LifecycleCallExtensionKtPath)
+        val mockApiCallImpl = configWanApiCallMock(
+                wanServiceAction = {
+                    getArticleList(1)
+                },
+                lifecycleCallActionMock = {
+                    coEvery {
+                        it.awaitWithTimeout(10000)
+                    } returns HttpResult.Okay(
+                            mockResponseBody,
+                            mockk()
+                    )
+                }
+        )
+
+        val mockArticleDataSource = mockk<ArticleDAO>()
+        every {
+            mockArticleDataSource.insert(any())
+        } just Runs
+
+        homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockArticleDataSource)
+        val articleVOList = homeRepository?.requestArticles(1)
+        verify(exactly = 1) {
+            mockArticleDataSource.insert(any())
+        }
+
         assertEquals(20, articleVOList?.size)
         assertEquals("https://www.jianshu.com/p/756863740988", articleVOList?.get(0)?.link)
     }

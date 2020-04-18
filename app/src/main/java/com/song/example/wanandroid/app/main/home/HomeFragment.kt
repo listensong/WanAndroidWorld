@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,7 @@ import com.song.example.wanandroid.Global
 import com.song.example.wanandroid.app.BR
 import com.song.example.wanandroid.app.databinding.FragmentHomeBinding
 import com.song.example.wanandroid.app.databinding.ListitemHomeArticleBinding
+import com.song.example.wanandroid.app.databinding.ListitemHomeBannerBinding
 import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter
@@ -56,24 +58,33 @@ class HomeFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        initRecyclerView()
         initBanner()
+        initRecyclerView()
         initViewModelBinding()
+
         return binding.root
     }
 
     private fun initRecyclerView() {
         articleAdapter = createAdapter(binding.rvArticle)
+        binding.srlRefresh.setOnRefreshListener {
+            refreshHomeContent()
+        }
+    }
+
+    private fun refreshHomeContent() {
+        viewModel.loadBanner()
+        viewModel.loadArticle()
     }
 
     private fun createAdapter(recyclerView: RecyclerView?): MixedTypeAdapter<ArticleVO> {
         return MixedTypeAdapter<ArticleVO>(
                 mutableListOf(),
                 BR.articleVo,
-                viewType = { 0 },
-                spanSize = { 0 },
+                viewType = { it.itemType },
+                spanSize = { 2 },
                 viewDataBinding = { parent, viewType ->
-                    createViewDataBinding(parent, viewType)
+                    createItemViewDataBinding(parent, viewType)
                 }
         ).also { mixedAdapter ->
             recyclerView?.apply {
@@ -89,6 +100,21 @@ class HomeFragment : BaseFragment() {
                 itemAnimator = DefaultItemAnimator()
                 adapter = mixedAdapter
                 addOnScrollListener(loadMoreScrollListener)
+            }
+        }
+    }
+
+    private fun createItemViewDataBinding(parent: ViewGroup,
+                                          viewType: Int): ViewDataBinding {
+        return when (viewType) {
+            HomeConst.ITEM_TYPE_BANNER -> {
+                createBannerViewDataBinding(parent, viewType)
+            }
+            HomeConst.ITEM_TYPE_ARTICLE -> {
+                createArticleViewDataBinding(parent, viewType)
+            }
+            else -> {
+                createArticleViewDataBinding(parent, viewType)
             }
         }
     }
@@ -110,16 +136,6 @@ class HomeFragment : BaseFragment() {
         )
 
         bannerAdapter = HomeBannerAdapter(list)
-        binding.banner.run {
-            adapter = bannerAdapter!!
-            setOrientation(Banner.HORIZONTAL)
-            indicator = CircleIndicator(requireContext())
-            setOnBannerListener { data, _ ->
-                if (data is BannerVO) {
-                    Toast.makeText(Global.globalContext, data.title, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
     private fun initViewModelBinding() {
@@ -134,13 +150,14 @@ class HomeFragment : BaseFragment() {
 
         viewModel.requestState.observe(viewLifecycleOwner, Observer {
             binding.srlRefresh.isRefreshing = false
+            WanLog.i(TAG, "requestState " + it)
             if (it is RequestStatus.Complete && it.err != null) {
                 WanLog.e(TAG, "RequestStatus " + it.err)
             }
         })
 
         lifecycleScope.launchWhenResumed {
-            viewModel.loadBanner()
+            refreshHomeContent()
         }
     }
 
@@ -155,7 +172,7 @@ class HomeFragment : BaseFragment() {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    private fun createViewDataBinding(parent: ViewGroup, viewType: Int): ListitemHomeArticleBinding {
+    private fun createArticleViewDataBinding(parent: ViewGroup, viewType: Int): ListitemHomeArticleBinding {
         return ListitemHomeArticleBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
@@ -165,14 +182,21 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        binding.banner.start()
+    @Suppress("UNUSED_PARAMETER")
+    private fun createBannerViewDataBinding(parent: ViewGroup, viewType: Int): ListitemHomeBannerBinding {
+        return ListitemHomeBannerBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+        ).also { binding ->
+            binding.banner.run {
+                adapter = bannerAdapter!!
+                setOrientation(Banner.HORIZONTAL)
+                indicator = CircleIndicator(requireContext())
+                setOnBannerListener { data, _ ->
+                    if (data is BannerVO) {
+                        Toast.makeText(Global.globalContext, data.title, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binding.banner.stop()
-    }
-
 }

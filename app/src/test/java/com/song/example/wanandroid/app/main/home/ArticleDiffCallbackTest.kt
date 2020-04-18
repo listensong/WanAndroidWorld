@@ -26,28 +26,29 @@ class ArticleDiffCallbackTest {
     @After
     fun tearDown() {
     }
-    
+
     private fun getMaskVO(maskId: Int, maskTitle: String, maskLink: String): ArticleVO {
         return ArticleVO(
-               id = maskId,
-        curPage = 0,
-        apkLink = "",
-        audit = 0,
-        author = "",
-        chapterName = "",
-        desc = "",
-        descMd = "",
-        envelopePic = "",
-        fresh = false,
-        link = maskLink,
-        projectLink = "",
-        publishTime = 0L,
-        shareDate = 0L,
-        shareUser = "",
-        superChapterId = 0,
-        superChapterName = "",
-        title = maskTitle,
-        type = 0
+                id = maskId,
+                curPage = 0,
+                itemType = 0,
+                apkLink = "",
+                audit = 0,
+                author = "",
+                chapterName = "",
+                desc = "",
+                descMd = "",
+                envelopePic = "",
+                fresh = false,
+                link = maskLink,
+                projectLink = "",
+                publishTime = 0L,
+                shareDate = 0L,
+                shareUser = "",
+                superChapterId = 0,
+                superChapterName = "",
+                title = maskTitle,
+                type = 0
         )
     }
 

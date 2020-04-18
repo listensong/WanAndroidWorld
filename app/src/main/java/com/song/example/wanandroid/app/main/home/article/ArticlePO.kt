@@ -20,6 +20,7 @@ data class ArticlePO(
         var _index: Int = 0,
         val id: Int,
         val curPage: Int,
+        val itemType: Int,
         val apkLink: String? = "",
         val audit: Int,
         val author: String,
@@ -51,3 +52,48 @@ data class ArticlePO(
         val visible: Int,
         val zan: Int
 )
+
+
+fun createMaskArticlePO(currentPage: Int,
+                        itemType: Int,
+                        title: String,
+                        link: String): ArticlePO {
+        val maskId = -(itemType * 10 + currentPage)
+        val maskTitle = "MASK_TITLE_${title}_${link}_${itemType}"
+        val maskLink = "MASK_LINK_${title}_${link}_${itemType}"
+        return ArticlePO(
+                itemType = itemType,
+                curPage = currentPage,
+                apkLink = "",
+                audit =  0,
+                author = "",
+                canEdit = false,
+                chapterId = 0,
+                chapterName = "",
+                collect = false,
+                courseId = 0,
+                desc = "",
+                descMd = "",
+                envelopePic =  "",
+                fresh = false,
+                id = maskId,
+                link = maskLink,
+                niceDate = "",
+                niceShareDate = "",
+                origin = "",
+                prefix = "",
+                projectLink = "",
+                publishTime = 0,
+                selfVisible = 0,
+                shareDate = 0,
+                shareUser =  "",
+                superChapterId = 0,
+                superChapterName = "",
+                tags = emptyList(),
+                title = maskTitle,
+                type = 0,
+                userId = 0,
+                visible = 0,
+                zan =0
+        )
+}

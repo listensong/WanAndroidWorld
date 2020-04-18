@@ -43,6 +43,7 @@ class HomeRepository(
                     requestStatus.value = RequestStatus.Complete(it.error)
                 }
                 .onSuccess {
+                    WanLog.d(TAG, "requestBanners onSuccess ")
                     requestStatus.value = RequestStatus.Complete()
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(BannerDataDTO::class.java)
@@ -63,7 +64,7 @@ class HomeRepository(
             return
         }
         withContext(Dispatchers.IO) {
-            bannerDataSource.insertAll(banners)
+            bannerDataSource.clearAndInsert(banners)
         }
     }
 
@@ -91,10 +92,11 @@ class HomeRepository(
                     requestStatus.value = RequestStatus.Complete(it.error)
                 }
                 .onSuccess {
+                    WanLog.d(TAG, "requestArticles onSuccess ")
                     requestStatus.value = RequestStatus.Complete()
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(ArticleDataDTO::class.java)
-                    saveArticles(list.toPOList())
+                    saveArticles(pageNum, list.toPOList())
                     HttpResult.Okay(list.toVOList(), it.response)
                 }
                 .doFollow {
@@ -106,12 +108,25 @@ class HomeRepository(
                 }
     }
 
-    private suspend fun saveArticles(articles: List<ArticlePO>) {
+    private suspend fun saveArticles(pageNum: Int = 0, articles: List<ArticlePO>) {
         if (articles.isEmpty()) {
             return
         }
         withContext(Dispatchers.IO) {
-            articleDataSource.insertAll(articles)
+            if (pageNum <= 0) {
+                articleDataSource.clearAndInsert(prependBannerMaskItem(articles))
+            } else {
+                articleDataSource.insert(articles)
+            }
         }
+    }
+
+    private fun prependBannerMaskItem(articles: List<ArticlePO>): List<ArticlePO>{
+        val newList = mutableListOf(
+                createMaskArticlePO(0,
+                        HomeConst.ITEM_TYPE_BANNER, "BANNER_TITLE", "BANNER_LINK")
+        )
+        newList.addAll(articles)
+        return newList
     }
 }

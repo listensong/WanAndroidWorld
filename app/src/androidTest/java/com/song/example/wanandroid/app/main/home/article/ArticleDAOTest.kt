@@ -9,6 +9,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.song.example.wanandroid.app.data.AppDataBase
+import com.song.example.wanandroid.app.main.home.HomeConst
 import com.song.example.wanandroid.app.main.home.TestUtils.readFile
 import com.song.example.wanandroid.extend.moshi
 import org.junit.After
@@ -81,7 +82,7 @@ class ArticleDAOTest {
         var articleSavedPOs = articleDao.getArticles().blockingObserver()
         assertEquals(0, articleSavedPOs?.size)
 
-        articleDao.insertAll(articlePOList)
+        articleDao.insert(articlePOList)
         articleSavedPOs = articleDao.getArticles().blockingObserver()
         assertNotNull(articleSavedPOs)
         assertEquals(articlePOList.size, articleSavedPOs?.size)
@@ -95,6 +96,19 @@ class ArticleDAOTest {
         articleDao.clear()
         articleSavedPOs = articleDao.getArticles().blockingObserver()
         assertEquals(0, articleSavedPOs?.size)
+
+        articleDao.clearAndInsert(
+                listOf(
+                        createMaskArticlePO(0,
+                                HomeConst.ITEM_TYPE_BANNER, "BANNER_TITLE", "BANNER_LINK")
+                )
+        )
+        articleSavedPOs = articleDao.getArticles().blockingObserver()
+        assertNotNull(articleSavedPOs)
+        articleSavedPOs?.let {
+            assertEquals(1, it.size)
+            assertEquals(HomeConst.ITEM_TYPE_BANNER, it[0].itemType)
+        }
     }
 
 }

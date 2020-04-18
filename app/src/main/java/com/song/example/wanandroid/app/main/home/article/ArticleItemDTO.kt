@@ -5,95 +5,95 @@ import com.squareup.moshi.Json
 data class ArticleItemDTO(
 
 		@Json(name="shareDate")
-	val shareDate: Long? = null,
+		val shareDate: Long? = null,
 
 		@Json(name="projectLink")
-	val projectLink: String? = null,
+		val projectLink: String? = null,
 
 		@Json(name="prefix")
-	val prefix: String? = null,
+		val prefix: String? = null,
 
 		@Json(name="canEdit")
-	val canEdit: Boolean? = null,
+		val canEdit: Boolean? = null,
 
 		@Json(name="origin")
-	val origin: String? = null,
+		val origin: String? = null,
 
 		@Json(name="link")
-	val link: String? = null,
+		val link: String? = null,
 
 		@Json(name="title")
-	val title: String? = null,
+		val title: String? = null,
 
 		@Json(name="type")
-	val type: Int? = null,
+		val type: Int? = null,
 
 		@Json(name="selfVisible")
-	val selfVisible: Int? = null,
+		val selfVisible: Int? = null,
 
 		@Json(name="apkLink")
-	val apkLink: String? = null,
+		val apkLink: String? = null,
 
 		@Json(name="envelopePic")
-	val envelopePic: String? = null,
+		val envelopePic: String? = null,
 
 		@Json(name="audit")
-	val audit: Int? = null,
+		val audit: Int? = null,
 
 		@Json(name="chapterId")
-	val chapterId: Int? = null,
+		val chapterId: Int? = null,
 
 		@Json(name="id")
-	val id: Int? = null,
+		val id: Int? = null,
 
 		@Json(name="courseId")
-	val courseId: Int? = null,
+		val courseId: Int? = null,
 
 		@Json(name="superChapterName")
-	val superChapterName: String? = null,
+		val superChapterName: String? = null,
 
 		@Json(name="descMd")
-	val descMd: String? = null,
+		val descMd: String? = null,
 
 		@Json(name="publishTime")
-	val publishTime: Long? = null,
+		val publishTime: Long? = null,
 
 		@Json(name="niceShareDate")
-	val niceShareDate: String? = null,
+		val niceShareDate: String? = null,
 
 		@Json(name="visible")
-	val visible: Int? = null,
+		val visible: Int? = null,
 
 		@Json(name="niceDate")
-	val niceDate: String? = null,
+		val niceDate: String? = null,
 
 		@Json(name="author")
-	val author: String? = null,
+		val author: String? = null,
 
 		@Json(name="zan")
-	val zan: Int? = null,
+		val zan: Int? = null,
 
 		@Json(name="chapterName")
-	val chapterName: String? = null,
+		val chapterName: String? = null,
 
 		@Json(name="userId")
-	val userId: Int? = null,
+		val userId: Int? = null,
 
 		@Json(name="tags")
-	val tags: List<Tag>? = null,
+		val tags: List<Tag>? = null,
 
 		@Json(name="superChapterId")
-	val superChapterId: Int? = null,
+		val superChapterId: Int? = null,
 
 		@Json(name="fresh")
-	val fresh: Boolean? = null,
+		val fresh: Boolean? = null,
 
 		@Json(name="collect")
-	val collect: Boolean? = null,
+		val collect: Boolean? = null,
 
 		@Json(name="shareUser")
-	val shareUser: String? = null,
+		val shareUser: String? = null,
 
 		@Json(name="desc")
-	val desc: String? = null
+		val desc: String? = null
 )
