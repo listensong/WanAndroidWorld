@@ -1,11 +1,19 @@
 package com.song.example.wanandroid.common.widget
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LifecycleCoroutineScope
 import io.mockk.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Rule
 
 /**
  * @author Listensong
@@ -23,8 +31,14 @@ class MixedTypeAdapterTest {
     private var testViewType: Int = 3
     private var testSpanSize: Int = 6
 
+//    @get:Rule
+//    val instantExecutorRule = InstantTaskExecutorRule()
+//    private val mainThreadSurrogate = newSingleThreadContext("UI thread")
+//    private val testScope = TestCoroutineScope()
+
     @Before
     fun setUp() {
+        //Dispatchers.setMain(mainThreadSurrogate)
         adapter = MixedTypeAdapter(
                 mutableListOf(),
                 variableId,
@@ -38,6 +52,10 @@ class MixedTypeAdapterTest {
 
     @After
     fun tearDown() {
+//        Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+//        mainThreadSurrogate.close()
+//        testScope.cleanupTestCoroutines()
+//        unmockkAll()
     }
 
     @Test
@@ -61,6 +79,12 @@ class MixedTypeAdapterTest {
     }
 
     @Test
+    fun release_whenReleaseThenDataListIsNull() {
+        adapter.release()
+        assertNull(adapter.getDataList())
+    }
+
+    @Test
     fun setDataList_givenValidListThenReturnList() {
         val beforeSize = adapter.getDataList()?.size!!
         adapter.setDataList(mutableListOf("1", "2"))
@@ -68,10 +92,11 @@ class MixedTypeAdapterTest {
         assertEquals(2, afterSize - beforeSize)
     }
 
-    @Test
-    fun diffUpdate() {
-        //TODO UT
-    }
+//TODO testFuncImplement
+//    @Test
+//    fun diffUpdate_afterDiffDispatchThenSetDataListWithNewList() {
+//        //adapter.diffUpdate(testScope, mutableListOf("1", "-2-"), mockk())
+//    }
 
     @Test
     fun append_given3SizeListThenCheckDataList() {

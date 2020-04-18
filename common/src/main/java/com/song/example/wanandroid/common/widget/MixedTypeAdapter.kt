@@ -42,12 +42,16 @@ class MixedTypeAdapter<T>(
         return dataList
     }
 
-    fun setDataList(datas: MutableList<T>?) {
-        if (datas == null) {
+    fun release() {
+        dataList = null
+    }
+
+    fun setDataList(dataList: MutableList<T>?) {
+        if (dataList == null) {
             return
         }
 
-        dataList = datas
+        this.dataList = dataList
     }
 
     fun diffUpdate(lifecycleScope: LifecycleCoroutineScope,

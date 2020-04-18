@@ -2,13 +2,14 @@ package com.song.example.wanandroid.app.main.home
 
 import androidx.recyclerview.widget.DiffUtil
 import com.song.example.wanandroid.app.main.home.article.ArticleVO
+import java.lang.IndexOutOfBoundsException
 
 /**
  * @package com.song.example.wanandroid.app.main.home
  * @fileName ArticleDiffCallback
  * @date on 4/15/2020 9:43 PM
  * @author Listensong
- * @desc: TODO
+ * @desc
  * @email No
  */
 class ArticleDiffCallback(
@@ -16,8 +17,12 @@ class ArticleDiffCallback(
         private var newList: List<ArticleVO>?
 ) : DiffUtil.Callback() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList?.get(oldItemPosition)?.id == newList?.get(newItemPosition)?.id
+    override fun areItemsTheSame(oldItemPos: Int, newItemPos: Int): Boolean {
+        return try {
+            oldList?.get(oldItemPos)?.id == newList?.get(newItemPos)?.id
+        } catch (e: IndexOutOfBoundsException) {
+            false
+        }
     }
 
     override fun getOldListSize(): Int {
@@ -28,10 +33,15 @@ class ArticleDiffCallback(
         return newList?.size ?: 0
     }
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return (oldList?.get(oldItemPosition)?.id == newList?.get(newItemPosition)?.id)
-                && (oldList?.get(oldItemPosition)?.title == newList?.get(newItemPosition)?.title)
-                && (oldList?.get(oldItemPosition)?.link == newList?.get(newItemPosition)?.link)
+    override fun areContentsTheSame(oldItemPos: Int,
+                                    newItemPos: Int): Boolean {
+        return try {
+            (oldList?.get(oldItemPos)?.id == newList?.get(newItemPos)?.id)
+                    && (oldList?.get(oldItemPos)?.title == newList?.get(newItemPos)?.title)
+                    && (oldList?.get(oldItemPos)?.link == newList?.get(newItemPos)?.link)
+        } catch (e: IndexOutOfBoundsException) {
+            false
+        }
     }
 
 }
