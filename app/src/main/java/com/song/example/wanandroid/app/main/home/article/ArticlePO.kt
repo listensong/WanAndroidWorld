@@ -3,6 +3,7 @@ package com.song.example.wanandroid.app.main.home.article
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.song.example.wanandroid.app.main.home.HomeConst
 import com.song.example.wanandroid.app.main.home.banner.WAN_HOME_BANNER_TABLE_NAME
 
 /**
@@ -16,7 +17,7 @@ import com.song.example.wanandroid.app.main.home.banner.WAN_HOME_BANNER_TABLE_NA
 @Entity(tableName = WAN_HOME_ARTICLE_TABLE_NAME)
 @TypeConverters(ArticleTagConverter::class)
 data class ArticlePO(
-        @PrimaryKey(autoGenerate = true)
+        @PrimaryKey
         var _index: Int = 0,
         val id: Int,
         val curPage: Int,
@@ -54,14 +55,16 @@ data class ArticlePO(
 )
 
 
-fun createMaskArticlePO(currentPage: Int,
+fun createMaskArticlePO(index: Int,
+                        currentPage: Int,
                         itemType: Int,
                         title: String,
                         link: String): ArticlePO {
-        val maskId = -(itemType * 10 + currentPage)
+        val maskId = -(itemType * 10 + currentPage) + index
         val maskTitle = "MASK_TITLE_${title}_${link}_${itemType}"
         val maskLink = "MASK_LINK_${title}_${link}_${itemType}"
         return ArticlePO(
+                _index = index,
                 itemType = itemType,
                 curPage = currentPage,
                 apkLink = "",

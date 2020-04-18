@@ -13,5 +13,6 @@ object HomeConst {
     const val ITEM_TYPE_ARTICLE = 2
 
     const val BASE_INDEX_BANNER = 0
-    const val BASE_INDEX_ARTICLE = 50
+    const val BASE_INDEX_TOP_ARTICLE = 50
+    const val BASE_INDEX_ARTICLE = 100
 }

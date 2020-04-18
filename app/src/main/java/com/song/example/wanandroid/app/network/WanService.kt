@@ -41,7 +41,6 @@ interface WanService {
             @Query("author") articlesAuthor: String
     ): ILifecycleCall<ResponseBody>
 
-
     //项目
     @GET("article/listproject/{pageNum}/json")
     fun getProjectArticles(

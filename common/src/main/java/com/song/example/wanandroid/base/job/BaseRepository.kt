@@ -11,4 +11,5 @@ import com.song.example.wanandroid.common.network.RequestStatus
  */
 abstract class BaseRepository {
     var requestStatus: MutableLiveData<RequestStatus> = MutableLiveData(RequestStatus.initial())
+        protected set
 }

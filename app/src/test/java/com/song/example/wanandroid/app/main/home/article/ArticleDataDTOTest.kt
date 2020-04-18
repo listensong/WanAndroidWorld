@@ -1,5 +1,6 @@
 package com.song.example.wanandroid.app.main.home.article
 
+import com.song.example.wanandroid.app.network.BaseWanApiCallMock
 import com.song.example.wanandroid.app.network.BaseWanApiCallMock.Companion.BASE_PATH
 import com.song.example.wanandroid.basetest.MockAssets
 import com.song.example.wanandroid.extend.moshi
@@ -110,6 +111,7 @@ class ArticleDataDTOTest {
     fun testArticleDTOWrapper() {
         val json = MockAssets.readFile("$BASE_PATH/HomeArticleJson.json")
         val list = json.moshi(ArticleDataDTO::class.java)
+
         assertEquals(2, list?.data?.curPage)
         assertEquals(412, list?.data?.pageCount)
         assertEquals(20, list?.data?.size)
@@ -129,6 +131,7 @@ class ArticleDataDTOTest {
         val dtoSize = validTestDTO.data?.datas?.size
         assertNotNull(dtoSize)
         assertTrue(dtoSize != 0)
+
         val articleVOList = validTestDTO.toVOList()
         assertEquals(dtoSize, articleVOList.size)
         articleVOList.forEachIndexed { index, articleVO ->
@@ -152,7 +155,7 @@ class ArticleDataDTOTest {
     @Test
     fun testToPOList_whenDTOListIsEmptyThenReturnEmptyList() {
         assertEquals(0, emptyTestDTO.data?.datas?.size)
-        val articlePOList = emptyTestDTO.toPOList()
+        val articlePOList = emptyTestDTO.toPOList(0, 0)
         assertEquals(0, articlePOList.size)
     }
 
@@ -174,10 +177,17 @@ class ArticleDataDTOTest {
     @Test
     fun testToPO() {
         val dto = getTestArticleDTO(1)
-        val po = dto.toPO(0)
+        val po = dto.toPO(0, 0)
         assertEquals(0, po.curPage)
         assertEquals(dto.link, po.link)
         assertEquals(dto.title, po.title)
         assertEquals(dto.type, po.type)
     }
+
+//    @Test
+//    fun testToSortPOList() {
+//        val json = MockAssets.readFile("${BASE_PATH}/HomeTopArticle.json")
+//        val dto = json.moshi(TopArticleDTO::class.java)
+//    }
+
 }

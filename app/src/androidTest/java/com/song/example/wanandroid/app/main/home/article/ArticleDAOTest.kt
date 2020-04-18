@@ -58,7 +58,7 @@ class ArticleDAOTest {
     private fun getArticlePOList(): List<ArticlePO> {
         val json = readFile("HomeArticleJson.json")
         val list = json.moshi(ArticleDataDTO::class.java)
-        return list.toPOList()
+        return list.toPOList(0, 0)
     }
 
     private fun <T> LiveData<T>.blockingObserver(): T? {
@@ -99,7 +99,8 @@ class ArticleDAOTest {
 
         articleDao.clearAndInsert(
                 listOf(
-                        createMaskArticlePO(0,
+                        createMaskArticlePO(
+                                HomeConst.BASE_INDEX_BANNER,  0,
                                 HomeConst.ITEM_TYPE_BANNER, "BANNER_TITLE", "BANNER_LINK")
                 )
         )

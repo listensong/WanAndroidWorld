@@ -79,7 +79,7 @@ class HomeViewModelTest {
 
         coEvery {
             mockRepository.requestBanners()
-        } returns emptyList()
+        } just Runs
 
         homeViewModel.loadBanner(testScope)
         coVerify(exactly = 1) {
@@ -98,12 +98,16 @@ class HomeViewModelTest {
         val homeViewModel = HomeViewModel(mockRepository)
 
         coEvery {
-            mockRepository.requestArticles()
-        } returns emptyList()
+            mockRepository.requestTopArticles()
+        } just Runs
+        coEvery {
+            mockRepository.requestArticles(any())
+        } just Runs
 
         homeViewModel.loadArticle(testScope)
         coVerify(exactly = 1) {
-            mockRepository.requestArticles()
+            mockRepository.requestTopArticles()
+            mockRepository.requestArticles(any())
         }
     }
 }

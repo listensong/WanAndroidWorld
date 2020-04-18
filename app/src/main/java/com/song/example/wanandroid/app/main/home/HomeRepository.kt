@@ -28,18 +28,16 @@ class HomeRepository(
 
     companion object {
         const val TAG = "HomeRepository"
-        const val HOME_ARTICLE_PAGE_SIZE = 20
-        const val HOME_ARTICLE_INIT_LOAD_SIZE = 20
     }
 
     fun getBanners():  LiveData<List<BannerVO>> = bannerDataSource.getBanners()
 
-    suspend fun requestBanners(): List<BannerVO> {
-        return wanApiService
+    suspend fun requestBanners() {
+        wanApiService
                 .getBannerList()
                 .awaitWithTimeout(10000)
                 .onFailure {
-                    WanLog.e(TAG, "onFailure $it")
+                    WanLog.e(TAG, "requestBanners onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)
                 }
                 .onSuccess {
@@ -48,14 +46,7 @@ class HomeRepository(
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(BannerDataDTO::class.java)
                     saveBanners(list.toPOList())
-                    HttpResult.Okay(list.toVOList(), it.response)
-                }
-                .doFollow {
-                    if (it is HttpResult.Okay) {
-                        it.value
-                    } else {
-                        emptyList()
-                    }
+                    HttpResult.Okay(emptyList<BannerVO>(), it.response)
                 }
     }
 
@@ -68,27 +59,48 @@ class HomeRepository(
         }
     }
 
-
-    /********************************** Article **************************************/
-//    fun initArticlesPageList(
-//            pagedBoundaryCallback:  PagedList.BoundaryCallback<ArticleVO>
-//    ): LiveData<PagedList<ArticleVO>> {
-//        return queryPagedList(
-//                dataSourceFactory = articleDataSource.getArticleVOPage(),
-//                pageSize = HOME_ARTICLE_PAGE_SIZE,
-//                initialLoadSize = HOME_ARTICLE_INIT_LOAD_SIZE,
-//                boundaryCallback = pagedBoundaryCallback
-//        )
-//    }
-
     fun getArticles():  LiveData<List<ArticleVO>> = articleDataSource.getArticles()
 
-    suspend fun requestArticles(pageNum: Int = 0): List<ArticleVO> {
-        return wanApiService
+    suspend fun requestTopArticles() {
+        wanApiService
+                .getTopArticles()
+                .awaitWithTimeout(10000)
+                .onFailure {
+                    WanLog.e(TAG, "requestTopArticles onFailure $it")
+                    requestStatus.value = RequestStatus.Complete(it.error)
+                }
+                .onSuccess {
+                    WanLog.d(TAG, "requestTopArticles onSuccess ")
+                    requestStatus.value = RequestStatus.Complete()
+                    val jsonString = it.value.string()
+                    val list = jsonString.moshi(TopArticleDTO::class.java)
+                    WanLog.d(TAG, "requestTopArticles list size:${list?.data?.size}")
+                    insertTopArticles(
+                            list.toSortPOList(HomeConst.BASE_INDEX_TOP_ARTICLE, 0)
+                    )
+                    HttpResult.Okay(emptyList<ArticleVO>(), it.response)
+                }
+    }
+
+
+    private suspend fun insertTopArticles(articles: List<ArticlePO>) {
+        if (articles.isEmpty()) {
+            return
+        }
+        withContext(Dispatchers.IO) {
+            articleDataSource.clearRangeAndInsert(
+                    HomeConst.BASE_INDEX_TOP_ARTICLE,
+                    HomeConst.BASE_INDEX_ARTICLE - 1,
+                    articles)
+        }
+    }
+
+    suspend fun requestArticles(pageNum: Int = 0) {
+        wanApiService
                 .getArticleList(pageNum)
                 .awaitWithTimeout(10000)
                 .onFailure {
-                    WanLog.e(TAG, "onFailure $it")
+                    WanLog.e(TAG, "requestArticles onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)
                 }
                 .onSuccess {
@@ -96,25 +108,20 @@ class HomeRepository(
                     requestStatus.value = RequestStatus.Complete()
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(ArticleDataDTO::class.java)
-                    saveArticles(pageNum, list.toPOList())
-                    HttpResult.Okay(list.toVOList(), it.response)
-                }
-                .doFollow {
-                    if (it is HttpResult.Okay) {
-                        it.value
-                    } else {
-                        emptyList()
-                    }
+                    saveArticles(pageNum, list.toPOList(HomeConst.BASE_INDEX_ARTICLE, pageNum))
+                    HttpResult.Okay(emptyList<ArticleVO>(), it.response)
                 }
     }
 
-    private suspend fun saveArticles(pageNum: Int = 0, articles: List<ArticlePO>) {
+    private suspend fun saveArticles(pageNum: Int = 0,
+                                     articles: List<ArticlePO>) {
         if (articles.isEmpty()) {
             return
         }
         withContext(Dispatchers.IO) {
             if (pageNum <= 0) {
-                articleDataSource.clearAndInsert(prependBannerMaskItem(articles))
+                articleDataSource.clearAboveAndInsert(
+                        HomeConst.BASE_INDEX_ARTICLE, prependBannerMaskItem(articles))
             } else {
                 articleDataSource.insert(articles)
             }
@@ -123,7 +130,8 @@ class HomeRepository(
 
     private fun prependBannerMaskItem(articles: List<ArticlePO>): List<ArticlePO>{
         val newList = mutableListOf(
-                createMaskArticlePO(0,
+                createMaskArticlePO(
+                        HomeConst.BASE_INDEX_BANNER, 0,
                         HomeConst.ITEM_TYPE_BANNER, "BANNER_TITLE", "BANNER_LINK")
         )
         newList.addAll(articles)

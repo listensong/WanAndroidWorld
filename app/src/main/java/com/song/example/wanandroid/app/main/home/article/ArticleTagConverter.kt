@@ -24,11 +24,3 @@ class ArticleTagConverter {
         return Gson().toJson(values)
     }
 }
-
-data class Tag(
-        @Json(name="name")
-        val name: String? = null,
-
-        @Json(name="url")
-        val url: String? = null
-)

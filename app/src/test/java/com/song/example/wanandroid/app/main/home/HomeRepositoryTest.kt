@@ -2,7 +2,10 @@ package com.song.example.wanandroid.app.main.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.song.example.wanandroid.app.main.home.article.ArticleDAO
+import com.song.example.wanandroid.app.main.home.article.ArticlePO
 import com.song.example.wanandroid.app.main.home.banner.BannerDAO
+import com.song.example.wanandroid.app.main.home.banner.BannerPO
+import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.app.network.BaseWanApiCallMock
 import com.song.example.wanandroid.app.network.WanService
 import com.song.example.wanandroid.common.network.RequestStatus
@@ -89,36 +92,22 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
                 }
         )
 
+        val slotPOList = slot<List<BannerPO>>()
         val mockBannerDataSource = mockk<BannerDAO>()
         every {
-            mockBannerDataSource.clearAndInsert(any())
+            mockBannerDataSource.clearAndInsert(capture(slotPOList))
         } just Runs
 
         homeRepository = HomeRepository(mockApiService, mockBannerDataSource, mockk())
-        val bannerVOList = homeRepository?.requestBanners()
+        homeRepository?.requestBanners()
         verify(exactly = 1) {
             mockBannerDataSource.clearAndInsert(any())
         }
+        assertEquals(4, slotPOList.captured.size)
+
         val requestStatusValue = homeRepository?.requestStatus?.value
         assertTrue(requestStatusValue is RequestStatus.Complete)
         assertNull((requestStatusValue as RequestStatus.Complete).err)
-        assertTrue(bannerVOList?.size == 4)
-        assertEquals(
-                "https://www.wanandroid.com/blogimgs/c4e5f86d-857a-41b9-a21a-316145cf3103.png",
-                bannerVOList?.get(0)?.imagePath
-        )
-        assertEquals(
-                "https://www.wanandroid.com/blogimgs/62c1bd68-b5f3-4a3c-a649-7ca8c7dfabe6.png",
-                bannerVOList?.get(1)?.imagePath
-        )
-        assertEquals(
-                "https://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png",
-                bannerVOList?.get(2)?.imagePath
-        )
-        assertEquals(
-                "https://www.wanandroid.com/blogimgs/90c6cc12-742e-4c9f-b318-b912f163b8d0.png",
-                bannerVOList?.get(3)?.imagePath
-        )
     }
 
     @Test
@@ -142,8 +131,7 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         )
 
         homeRepository = HomeRepository(mockApiService, mockk(), mockk())
-        val bannerVOList = homeRepository?.requestBanners()
-        assertTrue(bannerVOList?.size == 0)
+        homeRepository?.requestBanners()
         val requestStatusValue = homeRepository?.requestStatus?.value
         assertTrue(requestStatusValue is RequestStatus.Complete)
         assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
@@ -152,10 +140,10 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
     }
 
 
-    @Test
-    fun initArticlesPageList_whenInitZeroArticleCalledThenRequestArticlesCalled() {
-//TODO
-    }
+//    @Test
+//    fun initArticlesPageList_whenInitZeroArticleCalledThenRequestArticlesCalled() {
+////TODO
+//    }
 
 
     @Test
@@ -171,8 +159,49 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         }
     }
 
+
     @Test
-    fun getArticlesList_whenPageNum0NormalResponseThenParseDoClearAndInsert() = runBlocking {
+    fun requestTopArticles_ThenParseDoClearRangeAndInsert() = runBlocking {
+        val mockResponseBody = getMockResponseBody("$BASE_PATH/HomeTopArticle.json")
+        mockkStatic(LifecycleCallExtensionKtPath)
+        val mockApiCallImpl = configWanApiCallMock(
+                wanServiceAction = {
+                    getTopArticles()
+                },
+                lifecycleCallActionMock = {
+                    coEvery {
+                        it.awaitWithTimeout(10000)
+                    } returns HttpResult.Okay(
+                            mockResponseBody,
+                            mockk()
+                    )
+                }
+        )
+
+        val slotPOList = slot<List<ArticlePO>>()
+        val slotStartIndex = slot<Int>()
+        val slotEndIndex = slot<Int>()
+        val mockArticleDataSource = mockk<ArticleDAO>()
+        every {
+            mockArticleDataSource.clearRangeAndInsert(
+                    capture(slotStartIndex),
+                    capture(slotEndIndex),
+                    capture(slotPOList))
+        } just Runs
+
+        homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockArticleDataSource)
+        homeRepository?.requestTopArticles()
+        verify(exactly = 1) {
+            mockArticleDataSource.clearRangeAndInsert(any(), any(), any())
+        }
+        assertEquals(5, slotPOList.captured.size)
+        assertEquals(HomeConst.BASE_INDEX_TOP_ARTICLE, slotStartIndex.captured)
+        assertEquals(HomeConst.BASE_INDEX_ARTICLE - 1, slotEndIndex.captured)
+
+    }
+
+    @Test
+    fun requestArticles_whenPageNum0ForceRefreshThenDaoClearAboveAndInsert() = runBlocking {
         val mockResponseBody = getMockResponseBody("$BASE_PATH/HomeArticleJson.json")
         mockkStatic(LifecycleCallExtensionKtPath)
         val mockApiCallImpl = configWanApiCallMock(
@@ -189,24 +218,29 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
                 }
         )
 
+        val slotPOList = slot<List<ArticlePO>>()
+        val slotAboveIndexList = slot<Int>()
         val mockArticleDataSource = mockk<ArticleDAO>()
         every {
-            mockArticleDataSource.clearAndInsert(any())
+            mockArticleDataSource.clearAboveAndInsert(
+                    capture(slotAboveIndexList),
+                    capture(slotPOList)
+            )
         } just Runs
 
         homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockArticleDataSource)
-        val articleVOList = homeRepository?.requestArticles(0)
+        homeRepository?.requestArticles(0)
         verify(exactly = 1) {
-            mockArticleDataSource.clearAndInsert(any())
+            mockArticleDataSource.clearAboveAndInsert(any(), any())
         }
-
-        assertEquals(20, articleVOList?.size)
-        assertEquals("https://www.jianshu.com/p/756863740988", articleVOList?.get(0)?.link)
+        assertEquals(HomeConst.BASE_INDEX_ARTICLE, slotAboveIndexList.captured)
+        assertEquals(21, slotPOList.captured.size)
+        assertEquals(HomeConst.BASE_INDEX_BANNER, slotPOList.captured[0]._index)
+        assertEquals(HomeConst.ITEM_TYPE_BANNER, slotPOList.captured[0].itemType)
     }
 
-
     @Test
-    fun getArticlesList_whenPageNum1NormalResponseThenParseDoInsert() = runBlocking {
+    fun requestArticles_whenPageNum1NormalResponseThenParseDoInsert() = runBlocking {
         val mockResponseBody = getMockResponseBody("$BASE_PATH/HomeArticleJson.json")
         mockkStatic(LifecycleCallExtensionKtPath)
         val mockApiCallImpl = configWanApiCallMock(
@@ -229,17 +263,14 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         } just Runs
 
         homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockArticleDataSource)
-        val articleVOList = homeRepository?.requestArticles(1)
+        homeRepository?.requestArticles(1)
         verify(exactly = 1) {
             mockArticleDataSource.insert(any())
         }
-
-        assertEquals(20, articleVOList?.size)
-        assertEquals("https://www.jianshu.com/p/756863740988", articleVOList?.get(0)?.link)
     }
 
     @Test
-    fun getArticleList_whenTimeoutThenReturnEmptyList() = runBlockingTest {
+    fun requestArticles_whenTimeoutThenReturnEmptyList() = runBlockingTest {
         mockkStatic(LifecycleCallExtensionKtPath)
         val mockApiCallImpl = configWanApiCallMock(
                 wanServiceAction = {
@@ -258,7 +289,9 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         )
 
         homeRepository = HomeRepository(mockApiCallImpl, mockk(), mockk())
-        val articleVOList = homeRepository?.requestArticles()
-        assertTrue(articleVOList?.size == 0)
+        homeRepository?.requestArticles(0)
+        val requestStatusValue = homeRepository?.requestStatus?.value
+        assertTrue(requestStatusValue is RequestStatus.Complete)
+        assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
     }
 }

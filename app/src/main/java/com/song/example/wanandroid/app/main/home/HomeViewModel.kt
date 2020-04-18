@@ -12,6 +12,7 @@ import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.base.job.BaseViewModel
 import com.song.example.wanandroid.common.network.RequestStatus
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -59,13 +60,10 @@ class HomeViewModel(
 
     val articles = repository.getArticles()
 
-//    @Deprecated("use articles instead")
-//    val pagedArticles: LiveData<PagedList<ArticleVO>>
-//        get() = repository.initArticlesPageList(boundaryCallback)
-
     fun loadArticle(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {
-            repository.requestArticles()
+            repository.requestTopArticles()
+            repository.requestArticles(0)
         }
     }
 
@@ -78,21 +76,6 @@ class HomeViewModel(
             repository.requestArticles(currentPage + 1)
         }
     }
-
-//    private val boundaryCallback: PagedList.BoundaryCallback<ArticleVO> =
-//            object : PagedList.BoundaryCallback<ArticleVO>() {
-//                override fun onZeroItemsLoaded() {
-//                    viewModelScope.launch {
-//                        repository.requestArticles(0)
-//                    }
-//                }
-//
-//                override fun onItemAtEndLoaded(itemAtEnd: ArticleVO) {
-//                    viewModelScope.launch {
-//                        repository.requestArticles(itemAtEnd.curPage + 1)
-//                    }
-//                }
-//            }
 
     val requestState: LiveData<RequestStatus> = repository.requestStatus
 }

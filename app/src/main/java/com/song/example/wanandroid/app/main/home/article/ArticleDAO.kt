@@ -22,6 +22,18 @@ interface ArticleDAO {
         insert(articles)
     }
 
+    @Transaction
+    fun clearAboveAndInsert(aboveIndex: Int, articles: List<ArticlePO>) {
+        clearAbove(aboveIndex)
+        insert(articles)
+    }
+
+    @Transaction
+    fun clearRangeAndInsert(startIndex: Int, endIndex: Int, articles: List<ArticlePO>) {
+        clearRange(startIndex, endIndex)
+        insert(articles)
+    }
+
     @Query("SELECT * FROM $WAN_HOME_ARTICLE_TABLE_NAME")
     fun getArticles(): LiveData<List<ArticleVO>>
 
@@ -34,4 +46,10 @@ interface ArticleDAO {
 
     @Query("DELETE from $WAN_HOME_ARTICLE_TABLE_NAME")
     fun clear()
+
+    @Query("DELETE from $WAN_HOME_ARTICLE_TABLE_NAME where (_index >= :aboveIndex)")
+    fun clearAbove(aboveIndex: Int)
+
+    @Query("DELETE from $WAN_HOME_ARTICLE_TABLE_NAME where _index between :startIndex and :endIndex")
+    fun clearRange(startIndex: Int, endIndex: Int)
 }

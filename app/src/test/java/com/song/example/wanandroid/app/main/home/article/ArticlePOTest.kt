@@ -27,8 +27,12 @@ class ArticlePOTest {
 
     @Test
     fun testCreateMaskArticlePO() {
-        val po = createMaskArticlePO(0,
+        val maskId = -(HomeConst.ITEM_TYPE_BANNER * 10 + 0) + HomeConst.BASE_INDEX_BANNER
+        val po = createMaskArticlePO(
+                HomeConst.BASE_INDEX_BANNER, 0,
                 HomeConst.ITEM_TYPE_BANNER, "BANNER_TITLE", "BANNER_LINK")
+
+        assertEquals(maskId, po.id)
         assertEquals(0, po.curPage)
         assertEquals(HomeConst.ITEM_TYPE_BANNER, po.itemType)
         assertEquals("MASK_TITLE_BANNER_TITLE_BANNER_LINK_${HomeConst.ITEM_TYPE_BANNER}", po.title)

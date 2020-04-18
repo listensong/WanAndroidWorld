@@ -62,21 +62,25 @@ fun ArticleItemDTO.toVO(currentPage: Int) : ArticleVO {
     )
 }
 
-fun ArticleDataDTO?.toPOList(): List<ArticlePO> {
+fun ArticleDataDTO?.toPOList(baseIndex: Int, pageNum: Int): List<ArticlePO> {
     return this?.run {
         val currentPage = this.data?.curPage ?: 0
         val poList = mutableListOf<ArticlePO>()
+        val startIndex = baseIndex + (100 * pageNum)
+        var index = 0
         this.data?.datas?.forEach {
             if (it != null) {
-                poList.add(it.toPO(currentPage))
+                index++
+                poList.add(it.toPO(startIndex + index, currentPage))
             }
         }
         poList
     } ?: emptyList()
 }
 
-fun ArticleItemDTO.toPO(currentPage: Int) : ArticlePO {
+fun ArticleItemDTO.toPO(index: Int, currentPage: Int) : ArticlePO {
     return ArticlePO(
+            _index = index,
             itemType = HomeConst.ITEM_TYPE_ARTICLE,
             curPage = currentPage,
             apkLink = this.apkLink ?: "",
