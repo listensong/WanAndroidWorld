@@ -194,7 +194,8 @@ class HomeRepositoryTest: BaseWanApiCallMock() {
         verify(exactly = 1) {
             mockArticleDataSource.clearRangeAndInsert(any(), any(), any())
         }
-        assertEquals(5, slotPOList.captured.size)
+        // 5 top article + 1 banner
+        assertEquals(6, slotPOList.captured.size)
         assertEquals(HomeConst.BASE_INDEX_TOP_ARTICLE, slotStartIndex.captured)
         assertEquals(HomeConst.BASE_INDEX_ARTICLE - 1, slotEndIndex.captured)
 

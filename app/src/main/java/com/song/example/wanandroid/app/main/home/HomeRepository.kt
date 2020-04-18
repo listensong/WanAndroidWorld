@@ -91,7 +91,7 @@ class HomeRepository(
             articleDataSource.clearRangeAndInsert(
                     HomeConst.BASE_INDEX_TOP_ARTICLE,
                     HomeConst.BASE_INDEX_ARTICLE - 1,
-                    articles)
+                    prependBannerMaskItem(articles))
         }
     }
 
