@@ -20,7 +20,6 @@
 
         <activity
             android:name=".LauncherActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.SplashMaskTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

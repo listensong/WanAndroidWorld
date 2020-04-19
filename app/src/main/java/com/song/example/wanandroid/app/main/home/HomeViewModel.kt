@@ -2,17 +2,15 @@ package com.song.example.wanandroid.app.main.home
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagedList
-import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.base.job.BaseViewModel
 import com.song.example.wanandroid.common.network.RequestStatus
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -34,6 +32,9 @@ class HomeViewModel(
                 ViewModelProvider(fragment, HomeViewModelFactory(repo)).get(HomeViewModel::class.java)
 
         fun instance(activity: AppCompatActivity, repo: HomeRepository): HomeViewModel =
+                ViewModelProvider(activity, HomeViewModelFactory(repo)).get(HomeViewModel::class.java)
+
+        fun instance(activity: FragmentActivity, repo: HomeRepository): HomeViewModel =
                 ViewModelProvider(activity, HomeViewModelFactory(repo)).get(HomeViewModel::class.java)
 
         @Suppress("UNCHECKED_CAST")

@@ -61,7 +61,6 @@ class HomeFragment : BaseFragment() {
         initBanner()
         initRecyclerView()
         initViewModelBinding()
-
         return binding.root
     }
 

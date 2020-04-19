@@ -6,7 +6,10 @@ import com.song.example.wanandroid.app.main.home.banner.*
 import com.song.example.wanandroid.app.network.WanService
 import com.song.example.wanandroid.base.job.BaseRepository
 import com.song.example.wanandroid.common.network.RequestStatus
-import com.song.example.wanandroid.common.network.retrofit.*
+import com.song.example.wanandroid.common.network.retrofit.HttpResult
+import com.song.example.wanandroid.common.network.retrofit.awaitWithTimeout
+import com.song.example.wanandroid.common.network.retrofit.onFailure
+import com.song.example.wanandroid.common.network.retrofit.onSuccess
 import com.song.example.wanandroid.extend.moshi
 import com.song.example.wanandroid.util.WanLog
 import kotlinx.coroutines.Dispatchers
@@ -22,15 +25,15 @@ import kotlinx.coroutines.withContext
  */
 class HomeRepository(
         private val wanApiService: WanService,
-        private val bannerDataSource: BannerDAO,
-        private val articleDataSource: ArticleDAO
+        private val bannerDAO: BannerDAO,
+        private val articleDAO: ArticleDAO
 ) : BaseRepository() {
 
     companion object {
         const val TAG = "HomeRepository"
     }
 
-    fun getBanners():  LiveData<List<BannerVO>> = bannerDataSource.getBanners()
+    fun getBanners():  LiveData<List<BannerVO>> = bannerDAO.getBanners()
 
     suspend fun requestBanners() {
         wanApiService
@@ -55,11 +58,11 @@ class HomeRepository(
             return
         }
         withContext(Dispatchers.IO) {
-            bannerDataSource.clearAndInsert(banners)
+            bannerDAO.clearAndInsert(banners)
         }
     }
 
-    fun getArticles():  LiveData<List<ArticleVO>> = articleDataSource.getArticles()
+    fun getArticles():  LiveData<List<ArticleVO>> = articleDAO.getArticles()
 
     suspend fun requestTopArticles() {
         wanApiService
@@ -70,7 +73,6 @@ class HomeRepository(
                     requestStatus.value = RequestStatus.Complete(it.error)
                 }
                 .onSuccess {
-                    WanLog.d(TAG, "requestTopArticles onSuccess ")
                     requestStatus.value = RequestStatus.Complete()
                     val jsonString = it.value.string()
                     val list = jsonString.moshi(TopArticleDTO::class.java)
@@ -88,10 +90,10 @@ class HomeRepository(
             return
         }
         withContext(Dispatchers.IO) {
-            articleDataSource.clearRangeAndInsert(
+            articleDAO.clearRangeAndInsert(
                     HomeConst.BASE_INDEX_TOP_ARTICLE,
                     HomeConst.BASE_INDEX_ARTICLE - 1,
-                    prependBannerMaskItem(articles))
+                    prependBannerPlaceholderItem(articles))
         }
     }
 
@@ -120,15 +122,15 @@ class HomeRepository(
         }
         withContext(Dispatchers.IO) {
             if (pageNum <= 0) {
-                articleDataSource.clearAboveAndInsert(
-                        HomeConst.BASE_INDEX_ARTICLE, prependBannerMaskItem(articles))
+                articleDAO.clearAboveAndInsert(
+                        HomeConst.BASE_INDEX_ARTICLE, prependBannerPlaceholderItem(articles))
             } else {
-                articleDataSource.insert(articles)
+                articleDAO.insert(articles)
             }
         }
     }
 
-    private fun prependBannerMaskItem(articles: List<ArticlePO>): List<ArticlePO>{
+    private fun prependBannerPlaceholderItem(articles: List<ArticlePO>): List<ArticlePO>{
         val newList = mutableListOf(
                 createMaskArticlePO(
                         HomeConst.BASE_INDEX_BANNER, 0,
