@@ -43,15 +43,9 @@ public class SelectFlexboxLayout extends FlexboxLayout
         for (int i = 0; i < size; i++) {
             View tagView = this.flexboxViewAdapter.viewDelegate(this, i);
             final int position = i;
-            tagView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    flexboxViewAdapter.onItemClick(position);
-                }
-            });
+            tagView.setOnClickListener(v -> flexboxViewAdapter.onItemClick(position));
             this.addView(tagView);
         }
-        //updateSelectedState(saveSelectedPosition, saveSelectedPosition);
     }
 
     private int saveSelectedPosition = -1;

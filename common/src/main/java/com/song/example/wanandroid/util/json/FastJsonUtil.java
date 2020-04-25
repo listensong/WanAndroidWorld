@@ -13,6 +13,7 @@ import java.util.List;
  * @time 19-10-24 下午4:06
  * @desc com.song.example.wanandroid.util.json.FastJsonUtil
  */
+@SuppressWarnings("unused")
 public class FastJsonUtil {
 
     public static final String TAG = "FastJsonUtil";
