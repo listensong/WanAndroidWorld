@@ -5,8 +5,8 @@ import androidx.databinding.BindingAdapter
 import com.song.example.wanandroid.util.StringUtil
 /**
  * @author: Listensong
- * Time: 19-10-25 下午5:44
- * Desc: com.song.example.wanandroid.util.BindingAdapterUtil
+ * @time 19-10-25 下午5:44
+ * @desc com.song.example.wanandroid.util.BindingAdapterUtil
  */
 object BindingAdapterUtil {
 

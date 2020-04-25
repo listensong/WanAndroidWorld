@@ -18,9 +18,9 @@ import org.kodein.di.android.retainedKodein
 import org.kodein.di.generic.kcontext
 
 /**
- *  @author song
- * Time: 19-8-21 下午9:14
- * Desc: com.song.example.wanandroid.app.base.BaseActivity
+ * @author song
+ * @time 19-8-21 下午9:14
+ * @desc
  */
 abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     protected lateinit var TAG : String
@@ -48,7 +48,7 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
         handler.removeCallbacksAndMessages(null)
     }
 
-    protected fun setActionBar() {
+    protected open fun setActionBar() {
         toolbar = findViewById(R.id.toolbar)
 
         toolbar?.also {

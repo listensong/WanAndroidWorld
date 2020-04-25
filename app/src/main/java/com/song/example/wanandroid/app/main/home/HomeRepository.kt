@@ -10,7 +10,7 @@ import com.song.example.wanandroid.common.network.retrofit.HttpResult
 import com.song.example.wanandroid.common.network.retrofit.awaitWithTimeout
 import com.song.example.wanandroid.common.network.retrofit.onFailure
 import com.song.example.wanandroid.common.network.retrofit.onSuccess
-import com.song.example.wanandroid.extend.moshi
+import com.song.example.wanandroid.extension.moshi
 import com.song.example.wanandroid.util.WanLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

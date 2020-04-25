@@ -1,4 +1,4 @@
-package com.song.example.wanandroid.extend
+package com.song.example.wanandroid.extension
 
 import android.graphics.Color
 import android.view.View
@@ -6,8 +6,8 @@ import android.view.Window
 
 /**
  * @author song
- * Time: 19-8-22 上午8:49
- * Desc: com.song.example.wanandroid.extend.WindowExtend
+ * @time 19-8-22 上午8:49
+ * @desc com.song.example.wanandroid.extension.WindowExtension
  *             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
 

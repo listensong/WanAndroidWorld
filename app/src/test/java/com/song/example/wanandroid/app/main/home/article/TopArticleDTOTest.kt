@@ -2,7 +2,7 @@ package com.song.example.wanandroid.app.main.home.article
 
 import com.song.example.wanandroid.app.AppTestUtils
 import com.song.example.wanandroid.app.main.home.HomeConst
-import com.song.example.wanandroid.extend.moshi
+import com.song.example.wanandroid.extension.moshi
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before

@@ -1,11 +1,11 @@
-package com.song.example.wanandroid.extend
+package com.song.example.wanandroid.extension
 
 import com.song.example.wanandroid.util.WanLog
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 /**
- * @package com.song.example.wanandroid.extend
+ * @package com.song.example.wanandroid.extension
  * @fileName StringExtend
  * @date on 1/9/2020 7:48 PM
  * @author Listensong

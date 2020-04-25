@@ -10,8 +10,8 @@ import com.song.example.wanandroid.app.main.home.article.ArticleVO
 
 /**
  * @author: Listensong
- * Time: 19-10-25 下午8:43
- * Desc: com.song.example.wanandroid.app.main.home.BaseArticlePagedAdapter
+ * @time 19-10-25 下午8:43
+ * @desc com.song.example.wanandroid.app.main.home.BaseArticlePagedAdapter
  */
 @Suppress("unused")
 class ArticlePagedAdapter(

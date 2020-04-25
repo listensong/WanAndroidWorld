@@ -9,8 +9,8 @@ import retrofit2.http.Query
 
 /**
  * @author: Listensong
- * Time: 19-10-24 下午3:33
- * Desc: com.song.example.wanandroid.app.network.WanService
+ * @time 19-10-24 下午3:33
+ * @desc com.song.example.wanandroid.app.network.WanService
  */
 interface WanService {
     //首页

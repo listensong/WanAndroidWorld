@@ -17,8 +17,8 @@ import kotlin.properties.Delegates
 
 /**
  * @author song
- * Time: 19-8-22 上午10:27
- * Desc: com.song.example.wanandroid.BaseApplication
+ * @time 19-8-22 上午10:27
+ * @desc com.song.example.wanandroid.BaseApplication
  */
 open class BaseApplication: Application(), KodeinAware {
 

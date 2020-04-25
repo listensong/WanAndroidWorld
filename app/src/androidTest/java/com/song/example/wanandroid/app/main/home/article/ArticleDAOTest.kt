@@ -11,7 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.song.example.wanandroid.app.data.AppDataBase
 import com.song.example.wanandroid.app.main.home.HomeConst
 import com.song.example.wanandroid.app.main.home.TestUtils.readFile
-import com.song.example.wanandroid.extend.moshi
+import com.song.example.wanandroid.extension.moshi
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull

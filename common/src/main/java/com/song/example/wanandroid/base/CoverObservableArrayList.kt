@@ -5,8 +5,8 @@ import androidx.databinding.ObservableList
 
 /**
  * @author song
- * Time: 19-8-22 上午10:59
- * Desc: com.song.example.wanandroid.base.CoverObservableArrayList
+ * @time 19-8-22 上午10:59
+ * @desc com.song.example.wanandroid.base.CoverObservableArrayList
  */
 class CoverObservableArrayList<T> : ArrayList<T>(), ObservableList<T> {
     @Transient

@@ -11,8 +11,8 @@ import java.io.InputStream
 
 /**
  * @author: Listensong
- * Time: 19-10-26 下午2:43
- * Desc: com.song.example.wanandroid.util.image.WanGlideModule
+ * @time 19-10-26 下午2:43
+ * @desc com.song.example.wanandroid.util.image.WanGlideModule
  */
 @GlideModule
 class WanGlideModule : AppGlideModule() {

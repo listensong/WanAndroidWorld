@@ -37,6 +37,11 @@ class HomePagerAdapter : FragmentPagerAdapter {
         return fragmentList.size
     }
 
+    fun release() {
+        fragmentList.clear()
+        fragmentTitleList.clear()
+    }
+
     fun addFragment(fragment: Fragment, title: String) {
         fragmentList.add(fragment)
         fragmentTitleList.add(title)

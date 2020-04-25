@@ -1,9 +1,9 @@
-package com.song.example.wanandroid.extend
+package com.song.example.wanandroid.extension
 
 /**
  * @author: Listensong
- * Time: 19-11-25 下午2:44
- * Desc: com.song.example.wanandroid.extend.ListExtend
+ * @time 19-11-25 下午2:44
+ * @desc com.song.example.wanandroid.extension.ListExtension
  */
 inline fun <T: Any> List<T>?.ifValid(action: (List<T>) -> Unit) {
     if (this != null && this.isNotEmpty()) {

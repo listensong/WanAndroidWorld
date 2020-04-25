@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * @author Listensong
- * Time: 19-10-24 下午4:06
- * Desc: com.song.example.wanandroid.util.json.FastJsonUtil
+ * @time 19-10-24 下午4:06
+ * @desc com.song.example.wanandroid.util.json.FastJsonUtil
  */
 public class FastJsonUtil {
 

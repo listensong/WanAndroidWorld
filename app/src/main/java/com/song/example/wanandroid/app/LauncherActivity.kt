@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.song.example.wanandroid.app.main.WelcomeActivity
-import com.song.example.wanandroid.extend.setFullScreen
+import com.song.example.wanandroid.extension.setFullScreen
 
 /**
  * @author song

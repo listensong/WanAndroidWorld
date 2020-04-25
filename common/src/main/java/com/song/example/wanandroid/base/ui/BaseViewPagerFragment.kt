@@ -7,8 +7,8 @@ import com.song.example.wanandroid.base.ui.BaseFragment
 
 /**
  * @author: Listensong
- * Time: 19-10-21 下午8:20
- * Desc: com.song.example.wanandroid.base.ui.BaseFragment
+ * @time 19-10-21 下午8:20
+ * @desc com.song.example.wanandroid.base.ui.BaseFragment
  */
 abstract class BaseViewPagerFragment : BaseFragment() {
 

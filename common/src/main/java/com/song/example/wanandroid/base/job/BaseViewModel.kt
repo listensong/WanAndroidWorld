@@ -6,8 +6,8 @@ import com.song.example.wanandroid.util.WanLog
 
 /**
  * @author: Listensong
- * Time: 19-10-8 下午3:58
- * Desc: com.song.example.wanandroid.base.job.BaseViewModel
+ * @time 19-10-8 下午3:58
+ * @desc com.song.example.wanandroid.base.job.BaseViewModel
  */
 abstract class BaseViewModel : ViewModel() {
 

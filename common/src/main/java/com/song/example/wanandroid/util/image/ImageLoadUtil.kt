@@ -16,8 +16,8 @@ import java.util.HashSet
 
 /**
  * @author: Listensong
- * Time: 19-10-25 下午5:45
- * Desc: com.song.example.wanandroid.util.image.ImageLoadUtil
+ * @time 19-10-25 下午5:45
+ * @desc com.song.example.wanandroid.util.image.ImageLoadUtil
  */
 class ImageLoadUtil {
     companion object {

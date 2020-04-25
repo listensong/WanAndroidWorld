@@ -7,8 +7,8 @@ import com.song.example.wanandroid.util.WanLog
 
 /**
  *  * @author song
- * Time: 19-8-22 下午3:36
- * Desc: com.song.example.wanandroid.base.ui.ApplicationLifecycleObserver
+ * @time 19-8-22 下午3:36
+ * @desc com.song.example.wanandroid.base.ui.ApplicationLifecycleObserver
  */
 class ApplicationLifecycleObserver : LifecycleObserver {
     companion object {

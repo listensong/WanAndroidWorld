@@ -13,8 +13,8 @@ import com.song.example.wanandroid.R
 
 /**
  * @author: Listensong
- * Time: 19-10-22 下午7:40
- * Desc: com.song.example.wanandroid.common.widget.NotificationUtil
+ * @time 19-10-22 下午7:40
+ * @desc com.song.example.wanandroid.common.widget.NotificationUtil
  * Refer: https://www.jianshu.com/p/cb8426620e74
  */
 class NotificationUtil {

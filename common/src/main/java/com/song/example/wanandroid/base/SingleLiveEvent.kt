@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author song
- * Time: 19-8-22 上午10:15
- * Desc: com.song.example.wanandroid.base.SingleLiveEvent
+ * @time 19-8-22 上午10:15
+ * @desc com.song.example.wanandroid.base.SingleLiveEvent
  */
 class SingleLiveEvent<T> : MutableLiveData<T>() {
 

@@ -18,8 +18,11 @@ import org.junit.Assert.*
  */
 class HomePagerAdapterTest {
 
+    private lateinit var adapter: HomePagerAdapter
+
     @Before
     fun setUp() {
+        adapter = HomePagerAdapter(mock())
     }
 
     @After
@@ -29,14 +32,12 @@ class HomePagerAdapterTest {
     @Test
     fun testGetItem_returnFragmentListItem() {
         val fragment = mock<Fragment>()
-        val adapter = HomePagerAdapter(mock())
         adapter.addFragment(fragment, "")
         assertEquals(fragment, adapter.getItem(0))
     }
 
     @Test
     fun testGetCount_returnFragmentListSize() {
-        val adapter = HomePagerAdapter(mock())
         assertEquals(0, adapter.count)
 
         adapter.addFragment(mock(), "title")
@@ -44,8 +45,18 @@ class HomePagerAdapterTest {
     }
 
     @Test
+    fun testRelease() {
+        adapter.addFragment(mock(), "title1")
+        adapter.addFragment(mock(), "title2")
+        adapter.addFragment(mock(), "title3")
+        assertEquals(3, adapter.count)
+
+        adapter.release()
+        assertEquals(0, adapter.count)
+    }
+
+    @Test
     fun testAddFragment() {
-        val adapter = HomePagerAdapter(mock())
         assertEquals(0, adapter.count)
 
         adapter.addFragment(mock(), "title")
@@ -54,14 +65,12 @@ class HomePagerAdapterTest {
 
     @Test
     fun testGetPageTitle_givenValidPosThenReturnCorrespondingString() {
-        val adapter = HomePagerAdapter(mock())
         adapter.addFragment(mock(), "title")
         assertEquals("title", adapter.getPageTitle(0))
     }
 
     @Test
     fun testGetPageTitle_whenOutOfBoundsThenReturnEmptyString() {
-        val adapter = HomePagerAdapter(mock())
         assertEquals("", adapter.getPageTitle(1))
     }
 }

@@ -1,4 +1,4 @@
-package com.song.example.wanandroid.extend
+package com.song.example.wanandroid.extension
 
 import android.app.Activity
 import android.content.Context
@@ -15,8 +15,8 @@ import com.song.example.wanandroid.util.WanLog
 
 /**
  * @author song
- * Time: 19-8-22 下午12:18
- * Desc: com.song.example.wanandroid.extend.ActivityExtend
+ * @time 19-8-22 下午12:18
+ * @desc com.song.example.wanandroid.extension.ActivityExtension
  */
 
 fun Activity.getStatusBarHeight(): Int {

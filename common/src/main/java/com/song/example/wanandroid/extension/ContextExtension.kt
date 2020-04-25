@@ -1,4 +1,4 @@
-package com.song.example.wanandroid.extend
+package com.song.example.wanandroid.extension
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -6,8 +6,8 @@ import java.lang.Exception
 
 /**
  * @author: Listensong
- * Time: 19-11-21 下午8:22
- * Desc: com.song.example.wanandroid.extend.ContextExtent
+ * @time 19-11-21 下午8:22
+ * @desc com.song.example.wanandroid.extension.ContextExtension
  */
 fun Context?.isNetworkAvailable(): Boolean {
     this ?: return false

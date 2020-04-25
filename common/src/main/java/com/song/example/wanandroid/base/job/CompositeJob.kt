@@ -10,8 +10,8 @@ import java.util.*
 
 /**
  * @author: Listensong
- * Time: 19-10-22 下午9:09
- * Desc: com.song.example.wanandroid.base.job.CompositeJob
+ * @time 19-10-22 下午9:09
+ * @desc com.song.example.wanandroid.base.job.CompositeJob
  */
 class CompositeJob(vararg jobs: Job) : Disposable {
 

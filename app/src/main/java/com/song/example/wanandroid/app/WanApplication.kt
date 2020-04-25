@@ -8,8 +8,8 @@ import org.kodein.di.Kodein
 
 /**
  * @author song
- * Time: 19-8-22 上午10:23
- * Desc: com.song.example.wanandroid.app.BoreApplication
+ * @time 19-8-22 上午10:23
+ * @desc com.song.example.wanandroid.app.BoreApplication
  */
 class WanApplication : BaseApplication() {
 

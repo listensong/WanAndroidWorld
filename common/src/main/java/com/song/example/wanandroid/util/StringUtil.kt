@@ -9,8 +9,8 @@ import com.song.example.wanandroid.Global
 
 /**
  * @author: Listensong
- * Time: 19-11-13 下午1:15
- * Desc: com.song.example.wanandroid.util.StringUtil
+ * @time 19-11-13 下午1:15
+ * @desc com.song.example.wanandroid.util.StringUtil
  */
 object StringUtil {
 

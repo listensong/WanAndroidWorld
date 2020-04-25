@@ -10,8 +10,8 @@ import com.google.android.flexbox.FlexboxLayout;
 
 /**
  * @author: Listensong
- * Time: 19-12-2 下午4:12
- * Desc: com.song.example.wanandroid.common.widget.SelectFlexboxLayout
+ * @time 19-12-2 下午4:12
+ * @desc com.song.example.wanandroid.common.widget.SelectFlexboxLayout
  * 单选的FlexboxLayout效果
  */
 public class SelectFlexboxLayout extends FlexboxLayout

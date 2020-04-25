@@ -12,8 +12,8 @@ import org.powermock.modules.junit4.PowerMockRunner
 
 /**
  * @author: Listensong
- * Time: 19-10-23 上午8:55
- * Desc: com.song.example.wanandroid.common.base.CompositeJobTest
+ * @time 19-10-23 上午8:55
+ * @desc com.song.example.wanandroid.common.base.CompositeJobTest
  */
 @RunWith(PowerMockRunner::class)
 class CompositeJobTest {

@@ -5,8 +5,8 @@ import android.view.ViewGroup
 
 /**
  * @author: Listensong
- * Time: 19-12-2 下午3:17
- * Desc: com.song.example.wanandroid.common.widget.FlexboxViewAdapter
+ * @time 19-12-2 下午3:17
+ * @desc com.song.example.wanandroid.common.widget.FlexboxViewAdapter
  */
 abstract class FlexboxViewAdapter<T: Any>(
         private var dataList: List<T> = emptyList()

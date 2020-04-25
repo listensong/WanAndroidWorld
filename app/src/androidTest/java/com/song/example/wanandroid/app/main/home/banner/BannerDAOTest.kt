@@ -10,9 +10,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.song.example.wanandroid.app.data.AppDataBase
 import com.song.example.wanandroid.app.main.home.TestUtils
-import com.song.example.wanandroid.app.main.home.article.ArticleDataDTO
-import com.song.example.wanandroid.app.main.home.article.toPOList
-import com.song.example.wanandroid.extend.moshi
+import com.song.example.wanandroid.extension.moshi
 import org.junit.After
 import org.junit.Before
 
