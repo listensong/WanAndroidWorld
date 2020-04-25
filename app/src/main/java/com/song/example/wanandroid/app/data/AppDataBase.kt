@@ -1,11 +1,7 @@
 package com.song.example.wanandroid.app.data
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.song.example.wanandroid.BaseApplication
 import com.song.example.wanandroid.app.main.home.article.ArticleDAO
 import com.song.example.wanandroid.app.main.home.article.ArticlePO
 import com.song.example.wanandroid.app.main.home.banner.BannerDAO
@@ -28,7 +24,6 @@ import com.song.example.wanandroid.app.main.home.banner.BannerPO
         exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {
-
     abstract fun homeBannersDao(): BannerDAO
     abstract fun homeArticleDao(): ArticleDAO
 }

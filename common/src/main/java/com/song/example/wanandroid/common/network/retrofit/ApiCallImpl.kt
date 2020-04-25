@@ -24,7 +24,7 @@ internal class ApiCallImpl {
                 .proxy(Proxy.NO_PROXY)
                 //.cache(Cache(BaseApplication.instance.cacheDir, 52428800))//50*1024*1024 = 52428800
                 .addInterceptor(
-                        HttpLoggingInterceptorConfiguration.createLoggingInterceptor(BuildConfig.DEBUG)
+                        HttpLoggingInterceptorCreator.create(BuildConfig.DEBUG)
                 )
                 .build()
     }

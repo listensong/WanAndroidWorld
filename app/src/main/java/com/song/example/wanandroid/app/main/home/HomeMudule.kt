@@ -5,10 +5,7 @@ import androidx.fragment.app.Fragment
 import com.song.example.wanandroid.app.data.AppDataBase
 import org.kodein.di.Kodein
 import org.kodein.di.android.x.AndroidLifecycleScope
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.scoped
-import org.kodein.di.generic.singleton
+import org.kodein.di.generic.*
 
 /**
  * @package com.song.example.wanandroid.app.main.home
@@ -38,19 +35,27 @@ val homeKodeinModule = Kodein.Module(HOME_MODULE_DI_TAG) {
         HomeViewModel.instance(activity = this.context.requireActivity(), repo = instance())
     }
 
+    bind<HomeRepository>() with provider {
+        HomeRepository(
+                instance(),
+                instance(),
+                instance()
+        )
+    }
+
     bind<HomeRepository>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
         HomeRepository(
                 instance(),
-                instance<AppDataBase>().homeBannersDao(),
-                instance<AppDataBase>().homeArticleDao()
+                instance(),
+                instance()
         )
     }
 
     bind<HomeRepository>() with scoped<AppCompatActivity>(AndroidLifecycleScope).singleton {
         HomeRepository(
                 instance(),
-                instance<AppDataBase>().homeBannersDao(),
-                instance<AppDataBase>().homeArticleDao()
+                instance(),
+                instance()
         )
     }
 }

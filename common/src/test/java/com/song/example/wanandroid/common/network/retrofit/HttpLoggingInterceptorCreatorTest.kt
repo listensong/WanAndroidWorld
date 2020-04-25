@@ -1,8 +1,5 @@
 package com.song.example.wanandroid.common.network.retrofit
 
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkObject
 import okhttp3.logging.HttpLoggingInterceptor
 import org.junit.After
 import org.junit.Before
@@ -18,7 +15,7 @@ import org.junit.Assert.*
  * @desc: TODO
  * @email No
  */
-class HttpLoggingInterceptorConfigurationTest {
+class HttpLoggingInterceptorCreatorTest {
 
     @Before
     fun setUp() {
@@ -31,14 +28,14 @@ class HttpLoggingInterceptorConfigurationTest {
     @Test
     fun `createLoggingInterceptor 当DebugConfig为true的时候，返回BODY`() {
         //mockkObject(HttpLoggingInterceptorConfiguration)
-        val interceptor = HttpLoggingInterceptorConfiguration.createLoggingInterceptor(true)
+        val interceptor = HttpLoggingInterceptorCreator.create(true)
         assertEquals(HttpLoggingInterceptor.Level.BODY, interceptor.level)
     }
 
     @Test
     fun `createLoggingInterceptor 当DebugConfig为false的时候，返回BASIC`() {
         //mockkObject(HttpLoggingInterceptorConfiguration)
-        val interceptor = HttpLoggingInterceptorConfiguration.createLoggingInterceptor(false)
+        val interceptor = HttpLoggingInterceptorCreator.create(false)
         assertEquals(HttpLoggingInterceptor.Level.BASIC, interceptor.level)
     }
 }

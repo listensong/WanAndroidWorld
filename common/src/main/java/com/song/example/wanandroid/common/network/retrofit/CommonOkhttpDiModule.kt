@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit
  * @email No
  */
 @Suppress("ObjectPropertyName")
-const val _COMMON_NETWORK_CLIENT_MODULE = "COMMON_NETWORK_CLIENT_MODULE"
+const val _COMMON_NETWORK_CLIENT_MODULE = "_COMMON_NETWORK_CLIENT_MODULE"
 @Suppress("ObjectPropertyName")
 const val _HTTP_DEFAULT_LOG_INTERCEPTOR = "_HTTP_DEFAULT_LOG_INTERCEPTOR"
 @Suppress("ObjectPropertyName")
@@ -38,7 +38,7 @@ val commonNetworkModule = Kodein.Module(_COMMON_NETWORK_CLIENT_MODULE) {
 
     bind<OkHttpClient.Builder>() with provider { OkHttpClient.Builder() }
 
-    bind<Retrofit>(tag = "template") with singleton {
+    bind<Retrofit>(tag = "_template") with singleton {
         instance<Retrofit.Builder>()
                 .baseUrl("")
                 .client(instance())
@@ -54,7 +54,7 @@ val commonNetworkModule = Kodein.Module(_COMMON_NETWORK_CLIENT_MODULE) {
     }
 
     bind<Interceptor>(_HTTP_DEFAULT_LOG_INTERCEPTOR) with singleton {
-        HttpLoggingInterceptorConfiguration.createLoggingInterceptor(BuildConfig.DEBUG)
+        HttpLoggingInterceptorCreator.create(BuildConfig.DEBUG)
     }
 
     bind<Interceptor>(_HTTP_DEFAULT_HEADER_INTERCEPTOR) with singleton {
@@ -74,7 +74,7 @@ val commonNetworkModule = Kodein.Module(_COMMON_NETWORK_CLIENT_MODULE) {
                 .build()
     }
 
-    bind<OkHttpClient>(tag = "has_default_header_interceptor") with singleton {
+    bind<OkHttpClient>(tag = "_has_default_header_interceptor") with singleton {
         instance<OkHttpClient.Builder>()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

@@ -1,13 +1,11 @@
 package com.song.example.wanandroid.app.main.home.article
 
+import com.song.example.wanandroid.app.AppTestUtils
 import com.song.example.wanandroid.app.main.home.HomeConst
-import com.song.example.wanandroid.app.network.BaseWanApiCallMock
-import com.song.example.wanandroid.basetest.MockAssets
 import com.song.example.wanandroid.extend.moshi
 import org.junit.After
-import org.junit.Before
-
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 
 /**
@@ -30,7 +28,7 @@ class TopArticleDTOTest {
 
     @Test
     fun testTopArticleDTOStructure() {
-        val json = MockAssets.readFile("${BaseWanApiCallMock.BASE_PATH}/HomeTopArticle.json")
+        val json = AppTestUtils.readLocalJsonFile("HomeTopArticle.json")
         val dto = json.moshi(TopArticleDTO::class.java)
         assertNotNull(dto?.data)
         dto?.data?.let {
@@ -50,7 +48,7 @@ class TopArticleDTOTest {
 
     @Test
     fun testToSortPOList() {
-        val json = MockAssets.readFile("${BaseWanApiCallMock.BASE_PATH}/HomeTopArticle.json")
+        val json = AppTestUtils.readLocalJsonFile("HomeTopArticle.json")
         val dto = json.moshi(TopArticleDTO::class.java)
         val srcDTOListSize = dto?.data?.size
         val baseIndexTest = -100

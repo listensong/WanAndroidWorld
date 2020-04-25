@@ -10,9 +10,9 @@ import okhttp3.logging.HttpLoggingInterceptor
  * @desc: TODO
  * @email No
  */
-object HttpLoggingInterceptorConfiguration {
+object HttpLoggingInterceptorCreator {
     @JvmStatic
-    fun createLoggingInterceptor(debugConfig: Boolean): HttpLoggingInterceptor {
+    fun create(debugConfig: Boolean): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().also {
             it.level = if (debugConfig) {
                 HttpLoggingInterceptor.Level.BODY

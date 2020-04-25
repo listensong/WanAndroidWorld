@@ -1,16 +1,13 @@
 package com.song.example.wanandroid.app.main.home.article
 
-import com.song.example.wanandroid.app.network.BaseWanApiCallMock
-import com.song.example.wanandroid.app.network.BaseWanApiCallMock.Companion.BASE_PATH
+import com.song.example.wanandroid.app.AppTestUtils
 import com.song.example.wanandroid.basetest.MockAssets
 import com.song.example.wanandroid.extend.moshi
 import org.junit.After
-import org.junit.Before
 
 import org.junit.Assert.*
 import org.junit.BeforeClass
 import org.junit.Test
-import org.mockito.MockitoAnnotations
 
 /**
  * @author Listensong
@@ -109,7 +106,7 @@ class ArticleDataDTOTest {
 
     @Test
     fun testArticleDTOWrapper() {
-        val json = MockAssets.readFile("$BASE_PATH/HomeArticleJson.json")
+        val json = AppTestUtils.readLocalJsonFile("HomeArticleJson.json")
         val list = json.moshi(ArticleDataDTO::class.java)
 
         assertEquals(2, list?.data?.curPage)
@@ -183,11 +180,5 @@ class ArticleDataDTOTest {
         assertEquals(dto.title, po.title)
         assertEquals(dto.type, po.type)
     }
-
-//    @Test
-//    fun testToSortPOList() {
-//        val json = MockAssets.readFile("${BASE_PATH}/HomeTopArticle.json")
-//        val dto = json.moshi(TopArticleDTO::class.java)
-//    }
 
 }
