@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#6c252525">
+
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="#000000" />
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
+
+    <item>
+        <selector android:enterFadeDuration="50" android:exitFadeDuration="700">
+            <item android:state_focused="true" android:drawable="@drawable/corner_shape_color_t">
+            </item>
+            <item android:state_pressed="true" android:drawable="@drawable/corner_shape_color_t">
+            </item>
+            <item android:state_selected="true" android:drawable="@drawable/corner_shape_color_t">
+            </item>
+            <item android:state_hovered="true" android:drawable="@drawable/corner_shape_color_t">
+            </item>
+
+            <item android:drawable="@drawable/corner_shape_color_normal">
+            </item>
+        </selector>
+    </item>
+</ripple>

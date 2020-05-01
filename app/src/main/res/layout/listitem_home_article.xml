@@ -18,40 +18,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:transitionName="share_image"
-        tools:background="@drawable/ripple_listitem_article"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:onClick="@{itemClickedListener}"
-        android:descendantFocusability="afterDescendants"
+        android:background="@drawable/ripple_round_item_template"
+        android:descendantFocusability="blocksDescendants"
         android:layout_height="70dp">
 
-        <ImageView
-            android:id="@+id/pinned_image_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="12dp"
-            android:src="@mipmap/ic_article_pin_nail"
-            android:tint="@color/colorAccent"
-            android:layout_width="18dp"
-            android:layout_height="18dp"/>
-
-        <TextView
-            android:id="@+id/tv_title"
+        <com.song.example.wanandroid.app.widget.ArticleViewItem
+            android:id="@+id/item_article"
             android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            app:formatText="@{articleVo.title}"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            tools:text="Titletitle_text_view"
-            app:layout_constraintStart_toEndOf="@id/pinned_image_view"
-            app:layout_constraintTop_toTopOf="@id/pinned_image_view" />
+            android:layout_height="0dp"
+            android:clickable="false"
+            android:focusable="false"
+            app:data="@{articleVo}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        </com.song.example.wanandroid.app.widget.ArticleViewItem>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

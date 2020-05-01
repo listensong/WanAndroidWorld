@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.song.example.wanandroid.Global
@@ -25,6 +24,7 @@ import com.song.example.wanandroid.base.ui.BaseFragment
 import com.song.example.wanandroid.common.network.RequestStatus
 import com.song.example.wanandroid.common.widget.LoadMoreScrollListener
 import com.song.example.wanandroid.common.widget.MixedTypeAdapter
+import com.song.example.wanandroid.util.DeviceUtil
 import com.song.example.wanandroid.util.WanLog
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
@@ -48,6 +48,7 @@ class HomeFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeBinding
     private var bannerAdapter: HomeBannerAdapter? = null
     private var articleAdapter: MixedTypeAdapter<ArticleVO>? = null
+    private var banner: Banner<*, *>? = null
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -88,7 +89,7 @@ class HomeFragment : BaseFragment() {
         ).also { mixedAdapter ->
             recyclerView?.apply {
                 hasFixedSize()
-                addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+                //addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
                 layoutManager = GridLayoutManager(context, 2).apply {
                     spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                         override fun getSpanSize(position: Int): Int {
@@ -186,7 +187,8 @@ class HomeFragment : BaseFragment() {
         return ListitemHomeBannerBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
-            binding.banner.run {
+            banner = binding.banner.run {
+                setBannerRound(DeviceUtil.dp2PxFloat(10f))
                 adapter = bannerAdapter!!
                 setOrientation(Banner.HORIZONTAL)
                 indicator = CircleIndicator(requireContext())
@@ -197,5 +199,20 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        banner?.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        banner?.stop()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        banner = null
     }
 }

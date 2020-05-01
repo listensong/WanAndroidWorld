@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#2196F3</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#C3C7C8</color>
+    <color name="colorPrimaryDark">#A8AAAC</color>
+    <color name="colorAccent">#3BBAFD</color>
+
+    <color name="article_pinned">#FF4081</color>
 
     <color name="translucent">#01000000</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="bg_color_splash_mask">#5DCEF8</color>
+    <color name="bg_color_splash_mask">#5BCDF6</color>
 </resources>
