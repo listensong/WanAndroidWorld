@@ -17,9 +17,11 @@ import com.song.example.wanandroid.app.BR
 import com.song.example.wanandroid.app.databinding.FragmentHomeBinding
 import com.song.example.wanandroid.app.databinding.ListitemHomeArticleBinding
 import com.song.example.wanandroid.app.databinding.ListitemHomeBannerBinding
+import com.song.example.wanandroid.app.main.WelcomeViewModel
 import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.main.home.banner.BannerVO
 import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter
+import com.song.example.wanandroid.app.main.mainWelcomeKodeinModule
 import com.song.example.wanandroid.base.ui.BaseFragment
 import com.song.example.wanandroid.common.network.RequestStatus
 import com.song.example.wanandroid.common.widget.LoadMoreScrollListener
@@ -43,6 +45,7 @@ class HomeFragment : BaseFragment() {
 
     override fun fragmentCustomDiModule() = Kodein.Module("HomeFragment") {
         import(homeKodeinModule)
+        import(mainWelcomeKodeinModule)
     }
 
     private lateinit var binding: FragmentHomeBinding
@@ -55,6 +58,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private val viewModel: HomeViewModel by instance()
+    private val attachViewModel: WelcomeViewModel by instance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -159,6 +163,14 @@ class HomeFragment : BaseFragment() {
         lifecycleScope.launchWhenResumed {
             refreshHomeContent()
         }
+
+        attachViewModel.isDrawerOpen().observe(viewLifecycleOwner, Observer { opened ->
+            if (opened) {
+                banner?.stop()
+            } else {
+                banner?.start()
+            }
+        })
     }
 
     private fun onRefresh(adapter: MixedTypeAdapter<ArticleVO>?,

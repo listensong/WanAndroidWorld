@@ -29,6 +29,7 @@ class WelcomeActivity : BaseActivity() {
 
     override fun activityCustomDiModule() = Kodein.Module(TAG) {
         import(homeKodeinModule)
+        import(mainWelcomeKodeinModule)
     }
 
     private lateinit var viewPager: ViewPager
@@ -37,6 +38,7 @@ class WelcomeActivity : BaseActivity() {
     private var pagerAdapter: HomePagerAdapter? = null
 
     private val homeFragment: HomeFragment by instance()
+    private val viewModel: WelcomeViewModel by instance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +61,23 @@ class WelcomeActivity : BaseActivity() {
                     R.string.navigation_drawer_close)
             it.addDrawerListener(toggle)
             toggle.syncState()
+            it.addDrawerListener(object : DrawerLayout.DrawerListener {
+                override fun onDrawerStateChanged(newState: Int) {
+
+                }
+
+                override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+                }
+
+                override fun onDrawerClosed(drawerView: View) {
+                    viewModel.setDrawerOpenState(false)
+                }
+
+                override fun onDrawerOpened(drawerView: View) {
+                    viewModel.setDrawerOpenState(true)
+                }
+            })
         }
     }
 
