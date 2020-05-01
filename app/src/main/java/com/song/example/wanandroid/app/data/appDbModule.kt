@@ -1,9 +1,9 @@
 package com.song.example.wanandroid.app.data
 
+import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.song.example.wanandroid.Global
 import com.song.example.wanandroid.app.main.home.article.ArticleDAO
 import com.song.example.wanandroid.app.main.home.banner.BannerDAO
 import org.kodein.di.Kodein
@@ -33,7 +33,7 @@ val appDbModule = Kodein.Module(APP_DB_MODULE_DI_TAG) {
     }
 
     bind<AppDataBase>() with singleton {
-        Room.databaseBuilder(Global.globalContext, AppDataBase::class.java, APP_DB_NAME)
+        Room.databaseBuilder(instance(), AppDataBase::class.java, APP_DB_NAME)
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)

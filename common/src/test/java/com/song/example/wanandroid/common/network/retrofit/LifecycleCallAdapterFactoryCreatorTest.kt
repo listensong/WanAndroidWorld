@@ -1,7 +1,6 @@
 package com.song.example.wanandroid.common.network.retrofit
 
 import com.song.example.wanandroid.BaseApplication
-import com.song.example.wanandroid.Global
 import io.mockk.*
 import org.junit.After
 import org.junit.Before

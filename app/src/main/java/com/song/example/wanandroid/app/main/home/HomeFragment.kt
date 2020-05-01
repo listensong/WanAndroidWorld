@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.song.example.wanandroid.Global
 import com.song.example.wanandroid.app.BR
 import com.song.example.wanandroid.app.databinding.FragmentHomeBinding
 import com.song.example.wanandroid.app.databinding.ListitemHomeArticleBinding
@@ -24,6 +22,7 @@ import com.song.example.wanandroid.app.main.home.banner.HomeBannerAdapter
 import com.song.example.wanandroid.app.main.mainWelcomeKodeinModule
 import com.song.example.wanandroid.base.ui.BaseFragment
 import com.song.example.wanandroid.common.network.RequestStatus
+import com.song.example.wanandroid.common.router.LinkSwitch
 import com.song.example.wanandroid.common.widget.LoadMoreScrollListener
 import com.song.example.wanandroid.common.widget.MixedTypeAdapter
 import com.song.example.wanandroid.util.DeviceUtil
@@ -156,7 +155,7 @@ class HomeFragment : BaseFragment() {
             binding.srlRefresh.isRefreshing = false
             WanLog.i(TAG, "requestState " + it)
             if (it is RequestStatus.Complete && it.err != null) {
-                WanLog.e(TAG, "RequestStatus " + it.err)
+                WanLog.d(TAG, "RequestStatus " + it.err)
             }
         })
 
@@ -189,7 +188,7 @@ class HomeFragment : BaseFragment() {
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
             binding.itemClickedListener = View.OnClickListener {
-                Toast.makeText(Global.globalContext, "${binding.articleVo?.title}", Toast.LENGTH_SHORT).show()
+                LinkSwitch.goWebView(requireActivity(), binding.articleVo?.link)
             }
         }
     }
@@ -200,13 +199,13 @@ class HomeFragment : BaseFragment() {
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
             banner = binding.banner.run {
-                setBannerRound(DeviceUtil.dp2PxFloat(10f))
+                setBannerRound(DeviceUtil.dp2PxFloat(15f))
                 adapter = bannerAdapter!!
                 setOrientation(Banner.HORIZONTAL)
                 indicator = CircleIndicator(requireContext())
                 setOnBannerListener { data, _ ->
                     if (data is BannerVO) {
-                        Toast.makeText(Global.globalContext, data.title, Toast.LENGTH_SHORT).show()
+                        LinkSwitch.goWebView(requireActivity(), data.url)
                     }
                 }
             }

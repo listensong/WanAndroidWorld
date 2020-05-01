@@ -23,7 +23,6 @@ import org.kodein.di.generic.kcontext
  * @desc
  */
 abstract class BaseActivity : AppCompatActivity(), KodeinAware {
-    protected lateinit var TAG : String
     protected var toolbar: Toolbar? = null
     protected val handler = Handler(Looper.getMainLooper())
 
@@ -39,7 +38,6 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TAG = this.javaClass.simpleName
     }
 
     @CallSuper
@@ -65,7 +63,7 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    protected fun updateTitle(title: String) {
+    protected fun updateTitle(title: String?) {
         supportActionBar?.title = title
     }
 
@@ -99,9 +97,9 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
         try {
             supportFragmentManager.popBackStackImmediate()
         } catch (e: IllegalStateException) {
-            WanLog.e(TAG, "popFragment: e:$e")
+            WanLog.e("", "popFragment: e:$e")
         } catch (e: NullPointerException) {
-            WanLog.e(TAG, "popFragment: e:$e")
+            WanLog.e("", "popFragment: e:$e")
         }
     }
 

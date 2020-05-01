@@ -4,4 +4,13 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <application>
+        <activity
+            android:name=".common.web.WebActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+
+        </activity>
+    </application>
+
 </manifest>

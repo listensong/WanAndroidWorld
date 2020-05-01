@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Resources
 import com.song.example.wanandroid.BaseApplication
 import com.song.example.wanandroid.common.network.retrofit.commonNetworkModule
+import com.song.example.wanandroid.common.web.commonWebViewModule
 import org.kodein.di.Kodein
 import org.kodein.di.android.androidCoreModule
 import org.kodein.di.android.x.androidXModule
@@ -17,7 +18,7 @@ import org.kodein.di.generic.singleton
  * @fileName ApplicationModule
  * @date on 4/12/2020 8:38 AM
  * @author Listensong
- * @desc: TODO
+ * @desc
  * @email No
  */
 const val APP_WIDE_MODULE = "APP_WIDE_MODULE"
@@ -27,4 +28,5 @@ fun appWideModule(application: Application) = Kodein.Module(APP_WIDE_MODULE) {
     import(androidCoreModule(application))
     import(androidXModule(application))
     import(commonNetworkModule)
+    import(commonWebViewModule)
 }

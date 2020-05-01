@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
-import com.song.example.wanandroid.Global
+import com.song.example.wanandroid.BaseApplication
 import com.song.example.wanandroid.base.job.CompositeJob
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -19,6 +19,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.KodeinContext
 import org.kodein.di.android.closestKodein
+import org.kodein.di.generic.instance
 import org.kodein.di.generic.kcontext
 
 /**
@@ -29,12 +30,13 @@ import org.kodein.di.generic.kcontext
 abstract class BaseFragment : Fragment(), KodeinAware {
 
     protected var TAG = "BaseFragment"
-    protected var safeContext: Context = Global.globalContext
+    protected val safeContext = BaseApplication.instance
 
     private val _parentKodein by closestKodein(safeContext)
 
     override val kodeinContext: KodeinContext<Fragment>
         get() = kcontext(this)
+
     override val kodein: Kodein = Kodein.lazy {
         extend(_parentKodein)
         import(fragmentCustomDiModule())

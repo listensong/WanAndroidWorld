@@ -1,6 +1,6 @@
 package com.song.example.wanandroid.common.network.retrofit
 
-import com.song.example.wanandroid.Global
+import com.song.example.wanandroid.BaseApplication
 
 /**
  * @author Listensong
@@ -12,6 +12,6 @@ import com.song.example.wanandroid.Global
  */
 object LifecycleCallAdapterFactoryCreator {
     fun create(): LifecycleCallAdapterFactory {
-        return LifecycleCallAdapterFactory(Global.globalApplication, true)
+        return LifecycleCallAdapterFactory(BaseApplication.instance, true)
     }
 }

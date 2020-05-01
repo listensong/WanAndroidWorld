@@ -1,11 +1,11 @@
 package com.song.example.wanandroid.util
 
+import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import androidx.annotation.StringRes
 import com.song.example.wanandroid.BaseApplication
-import com.song.example.wanandroid.Global
 
 /**
  * @author: Listensong
@@ -15,7 +15,7 @@ import com.song.example.wanandroid.Global
 object StringUtil {
 
     fun getString(@StringRes strRes: Int): String {
-        return Global.globalContext.getString(strRes)
+        return BaseApplication.instance.getString(strRes)
     }
 
     fun convert2Html(htmlContent: String): Spanned {
