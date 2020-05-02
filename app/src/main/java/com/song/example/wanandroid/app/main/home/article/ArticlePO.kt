@@ -51,7 +51,8 @@ data class ArticlePO(
         val type: Int,
         val userId: Int,
         val visible: Int,
-        val zan: Int
+        val zan: Int,
+        var placeTop: Boolean
 )
 
 
@@ -97,6 +98,7 @@ fun createMaskArticlePO(index: Int,
                 type = 0,
                 userId = 0,
                 visible = 0,
-                zan =0
+                zan =0,
+                placeTop = false
         )
 }

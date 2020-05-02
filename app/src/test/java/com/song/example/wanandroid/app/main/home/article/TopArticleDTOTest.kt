@@ -47,20 +47,20 @@ class TopArticleDTOTest {
     }
 
     @Test
-    fun testToSortPOList() {
+    fun testToPlaceTopPOList() {
         val json = AppTestUtils.readLocalJsonFile("HomeTopArticle.json")
         val dto = json.moshi(TopArticleDTO::class.java)
         val srcDTOListSize = dto?.data?.size
         val baseIndexTest = -100
         val currentPageTest = 10
-        val sortPOList = dto.toSortPOList(
+        val placeTopPOList = dto.toPlaceTopPOList(
                 baseIndexTest,
                 currentPageTest
         )
 
-        assertTrue(sortPOList.isNotEmpty())
-        assertEquals(srcDTOListSize, sortPOList.size)
-        sortPOList.forEachIndexed { index, articlePO ->
+        assertTrue(placeTopPOList.isNotEmpty())
+        assertEquals(srcDTOListSize, placeTopPOList.size)
+        placeTopPOList.forEachIndexed { index, articlePO ->
             assertEquals(currentPageTest, articlePO.curPage)
             assertEquals(baseIndexTest, articlePO._index - index)
             assertEquals(HomeConst.ITEM_TYPE_ARTICLE, articlePO.itemType)

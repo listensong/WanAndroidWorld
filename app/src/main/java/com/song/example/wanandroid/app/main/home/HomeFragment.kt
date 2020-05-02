@@ -15,6 +15,7 @@ import com.song.example.wanandroid.app.BR
 import com.song.example.wanandroid.app.databinding.FragmentHomeBinding
 import com.song.example.wanandroid.app.databinding.ListitemHomeArticleBinding
 import com.song.example.wanandroid.app.databinding.ListitemHomeBannerBinding
+import com.song.example.wanandroid.app.databinding.ListitemHomeTopArticleBinding
 import com.song.example.wanandroid.app.main.WelcomeViewModel
 import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.main.home.banner.BannerVO
@@ -111,13 +112,16 @@ class HomeFragment : BaseFragment() {
                                           viewType: Int): ViewDataBinding {
         return when (viewType) {
             HomeConst.ITEM_TYPE_BANNER -> {
-                createBannerViewDataBinding(parent, viewType)
+                createBannerViewDataBinding(parent)
             }
             HomeConst.ITEM_TYPE_ARTICLE -> {
-                createArticleViewDataBinding(parent, viewType)
+                createArticleViewDataBinding(parent)
+            }
+            HomeConst.ITEM_TYPE_TOP_ARTICLE -> {
+                createTopArticleViewDataBinding(parent)
             }
             else -> {
-                createArticleViewDataBinding(parent, viewType)
+                createArticleViewDataBinding(parent)
             }
         }
     }
@@ -182,19 +186,29 @@ class HomeFragment : BaseFragment() {
         adapter.diffUpdate(lifecycleScope, newList, ArticleDiffCallback(oldList, newList))
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun createArticleViewDataBinding(parent: ViewGroup, viewType: Int): ListitemHomeArticleBinding {
+    private fun createArticleViewDataBinding(parent: ViewGroup): ListitemHomeArticleBinding {
         return ListitemHomeArticleBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
             binding.itemClickedListener = View.OnClickListener {
                 LinkSwitch.goWebView(requireActivity(), binding.articleVo?.link)
             }
+            binding.itemArticle.setPinnedVisible(false)
         }
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    private fun createBannerViewDataBinding(parent: ViewGroup, viewType: Int): ListitemHomeBannerBinding {
+    private fun createTopArticleViewDataBinding(parent: ViewGroup): ListitemHomeTopArticleBinding {
+        return ListitemHomeTopArticleBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+        ).also { binding ->
+            binding.itemClickedListener = View.OnClickListener {
+                LinkSwitch.goWebView(requireActivity(), binding.articleVo?.link)
+            }
+            binding.itemArticle.setPinnedVisible(true)
+        }
+    }
+
+    private fun createBannerViewDataBinding(parent: ViewGroup): ListitemHomeBannerBinding {
         return ListitemHomeBannerBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->

@@ -78,7 +78,7 @@ class HomeRepository(
                     val list = jsonString.moshi(TopArticleDTO::class.java)
                     WanLog.d(TAG, "requestTopArticles list size:${list?.data?.size}")
                     insertTopArticles(
-                            list.toSortPOList(HomeConst.BASE_INDEX_TOP_ARTICLE, 0)
+                            list.toPlaceTopPOList(HomeConst.BASE_INDEX_TOP_ARTICLE, 0)
                     )
                     HttpResult.Okay(emptyList<ArticleVO>(), it.response)
                 }

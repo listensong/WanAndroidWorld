@@ -48,7 +48,8 @@ class ArticleDiffCallbackTest {
                 superChapterId = 0,
                 superChapterName = "",
                 title = maskTitle,
-                type = 0
+                type = 0,
+                placeTop = false
         )
     }
 

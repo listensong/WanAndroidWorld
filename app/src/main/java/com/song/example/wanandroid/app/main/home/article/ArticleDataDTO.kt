@@ -58,7 +58,8 @@ fun ArticleItemDTO.toVO(currentPage: Int) : ArticleVO {
             superChapterId =  this.superChapterId ?: 0,
             superChapterName =  this.superChapterName ?: "",
             title =  this.title ?: "",
-            type =  this.type ?: 0
+            type =  this.type ?: 0,
+            placeTop = false
     )
 }
 
@@ -113,6 +114,7 @@ fun ArticleItemDTO.toPO(index: Int, currentPage: Int) : ArticlePO {
             type =  this.type ?: 0,
             userId =  this.userId ?: 0,
             visible =  this.visible ?: 0,
-            zan = this.zan ?:  0
+            zan = this.zan ?:  0,
+            placeTop = false
     )
 }

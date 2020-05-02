@@ -2,6 +2,7 @@ package com.song.example.wanandroid.app.util
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.song.example.wanandroid.app.main.home.HomeConst
 import com.song.example.wanandroid.app.main.home.article.ArticleVO
 import com.song.example.wanandroid.app.widget.ArticleViewItem
 import com.song.example.wanandroid.util.StringUtil
@@ -31,6 +32,6 @@ object BindingAdapterUtil {
     @BindingAdapter("data")
     @JvmStatic
     fun setArticleItemUrl(item: ArticleViewItem, vo: ArticleVO) {
-        item.bindItemView(vo.title, vo.title)
+        item.bindItemView(vo.title, vo.placeTop, vo.link)
     }
 }

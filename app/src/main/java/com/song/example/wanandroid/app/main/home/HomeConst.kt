@@ -10,7 +10,8 @@ package com.song.example.wanandroid.app.main.home
  */
 object HomeConst {
     const val ITEM_TYPE_BANNER = 1
-    const val ITEM_TYPE_ARTICLE = 2
+    const val ITEM_TYPE_TOP_ARTICLE = 2
+    const val ITEM_TYPE_ARTICLE = 3
 
     const val BASE_INDEX_BANNER = 0
     const val BASE_INDEX_TOP_ARTICLE = 50

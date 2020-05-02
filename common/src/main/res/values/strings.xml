@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Wanandroid</string>
-    <string name="application_name">Wanandroid</string>
+    <string name="app_name">WanAndroidWorld</string>
+    <string name="app_name_alias">WanAndroidWorld</string>
+    <string name="application_name">WanAndroidWorld</string>
     <string name="action_bar_back_button_navi_up" tools:ignore="ExtraTranslation">action_bar_back_button_navi_up</string>
 </resources>

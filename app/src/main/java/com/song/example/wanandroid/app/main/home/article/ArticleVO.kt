@@ -32,5 +32,6 @@ data class ArticleVO(
         var superChapterId: Int,
         var superChapterName: String,
         var title: String,
-        var type: Int
+        var type: Int,
+        var placeTop: Boolean
 )

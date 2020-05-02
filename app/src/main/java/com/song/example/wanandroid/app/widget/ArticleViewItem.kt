@@ -2,6 +2,7 @@ package com.song.example.wanandroid.app.widget
 
 import android.animation.LayoutTransition
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -9,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.song.example.wanandroid.app.R
+import com.song.example.wanandroid.extension.setGone
+import com.song.example.wanandroid.extension.setVisible
 
 /**
  * @package com.song.example.wanandroid.common.widget
@@ -107,12 +110,21 @@ class ArticleViewItem: ConstraintLayout {
         partialHeightMeasureSpec = heightMeasureSpec
     }
 
+    fun setPinnedVisible(placeTop: Boolean?) {
+    }
+
     @Suppress("UNUSED_PARAMETER")
     fun bindItemView(title: String?,
+                     placeTop: Boolean,
                      url: String? = null) {
-        url ?: return
 
-        shouldPartialRefresh = true
+        if (placeTop) {
+            this.pinnedImageView?.setVisible()
+        } else {
+            this.pinnedImageView?.setGone()
+        }
+
+        shouldPartialRefresh = false
         this.titleTextView?.text = title
     }
 

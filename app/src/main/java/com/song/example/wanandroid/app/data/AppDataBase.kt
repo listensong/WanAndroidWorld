@@ -20,7 +20,7 @@ import com.song.example.wanandroid.app.main.home.banner.BannerPO
             BannerPO::class,
             ArticlePO::class
         ],
-        version = 1,
+        version = 2,
         exportSchema = false
 )
 abstract class AppDataBase : RoomDatabase() {

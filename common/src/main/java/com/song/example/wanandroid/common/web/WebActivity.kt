@@ -43,12 +43,12 @@ class WebActivity : BaseActivity() {
         window?.setFullScreen()
         setContentView(R.layout.activity_toolbar_web)
 
-        val actionLayoutHeight = getAndroidAttrPX(android.R.attr.actionBarSize) + getStatusBarHeight()
         val appBar = findViewById<AppBarLayout>(R.id.app_bar_layout)
-        appBar.setLayoutHeight(actionLayoutHeight)
+        appBar.setLayoutHeight(calcAppbarLayoutHeight())
         containView = findViewById(R.id.fl_web_view_container)
 
         setActionBar()
+        updateTitle(getString(R.string.app_name))
 
         intent.extras?.let {
             val url = it.getString(WebConst.KEY_WEB_URL, "")
@@ -61,6 +61,10 @@ class WebActivity : BaseActivity() {
                 wanWebView.loadUrl(url)
             }
         }
+    }
+
+    private fun calcAppbarLayoutHeight(): Int {
+        return getAndroidAttrPX(android.R.attr.actionBarSize) + getStatusBarHeight()
     }
 
 
@@ -168,5 +172,6 @@ class WebActivity : BaseActivity() {
     override fun onDestroy() {
         wanWebView.clear()
         super.onDestroy()
+        containView.removeAllViews()
     }
 }

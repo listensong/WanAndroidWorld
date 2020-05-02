@@ -28,7 +28,7 @@ data class TopArticleDTO(
 
 
 
-fun TopArticleDTO?.toSortPOList(
+fun TopArticleDTO?.toPlaceTopPOList(
         baseIndex: Int,
         currentPage: Int
 ): List<ArticlePO> {
@@ -37,10 +37,10 @@ fun TopArticleDTO?.toSortPOList(
         this.data?.forEachIndexed { index, articleItemDTO ->
             if (articleItemDTO != null) {
                 poList.add(
-                        articleItemDTO.toSortPO(
+                        articleItemDTO.toPlaceTopPO(
                                 baseIndex + index,
                                 currentPage,
-                                HomeConst.ITEM_TYPE_ARTICLE)
+                                HomeConst.ITEM_TYPE_TOP_ARTICLE)
                 )
             }
         }
@@ -48,9 +48,9 @@ fun TopArticleDTO?.toSortPOList(
     } ?: emptyList()
 }
 
-fun ArticleItemDTO.toSortPO(index: Int,
-                            currentPage: Int,
-                            itemType: Int) : ArticlePO {
+fun ArticleItemDTO.toPlaceTopPO(index: Int,
+                                currentPage: Int,
+                                itemType: Int) : ArticlePO {
     return ArticlePO(
             _index = index,
             itemType = itemType,
@@ -81,10 +81,11 @@ fun ArticleItemDTO.toSortPO(index: Int,
             superChapterId =  this.superChapterId ?: 0,
             superChapterName =  this.superChapterName ?: "",
             tags =  this.tags ?: emptyList(),
-            title = "置顶: "  + (this.title ?: ""),
+            title = this.title ?: "",
             type =  this.type ?: 0,
             userId =  this.userId ?: 0,
             visible =  this.visible ?: 0,
-            zan = this.zan ?:  0
+            zan = this.zan ?:  0,
+            placeTop = true
     )
 }
