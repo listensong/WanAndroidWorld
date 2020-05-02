@@ -28,11 +28,16 @@ class LifecycleCallAdapterFactoryCreatorTest {
 
     @Test
     fun `create 成功创建LifecycleCallAdapterFactory`() {
-        mockkObject(BaseApplication)
-        val mockApplicationCtx = mockk<BaseApplication>()
-        every { BaseApplication.instance } returns mockApplicationCtx
+        prepareApplicationMock()
+
         val adapter = LifecycleCallAdapterFactoryCreator.create()
         assertTrue(adapter is LifecycleCallAdapterFactory)
         //assertTrue(adapter.getEnableCancel())
+    }
+
+    private fun prepareApplicationMock() {
+        mockkObject(BaseApplication)
+        val mockApplicationCtx = mockk<BaseApplication>()
+        every { BaseApplication.instance } returns mockApplicationCtx
     }
 }

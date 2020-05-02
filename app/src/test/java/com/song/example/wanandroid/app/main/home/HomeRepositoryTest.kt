@@ -15,6 +15,7 @@ import com.song.example.wanandroid.common.network.retrofit.NetworkError
 import com.song.example.wanandroid.common.network.retrofit.awaitWithTimeout
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -43,6 +44,7 @@ import kotlin.test.assertNull
  * @desc: TODO
  * @email No
  */
+@ExperimentalCoroutinesApi
 class HomeRepositoryTest: KodeinAware {
 
     @get:Rule
@@ -105,6 +107,19 @@ class HomeRepositoryTest: KodeinAware {
         assertNull((requestStatusValue as RequestStatus.Complete).err)
     }
 
+    private fun givenNormalBannerResponseAndCapturingSlot(): CapturingSlot<List<BannerPO>> {
+        val mockResponseBody = AppTestUtils.generateMockResponseBody("BannerJson.json")
+        coEvery {
+            apiService.getBannerList().awaitWithTimeout(10000)
+        } returns HttpResult.Okay(mockResponseBody, mockk())
+
+        val slotPOList = slot<List<BannerPO>>()
+        every {
+            bannerDAO.clearAndInsert(capture(slotPOList))
+        } just Runs
+        return slotPOList
+    }
+
     @Test
     fun requestBanners_whenTimeoutThenReturnEmptyList() = runBlockingTest {
         val timeoutMillis = givenGetBannerListWithTimeoutMillis()
@@ -115,6 +130,19 @@ class HomeRepositoryTest: KodeinAware {
         assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
         assertEquals(0, requestStatusValue.err?.errorCode)
         assertEquals("Timeout: no response within $timeoutMillis", requestStatusValue.err?.errorMessage)
+    }
+
+    private fun givenGetBannerListWithTimeoutMillis(): Long {
+        val timeoutMillis = 10000L
+        coEvery {
+            apiService.getBannerList().awaitWithTimeout(10000)
+        } returns HttpResult.Error(
+                NetworkError(
+                        0, "Timeout: no response within $timeoutMillis",
+                        TimeoutException("Timeout: no response within $timeoutMillis")
+                )
+        )
+        return timeoutMillis
     }
 
     @Test
@@ -143,48 +171,6 @@ class HomeRepositoryTest: KodeinAware {
 
     }
 
-    @Test
-    fun requestArticles_whenPageNum0ForceRefreshThenDaoClearAboveAndInsert() = runBlocking {
-        val (slotPOList, slotAboveIndexList) = givenHomeArticleDataWithPageNum0()
-
-        repository.requestArticles(0)
-        verify(exactly = 1) {
-            articleDAO.clearAboveAndInsert(any(), any())
-        }
-        assertEquals(HomeConst.BASE_INDEX_ARTICLE, slotAboveIndexList.captured)
-        assertEquals(21, slotPOList.captured.size)
-        assertEquals(HomeConst.BASE_INDEX_BANNER, slotPOList.captured[0]._index)
-        assertEquals(HomeConst.ITEM_TYPE_BANNER, slotPOList.captured[0].itemType)
-    }
-
-    @Test
-    fun requestArticles_whenPageNum1NormalResponseThenParseDoInsert() = runBlocking {
-        givenHomeArtivcleDataWithPageNum1()
-
-        repository.requestArticles(1)
-        verify(exactly = 1) {
-            articleDAO.insert(any())
-        }
-    }
-
-    @Test
-    fun requestArticles_whenTimeoutThenReturnEmptyList() = runBlockingTest {
-        coEvery {
-            apiService.getArticleList().awaitWithTimeout(10000)
-        } returns  HttpResult.Error(
-                NetworkError(
-                        0, "Timeout: no response within 10000",
-                        TimeoutException("Timeout: no response within 10000")
-                )
-        )
-
-        repository.requestArticles(0)
-        val requestStatusValue = repository.requestStatus.value
-        assertTrue(requestStatusValue is RequestStatus.Complete)
-        assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
-    }
-
-
     private fun givenHomeTopArticlesData():
             Triple<CapturingSlot<List<ArticlePO>>, CapturingSlot<Int>, CapturingSlot<Int>> {
         val mockResponseBody = AppTestUtils.generateMockResponseBody("HomeTopArticle.json")
@@ -207,32 +193,18 @@ class HomeRepositoryTest: KodeinAware {
         return Triple(slotPOList, slotStartIndex, slotEndIndex)
     }
 
+    @Test
+    fun requestArticles_whenPageNum0ForceRefreshThenDaoClearAboveAndInsert() = runBlocking {
+        val (slotPOList, slotAboveIndexList) = givenHomeArticleDataWithPageNum0()
 
-    private fun givenNormalBannerResponseAndCapturingSlot(): CapturingSlot<List<BannerPO>> {
-        val mockResponseBody = AppTestUtils.generateMockResponseBody("BannerJson.json")
-        coEvery {
-            apiService.getBannerList().awaitWithTimeout(10000)
-        } returns HttpResult.Okay(mockResponseBody, mockk())
-
-        val slotPOList = slot<List<BannerPO>>()
-        every {
-            bannerDAO.clearAndInsert(capture(slotPOList))
-        } just Runs
-        return slotPOList
-    }
-
-    private fun givenHomeArtivcleDataWithPageNum1() {
-        val mockResponseBody = AppTestUtils.generateMockResponseBody("HomeArticleJson.json")
-        coEvery {
-            apiService.getArticleList(1).awaitWithTimeout(10000)
-        } returns HttpResult.Okay(
-                mockResponseBody,
-                mockk()
-        )
-
-        every {
-            articleDAO.insert(any())
-        } just Runs
+        repository.requestArticles(0)
+        verify(exactly = 1) {
+            articleDAO.clearAboveAndInsert(any(), any())
+        }
+        assertEquals(HomeConst.BASE_INDEX_ARTICLE, slotAboveIndexList.captured)
+        assertEquals(21, slotPOList.captured.size)
+        assertEquals(HomeConst.BASE_INDEX_BANNER, slotPOList.captured[0]._index)
+        assertEquals(HomeConst.ITEM_TYPE_BANNER, slotPOList.captured[0].itemType)
     }
 
     private fun givenHomeArticleDataWithPageNum0(): Pair<CapturingSlot<List<ArticlePO>>, CapturingSlot<Int>> {
@@ -255,18 +227,48 @@ class HomeRepositoryTest: KodeinAware {
         return Pair(slotPOList, slotAboveIndexList)
     }
 
+    @Test
+    fun requestArticles_whenPageNum1NormalResponseThenParseDoInsert() = runBlocking {
+        givenHomeArticleDataWithPageNum1()
 
-    private fun givenGetBannerListWithTimeoutMillis(): Long {
-        val timeoutMillis = 10000L
+        repository.requestArticles(1)
+        verify(exactly = 1) {
+            articleDAO.insert(any())
+        }
+    }
+
+    private fun givenHomeArticleDataWithPageNum1() {
+        val mockResponseBody = AppTestUtils.generateMockResponseBody("HomeArticleJson.json")
         coEvery {
-            apiService.getBannerList().awaitWithTimeout(10000)
-        } returns HttpResult.Error(
+            apiService.getArticleList(1).awaitWithTimeout(10000)
+        } returns HttpResult.Okay(
+                mockResponseBody,
+                mockk()
+        )
+
+        every {
+            articleDAO.insert(any())
+        } just Runs
+    }
+
+    @Test
+    fun requestArticles_whenTimeoutThenReturnEmptyList() = runBlockingTest {
+        coEvery {
+            apiService.getArticleList().awaitWithTimeout(10000)
+        } returns  HttpResult.Error(
                 NetworkError(
-                        0, "Timeout: no response within $timeoutMillis",
-                        TimeoutException("Timeout: no response within $timeoutMillis")
+                        0, "Timeout: no response within 10000",
+                        TimeoutException("Timeout: no response within 10000")
                 )
         )
-        return timeoutMillis
+
+        repository.requestArticles(0)
+        val requestStatusValue = repository.requestStatus.value
+        assertTrue(requestStatusValue is RequestStatus.Complete)
+        assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
     }
+
+
+
 
 }

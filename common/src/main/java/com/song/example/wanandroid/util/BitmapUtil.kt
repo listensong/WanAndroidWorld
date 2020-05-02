@@ -13,13 +13,22 @@ import android.graphics.drawable.Drawable
  */
 object BitmapUtil {
 
-    private val radiusArray = floatArrayOf(
+    private val defaultRadiusArray = floatArrayOf(
             DeviceUtil.dp2PxFloat(10f), DeviceUtil.dp2PxFloat(10f), DeviceUtil.dp2PxFloat(10f), DeviceUtil.dp2PxFloat(10f),
             DeviceUtil.dp2PxFloat(10f), DeviceUtil.dp2PxFloat(10f), DeviceUtil.dp2PxFloat(10f), DeviceUtil.dp2PxFloat(10f)
     )
 
     @JvmStatic
-    fun getRoundBitmapByShader(bitmap: Bitmap?, outWidth: Int, outHeight: Int, radius: Int, boarder: Int): Bitmap? {
+    fun getRoundBitmapByShader(bitmap: Bitmap?,
+                               outWidth: Int, outHeight: Int, radius: Int, boarder: Int): Bitmap? {
+        return getRoundBitmapByShaderWithRadius(bitmap,
+                outWidth, outHeight, radius, boarder, defaultRadiusArray)
+    }
+
+    @JvmStatic
+    fun getRoundBitmapByShaderWithRadius(
+            bitmap: Bitmap?, outWidth: Int, outHeight: Int,
+            radius: Int, boarder: Int, radiusArray: FloatArray): Bitmap? {
         if (bitmap == null) {
             return null
         }
