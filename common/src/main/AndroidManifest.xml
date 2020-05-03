@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.song.example.wanandroid">
+    package="com.song.example.study">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
         <activity
-            android:name=".common.web.WebActivity"
+            android:name="com.song.example.study.common.web.WebActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
 

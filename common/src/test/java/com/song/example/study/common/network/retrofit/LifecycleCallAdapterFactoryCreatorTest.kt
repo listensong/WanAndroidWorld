@@ -1,0 +1,43 @@
+package com.song.example.study.common.network.retrofit
+
+import com.song.example.study.BaseApplication
+import io.mockk.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+
+import org.junit.Assert.*
+
+/**
+ * @author Listensong
+ * @package com.song.example.study.common.network.retrofit
+ * @fileName LifecycleCallAdapterFactoryCreatorTest
+ * @date on 3/22/2020 7:16 PM
+ * @desc: TODO
+ * @email No
+ */
+class LifecycleCallAdapterFactoryCreatorTest {
+
+    @Before
+    fun setUp() {
+    }
+
+    @After
+    fun tearDown() {
+    }
+
+    @Test
+    fun `create 成功创建LifecycleCallAdapterFactory`() {
+        prepareApplicationMock()
+
+        val adapter = LifecycleCallAdapterFactoryCreator.create()
+        assertTrue(adapter is LifecycleCallAdapterFactory)
+        //assertTrue(adapter.getEnableCancel())
+    }
+
+    private fun prepareApplicationMock() {
+        mockkObject(BaseApplication)
+        val mockApplicationCtx = mockk<BaseApplication>()
+        every { BaseApplication.instance } returns mockApplicationCtx
+    }
+}

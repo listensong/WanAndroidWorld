@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="wanColorPrimary">#C3C7C8</color>
+    <color name="wanColorPrimaryDark">#A8AAAC</color>
+    <color name="wanColorAccent">#3BBAFD</color>
+
+    <color name="wanArticle_pinned">#FF4081</color>
+
+    <color name="wanTranslucent">#01000000</color>
+    <color name="wanColorWhite">#ffffff</color>
+    <color name="wanColorSplashMaskBg">#5BCDF6</color>
+</resources>

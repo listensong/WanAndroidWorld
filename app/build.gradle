@@ -11,7 +11,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.song.example.wanandroid"
+        applicationId "com.song.example.study"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -75,6 +75,7 @@ dependencies {
     implementation fileTree(include: ["*.jar"], dir: "libs")
 
     implementation project(path: ":common")
+    implementation project(path: ":wanandroid")
 
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
     kapt "androidx.room:room-compiler:$androidXRoomVersion"

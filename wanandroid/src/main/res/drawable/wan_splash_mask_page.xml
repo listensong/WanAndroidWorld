@@ -1,0 +1,10 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+    <item android:drawable="@color/wanColorSplashMaskBg"/>
+    <item
+        android:gravity="center">
+        <bitmap android:src="@drawable/wan_ic_logo_wanandroid"
+            android:gravity="center">
+        </bitmap>
+    </item>
+</layer-list>
