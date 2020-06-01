@@ -58,7 +58,7 @@ class ArticleViewItem: ConstraintLayout {
     private fun applyItemLayoutFromTemplateXml(title: String,
                                                url: String?
     ): View {
-        val view = View.inflate(context, R.layout.wan_layout_round_article_item, null)
+        val view = View.inflate(context, R.layout.wan_layout_template_round_article_item, null)
         if (view is ConstraintLayout) {
             val titleView = view.findViewById<TextView>(R.id.tv_title)
             titleView.text = title

@@ -20,7 +20,7 @@
         <item name="android:background">@drawable/wan_splash_mask_page</item>
     </style>
 
-    <style name="WanLauncherTheme" parent="WanTheme">
+    <style name="WanTheme.WanLauncherTheme" parent="WanTheme">
         <item name="android:windowBackground">@color/wanTranslucent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/NoneAnimation</item>

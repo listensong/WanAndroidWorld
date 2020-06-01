@@ -20,9 +20,9 @@ import com.song.example.study.util.DeviceUtil
 import com.song.example.study.util.WanLog
 import com.song.example.study.wanandroid.BR
 import com.song.example.study.wanandroid.databinding.WanFragmentHomeBinding
-import com.song.example.study.wanandroid.databinding.WanListitemHomeArticleBinding
-import com.song.example.study.wanandroid.databinding.WanListitemHomeBannerBinding
-import com.song.example.study.wanandroid.databinding.WanListitemHomeTopArticleBinding
+import com.song.example.study.wanandroid.databinding.WanListItemHomeArticleBinding
+import com.song.example.study.wanandroid.databinding.WanListItemHomeBannerBinding
+import com.song.example.study.wanandroid.databinding.WanListItemHomeTopArticleBinding
 import com.song.example.study.wanandroid.main.WelcomeViewModel
 import com.song.example.study.wanandroid.main.home.article.ArticleVO
 import com.song.example.study.wanandroid.main.home.banner.BannerVO
@@ -186,8 +186,8 @@ class HomeFragment : BaseFragment() {
         adapter.diffUpdate(lifecycleScope, newList, ArticleDiffCallback(oldList, newList))
     }
 
-    private fun createArticleViewDataBinding(parent: ViewGroup): WanListitemHomeArticleBinding {
-        return WanListitemHomeArticleBinding.inflate(
+    private fun createArticleViewDataBinding(parent: ViewGroup): WanListItemHomeArticleBinding {
+        return WanListItemHomeArticleBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
             binding.itemClickedListener = View.OnClickListener {
@@ -197,8 +197,8 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun createTopArticleViewDataBinding(parent: ViewGroup): WanListitemHomeTopArticleBinding {
-        return WanListitemHomeTopArticleBinding.inflate(
+    private fun createTopArticleViewDataBinding(parent: ViewGroup): WanListItemHomeTopArticleBinding {
+        return WanListItemHomeTopArticleBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
             binding.itemClickedListener = View.OnClickListener {
@@ -208,8 +208,8 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun createBannerViewDataBinding(parent: ViewGroup): WanListitemHomeBannerBinding {
-        return WanListitemHomeBannerBinding.inflate(
+    private fun createBannerViewDataBinding(parent: ViewGroup): WanListItemHomeBannerBinding {
+        return WanListItemHomeBannerBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
         ).also { binding ->
             banner = binding.banner.run {

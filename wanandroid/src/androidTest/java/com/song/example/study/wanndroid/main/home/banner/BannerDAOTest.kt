@@ -58,7 +58,7 @@ class BannerDAOTest {
     }
 
     private fun getBannerPOList(): List<BannerPO> {
-        val json = TestUtils.readFile("BannerJson.json")
+        val json = TestUtils.readFile("WanHomeBanner.json")
         val list = json.moshi(BannerDataDTO::class.java)
         return list.toPOList()
     }

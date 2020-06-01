@@ -3,6 +3,7 @@ package com.song.example.study.wanandroid.main.home.article
 import com.song.example.study.wanandroid.AppTestUtils
 import com.song.example.study.wanandroid.main.home.HomeConst
 import com.song.example.study.extension.moshi
+import com.song.example.study.wanandroid.main.home.HomeTestConst
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -28,7 +29,7 @@ class TopArticleDTOTest {
 
     @Test
     fun testTopArticleDTOStructure() {
-        val json = AppTestUtils.readLocalJsonFile("HomeTopArticle.json")
+        val json = AppTestUtils.readLocalJsonFile(HomeTestConst.WAN_HOME_TOP_ARTICLE_FILE)
         val dto = json.moshi(TopArticleDTO::class.java)
         assertNotNull(dto?.data)
         dto?.data?.let {
@@ -48,7 +49,7 @@ class TopArticleDTOTest {
 
     @Test
     fun testToPlaceTopPOList() {
-        val json = AppTestUtils.readLocalJsonFile("HomeTopArticle.json")
+        val json = AppTestUtils.readLocalJsonFile(HomeTestConst.WAN_HOME_TOP_ARTICLE_FILE)
         val dto = json.moshi(TopArticleDTO::class.java)
         val srcDTOListSize = dto?.data?.size
         val baseIndexTest = -100

@@ -4,8 +4,8 @@
 buildscript {
 
     ext {
-        kotlinVersion = '1.3.70'
-        kotlinCoroutinesVersion = '1.3.3'
+        kotlinVersion = '1.3.72'
+        kotlinCoroutinesVersion = '1.3.7'
         kodeinVersion = '6.5.3'
         androidXRoomVersion = '2.2.5'
         androidXWorkVersion = '2.3.4'
@@ -25,7 +25,6 @@ buildscript {
         //Android Test
         androidXTestRunnerVersion = '1.2.0'
         androidXEspressoVersion = '3.2.0'
-        kotlin_version = '1.3.70'
     }
     
     repositories {
@@ -34,7 +33,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.6.0"
+        classpath "com.android.tools.build:gradle:4.0.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         //classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.10'
 

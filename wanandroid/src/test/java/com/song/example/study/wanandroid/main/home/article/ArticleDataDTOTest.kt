@@ -2,6 +2,7 @@ package com.song.example.study.wanandroid.main.home.article
 
 import com.song.example.study.wanandroid.AppTestUtils
 import com.song.example.study.extension.moshi
+import com.song.example.study.wanandroid.main.home.HomeTestConst
 import org.junit.After
 
 import org.junit.Assert.*
@@ -105,7 +106,7 @@ class ArticleDataDTOTest {
 
     @Test
     fun testArticleDTOWrapper() {
-        val json = AppTestUtils.readLocalJsonFile("HomeArticleJson.json")
+        val json = AppTestUtils.readLocalJsonFile(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         val list = json.moshi(ArticleDataDTO::class.java)
 
         assertEquals(2, list?.data?.curPage)

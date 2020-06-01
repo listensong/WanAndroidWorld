@@ -57,7 +57,7 @@ class ArticleDAOTest {
     }
 
     private fun getArticlePOList(): List<ArticlePO> {
-        val json = readFile("HomeArticleJson.json")
+        val json = readFile("WanHomeArticle.json")
         val list = json.moshi(ArticleDataDTO::class.java)
         return list.toPOList(0, 0)
     }
