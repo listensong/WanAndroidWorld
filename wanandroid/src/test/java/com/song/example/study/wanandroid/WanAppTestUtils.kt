@@ -12,8 +12,8 @@ import okhttp3.ResponseBody.Companion.toResponseBody
  * @desc TODO
  * @email No
  */
-object AppTestUtils {
-    const val BASE_PATH = "../app/src/androidTest/assets"
+object WanAppTestUtils {
+    const val BASE_PATH = "../wanandroid/src/androidTest/assets"
 
     fun getMockResponseBody(filePath: String): ResponseBody {
         val mockJson: String = MockAssets.readFile(filePath)

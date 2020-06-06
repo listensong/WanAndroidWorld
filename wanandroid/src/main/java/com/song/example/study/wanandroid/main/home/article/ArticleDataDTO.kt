@@ -1,6 +1,9 @@
 package com.song.example.study.wanandroid.main.home.article
 
+import com.song.example.study.extension.new
+import com.song.example.study.wanandroid.common.BaseArticlePO
 import com.song.example.study.wanandroid.main.home.HomeConst
+import com.song.example.study.wanandroid.util.HighLightUtils
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -27,17 +30,32 @@ data class ArticleDataDTO(
 fun ArticleDataDTO?.toVOList(): List<ArticleVO> {
     return this?.run {
         val currentPage = this.data?.curPage ?: 0
+        val over = this.data?.over ?: true
         val voList = mutableListOf<ArticleVO>()
         this.data?.datas?.forEach {
             if (it != null) {
-                voList.add(it.toVO(currentPage))
+                voList.add(it.toVO(currentPage, over))
             }
         }
         voList
     } ?: emptyList()
 }
 
-fun ArticleItemDTO.toVO(currentPage: Int) : ArticleVO {
+fun ArticleDataDTO?.toHighLightVOList(): List<ArticleVO> {
+    return this?.run {
+        val currentPage = this.data?.curPage ?: 0
+        val over = this.data?.over ?: true
+        val voList = mutableListOf<ArticleVO>()
+        this.data?.datas?.forEach {
+            if (it != null) {
+                voList.add(it.toHighLightVO(currentPage, over))
+            }
+        }
+        voList
+    } ?: emptyList()
+}
+
+fun ArticleItemDTO.toVO(currentPage: Int, lastPage: Boolean) : ArticleVO {
     return ArticleVO(
             curPage = currentPage,
             itemType = HomeConst.ITEM_TYPE_ARTICLE,
@@ -59,62 +77,69 @@ fun ArticleItemDTO.toVO(currentPage: Int) : ArticleVO {
             superChapterName =  this.superChapterName ?: "",
             title =  this.title ?: "",
             type =  this.type ?: 0,
-            placeTop = false
+            placeTop = false,
+            over = lastPage
     )
 }
 
-fun ArticleDataDTO?.toPOList(baseIndex: Int, pageNum: Int): List<ArticlePO> {
-    return this?.run {
-        val currentPage = this.data?.curPage ?: 0
-        val poList = mutableListOf<ArticlePO>()
-        val startIndex = baseIndex + (100 * pageNum)
-        var index = 0
-        this.data?.datas?.forEach {
-            if (it != null) {
-                index++
-                poList.add(it.toPO(startIndex + index, currentPage))
-            }
-        }
-        poList
-    } ?: emptyList()
-}
 
-fun ArticleItemDTO.toPO(index: Int, currentPage: Int) : ArticlePO {
-    return ArticlePO(
-            _index = index,
-            itemType = HomeConst.ITEM_TYPE_ARTICLE,
+fun ArticleItemDTO.toHighLightVO(currentPage: Int, lastPage: Boolean) : ArticleVO {
+    return ArticleVO(
             curPage = currentPage,
+            itemType = HomeConst.ITEM_TYPE_ARTICLE,
             apkLink = this.apkLink ?: "",
             audit = this.audit ?:  0,
             author = this.author ?:  "",
-            canEdit = this.canEdit ?:  false,
-            chapterId =  this.chapterId ?: 0,
             chapterName = this.chapterName ?:  "",
-            collect = this.collect ?:  false,
-            courseId = this.courseId ?:  0,
             desc = this.desc ?: "",
             descMd =  this.descMd ?: "",
             envelopePic = this.envelopePic ?:  "",
             fresh = this.fresh ?:  false,
             id = this.id ?:  0,
             link =  this.link ?: "",
-            niceDate =  this.niceDate ?: "",
-            niceShareDate =  this.niceShareDate ?: "",
-            origin = this.origin ?: "",
-            prefix =  this.prefix ?: "",
             projectLink =  this.projectLink ?: "",
             publishTime =  this.publishTime ?: 0,
-            selfVisible = this.selfVisible ?:  0,
             shareDate = this.shareDate ?:  0,
             shareUser =  this.shareUser ?: "",
             superChapterId =  this.superChapterId ?: 0,
             superChapterName =  this.superChapterName ?: "",
-            tags =  this.tags ?: emptyList(),
-            title =  this.title ?: "",
+            title =  HighLightUtils.replaceHighLight(this.title),
             type =  this.type ?: 0,
-            userId =  this.userId ?: 0,
-            visible =  this.visible ?: 0,
-            zan = this.zan ?:  0,
-            placeTop = false
+            placeTop = false,
+            over = lastPage
     )
+}
+
+inline fun <reified PO: BaseArticlePO> ArticleDataDTO?.toPOList(
+        baseIndex: Int,
+        pageNum: Int
+): List<PO> {
+    return this?.run {
+        val currentPage = this.data?.curPage ?: 0
+        val over = this.data?.over ?: true
+        val poList = mutableListOf<PO>()
+        val startIndex = baseIndex + (100 * pageNum)
+        var index = 0
+        this.data?.datas?.forEach {
+            if (it != null) {
+                index++
+                poList.add(it.toPO(startIndex + index, currentPage, over))
+            }
+        }
+        poList
+    } ?: emptyList()
+}
+
+inline fun <reified PO: BaseArticlePO> ArticleItemDTO.toPO(
+        index: Int,
+        currentPage: Int,
+        over: Boolean
+) : PO {
+    //return ArticlePO(index, HomeConst.ITEM_TYPE_ARTICLE, currentPage, this)
+    return new<PO>().apply {
+        unpackDTO(this@toPO, over)
+        _index = index
+        itemType = HomeConst.ITEM_TYPE_ARTICLE
+        curPage = currentPage
+    }
 }

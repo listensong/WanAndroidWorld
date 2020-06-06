@@ -1,6 +1,6 @@
 package com.song.example.study.wanandroid.main.home.article
 
-import com.song.example.study.wanandroid.AppTestUtils
+import com.song.example.study.wanandroid.WanAppTestUtils
 import com.song.example.study.extension.moshi
 import com.song.example.study.wanandroid.main.home.HomeTestConst
 import org.junit.After
@@ -106,7 +106,7 @@ class ArticleDataDTOTest {
 
     @Test
     fun testArticleDTOWrapper() {
-        val json = AppTestUtils.readLocalJsonFile(HomeTestConst.WAN_HOME_ARTICLE_FILE)
+        val json = WanAppTestUtils.readLocalJsonFile(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         val list = json.moshi(ArticleDataDTO::class.java)
 
         assertEquals(2, list?.data?.curPage)
@@ -142,7 +142,7 @@ class ArticleDataDTOTest {
     @Test
     fun testToVO() {
         val dto = getTestArticleDTO(1)
-        val vo = dto.toVO(0)
+        val vo = dto.toVO(0, false)
         assertEquals(0, vo.curPage)
         assertEquals(dto.link, vo.link)
         assertEquals(dto.title, vo.title)
@@ -152,7 +152,7 @@ class ArticleDataDTOTest {
     @Test
     fun testToPOList_whenDTOListIsEmptyThenReturnEmptyList() {
         assertEquals(0, emptyTestDTO.data?.datas?.size)
-        val articlePOList = emptyTestDTO.toPOList(0, 0)
+        val articlePOList = emptyTestDTO.toPOList<ArticlePO>(0, 0)
         assertEquals(0, articlePOList.size)
     }
 
@@ -174,7 +174,7 @@ class ArticleDataDTOTest {
     @Test
     fun testToPO() {
         val dto = getTestArticleDTO(1)
-        val po = dto.toPO(0, 0)
+        val po = dto.toPO<ArticlePO>(0, 0, false)
         assertEquals(0, po.curPage)
         assertEquals(dto.link, po.link)
         assertEquals(dto.title, po.title)

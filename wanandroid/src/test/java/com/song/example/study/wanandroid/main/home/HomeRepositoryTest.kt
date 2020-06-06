@@ -1,7 +1,7 @@
 package com.song.example.study.wanandroid.main.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.song.example.study.wanandroid.AppTestUtils
+import com.song.example.study.wanandroid.WanAppTestUtils
 import com.song.example.study.wanandroid.main.home.article.ArticleDAO
 import com.song.example.study.wanandroid.main.home.article.ArticlePO
 import com.song.example.study.wanandroid.main.home.banner.BannerDAO
@@ -108,7 +108,7 @@ class HomeRepositoryTest: KodeinAware {
     }
 
     private fun givenNormalBannerResponseAndCapturingSlot(): CapturingSlot<List<BannerPO>> {
-        val mockResponseBody = AppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_BANNER_FILE)
+        val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_BANNER_FILE)
         coEvery {
             apiService.getBannerList().awaitWithTimeout(10000)
         } returns HttpResult.Okay(mockResponseBody, mockk())
@@ -173,7 +173,7 @@ class HomeRepositoryTest: KodeinAware {
 
     private fun givenHomeTopArticlesData():
             Triple<CapturingSlot<List<ArticlePO>>, CapturingSlot<Int>, CapturingSlot<Int>> {
-        val mockResponseBody = AppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_TOP_ARTICLE_FILE)
+        val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_TOP_ARTICLE_FILE)
         coEvery {
             apiService.getTopArticles().awaitWithTimeout(10000)
         } returns HttpResult.Okay(
@@ -208,7 +208,7 @@ class HomeRepositoryTest: KodeinAware {
     }
 
     private fun givenHomeArticleDataWithPageNum0(): Pair<CapturingSlot<List<ArticlePO>>, CapturingSlot<Int>> {
-        val mockResponseBody = AppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
+        val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         coEvery {
             apiService.getArticleList(0).awaitWithTimeout(10000)
         } returns HttpResult.Okay(
@@ -238,7 +238,7 @@ class HomeRepositoryTest: KodeinAware {
     }
 
     private fun givenHomeArticleDataWithPageNum1() {
-        val mockResponseBody = AppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
+        val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         coEvery {
             apiService.getArticleList(1).awaitWithTimeout(10000)
         } returns HttpResult.Okay(
