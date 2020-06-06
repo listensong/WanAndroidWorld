@@ -7,15 +7,16 @@ import retrofit2.Response
 /**
  * @author song
  */
-class LifecycleCallImpl<T>(
+class CoroutineLifecycleCallImpl<T>(
         private val callImpl: Call<T>,
-        private val enableCancel: Boolean) : ILifecycleCall<T> {
+        private val enableCancel: Boolean
+) : CoroutineLifecycleCall<T> {
 
     override fun cancel() {
         callImpl.cancel()
     }
 
-    override fun enqueue(callback: ILifecycleCallback<T>) {
+    override fun enqueue(callback: CoroutineLifecycleCallback<T>) {
         callImpl.enqueue(object : Callback<T> {
             override fun onFailure(call: Call<T>, t: Throwable) {
                 callback.onFail(0, t)
@@ -27,8 +28,8 @@ class LifecycleCallImpl<T>(
         })
     }
 
-    override fun clone(): ILifecycleCall<T> {
-        return LifecycleCallImpl<T>(callImpl.clone(), enableCancel)
+    override fun clone(): CoroutineLifecycleCall<T> {
+        return CoroutineLifecycleCallImpl<T>(callImpl.clone(), enableCancel)
     }
 
     override fun isCanceled(): Boolean {

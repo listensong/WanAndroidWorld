@@ -1,18 +1,18 @@
 package com.song.example.study.wanandroid.main.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.song.example.study.common.network.RequestStatus
+import com.song.example.study.common.network.retrofit.CoroutineLifecycleCallExtensionKtPath
+import com.song.example.study.common.network.retrofit.HttpResult
+import com.song.example.study.common.network.retrofit.NetworkError
+import com.song.example.study.common.network.retrofit.suspendAwaitTimeout
 import com.song.example.study.wanandroid.WanAppTestUtils
+import com.song.example.study.wanandroid.data.wanAppDbModule
 import com.song.example.study.wanandroid.main.home.article.ArticleDAO
 import com.song.example.study.wanandroid.main.home.article.ArticlePO
 import com.song.example.study.wanandroid.main.home.banner.BannerDAO
 import com.song.example.study.wanandroid.main.home.banner.BannerPO
 import com.song.example.study.wanandroid.network.WanService
-import com.song.example.study.common.network.RequestStatus
-import com.song.example.study.common.network.retrofit.HttpResult
-import com.song.example.study.common.network.retrofit.LifecycleCallExtensionKtPath
-import com.song.example.study.common.network.retrofit.NetworkError
-import com.song.example.study.common.network.retrofit.awaitWithTimeout
-import com.song.example.study.wanandroid.data.wanAppDbModule
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,7 +41,7 @@ import kotlin.test.assertNull
  * @package com.song.example.study.app.main.home
  * @fileName HomeRepositoryTest
  * @date on 3/29/2020 4:51 PM
- * @desc: TODO
+ * @desc
  * @email No
  */
 @ExperimentalCoroutinesApi
@@ -70,7 +70,7 @@ class HomeRepositoryTest: KodeinAware {
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
-        mockkStatic(LifecycleCallExtensionKtPath)
+        mockkStatic(CoroutineLifecycleCallExtensionKtPath)
     }
 
     @After
@@ -110,7 +110,7 @@ class HomeRepositoryTest: KodeinAware {
     private fun givenNormalBannerResponseAndCapturingSlot(): CapturingSlot<List<BannerPO>> {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_BANNER_FILE)
         coEvery {
-            apiService.getBannerList().awaitWithTimeout(10000)
+            apiService.getBannerList().suspendAwaitTimeout(10000)
         } returns HttpResult.Okay(mockResponseBody, mockk())
 
         val slotPOList = slot<List<BannerPO>>()
@@ -135,7 +135,7 @@ class HomeRepositoryTest: KodeinAware {
     private fun givenGetBannerListWithTimeoutMillis(): Long {
         val timeoutMillis = 10000L
         coEvery {
-            apiService.getBannerList().awaitWithTimeout(10000)
+            apiService.getBannerList().suspendAwaitTimeout(10000)
         } returns HttpResult.Error(
                 NetworkError(
                         0, "Timeout: no response within $timeoutMillis",
@@ -175,7 +175,7 @@ class HomeRepositoryTest: KodeinAware {
             Triple<CapturingSlot<List<ArticlePO>>, CapturingSlot<Int>, CapturingSlot<Int>> {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_TOP_ARTICLE_FILE)
         coEvery {
-            apiService.getTopArticles().awaitWithTimeout(10000)
+            apiService.getTopArticles().suspendAwaitTimeout(10000)
         } returns HttpResult.Okay(
                 mockResponseBody,
                 mockk()
@@ -210,7 +210,7 @@ class HomeRepositoryTest: KodeinAware {
     private fun givenHomeArticleDataWithPageNum0(): Pair<CapturingSlot<List<ArticlePO>>, CapturingSlot<Int>> {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         coEvery {
-            apiService.getArticleList(0).awaitWithTimeout(10000)
+            apiService.getArticleList(0).suspendAwaitTimeout(10000)
         } returns HttpResult.Okay(
                 mockResponseBody,
                 mockk()
@@ -240,7 +240,7 @@ class HomeRepositoryTest: KodeinAware {
     private fun givenHomeArticleDataWithPageNum1() {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         coEvery {
-            apiService.getArticleList(1).awaitWithTimeout(10000)
+            apiService.getArticleList(1).suspendAwaitTimeout(10000)
         } returns HttpResult.Okay(
                 mockResponseBody,
                 mockk()
@@ -254,7 +254,7 @@ class HomeRepositoryTest: KodeinAware {
     @Test
     fun requestArticles_whenTimeoutThenReturnEmptyList() = runBlockingTest {
         coEvery {
-            apiService.getArticleList().awaitWithTimeout(10000)
+            apiService.getArticleList().suspendAwaitTimeout(10000)
         } returns  HttpResult.Error(
                 NetworkError(
                         0, "Timeout: no response within 10000",

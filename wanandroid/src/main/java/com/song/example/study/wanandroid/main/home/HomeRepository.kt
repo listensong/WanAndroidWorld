@@ -6,10 +6,7 @@ import com.song.example.study.wanandroid.main.home.banner.*
 import com.song.example.study.wanandroid.network.WanService
 import com.song.example.study.base.job.BaseRepository
 import com.song.example.study.common.network.RequestStatus
-import com.song.example.study.common.network.retrofit.HttpResult
-import com.song.example.study.common.network.retrofit.awaitWithTimeout
-import com.song.example.study.common.network.retrofit.onFailure
-import com.song.example.study.common.network.retrofit.onSuccess
+import com.song.example.study.common.network.retrofit.*
 import com.song.example.study.extension.moshi
 import com.song.example.study.util.WanLog
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +35,7 @@ class HomeRepository(
     suspend fun requestBanners() {
         wanApiService
                 .getBannerList()
-                .awaitWithTimeout(10000)
+                .suspendAwaitTimeout(10000)
                 .onFailure {
                     WanLog.e(TAG, "requestBanners onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)
@@ -67,7 +64,7 @@ class HomeRepository(
     suspend fun requestTopArticles() {
         wanApiService
                 .getTopArticles()
-                .awaitWithTimeout(10000)
+                .suspendAwaitTimeout(10000)
                 .onFailure {
                     WanLog.e(TAG, "requestTopArticles onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)
@@ -100,7 +97,7 @@ class HomeRepository(
     suspend fun requestArticles(pageNum: Int = 0) {
         wanApiService
                 .getArticleList(pageNum)
-                .awaitWithTimeout(10000)
+                .suspendAwaitTimeout(10000)
                 .onFailure {
                     WanLog.e(TAG, "requestArticles onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)

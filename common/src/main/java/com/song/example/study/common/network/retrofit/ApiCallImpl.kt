@@ -2,6 +2,7 @@ package com.song.example.study.common.network.retrofit
 
 import com.song.example.study.BuildConfig
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.Proxy
@@ -24,7 +25,13 @@ internal class ApiCallImpl {
                 .proxy(Proxy.NO_PROXY)
                 //.cache(Cache(BaseApplication.instance.cacheDir, 52428800))//50*1024*1024 = 52428800
                 .addInterceptor(
-                        HttpLoggingInterceptorCreator.create(BuildConfig.DEBUG)
+                        HttpLoggingInterceptor().also {
+                            it.level = if (BuildConfig.DEBUG) {
+                                HttpLoggingInterceptor.Level.BODY
+                            } else {
+                                HttpLoggingInterceptor.Level.BASIC
+                            }
+                        }
                 )
                 .build()
     }
@@ -48,7 +55,7 @@ internal class ApiCallImpl {
                 .client(okHttpClient.newBuilder().addInterceptor(interceptorModifyRequest).build())
                 .baseUrl(baseCallUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(LifecycleCallAdapterFactoryCreator.create())
+                .addCallAdapterFactory(CoroutineLifecycleCallAdapterFactory(true))
                 .build()
     }
 

@@ -12,8 +12,7 @@ import java.lang.reflect.Type
 /**
  * @author song
  */
-class LifecycleCallAdapterFactory(
-        private val appContext: Context,
+class CoroutineLifecycleCallAdapterFactory(
         private val enableCancel: Boolean = true
 ) : CallAdapter.Factory() {
 
@@ -25,7 +24,7 @@ class LifecycleCallAdapterFactory(
                      annotations: Array<out Annotation>?,
                      retrofit: Retrofit?): CallAdapter<*, *>? {
         if (returnType == null ||
-                getRawType(returnType) != ILifecycleCall::class.java) {
+                getRawType(returnType) != CoroutineLifecycleCall::class.java) {
             return null
         }
 
@@ -34,12 +33,6 @@ class LifecycleCallAdapterFactory(
         }
 
         val responseType = getParameterUpperBound(0, returnType)
-        if (appContext is LifecycleOwner && appContext.lifecycle is LifecycleRegistry) {
-            return ErrorHandleCallAdapter<Any>(
-                    responseType, appContext.lifecycle as LifecycleRegistry, enableCancel
-            )
-        }
-
-        return ErrorHandleCallAdapter<Any>(responseType, enableCancel = enableCancel)
+        return CoroutineCallEventHandleCallAdapter<Any>(responseType, enableCancel = enableCancel)
     }
 }

@@ -21,44 +21,44 @@ import org.mockito.junit.MockitoJUnitRunner
  * @email No
  */
 @RunWith(MockitoJUnitRunner::class)
-class LifecycleCallAdapterFactoryTest {
+class CoroutineLifecycleCallAdapterFactoryTest {
 
     @Rule
     @JvmField
     var exception: ExpectedException = ExpectedException.none()
 
-    private var lifecycleCallAdapterFactory: LifecycleCallAdapterFactory? = null
+    private var coroutineLifecycleCallAdapterFactory: CoroutineLifecycleCallAdapterFactory? = null
 
     @Before
     fun setUp() {
-        lifecycleCallAdapterFactory = LifecycleCallAdapterFactory(Mockito.mock(Context::class.java))
+        coroutineLifecycleCallAdapterFactory = CoroutineLifecycleCallAdapterFactory()
     }
 
     @After
     fun tearDown() {
-        lifecycleCallAdapterFactory = null
+        coroutineLifecycleCallAdapterFactory = null
     }
 
     @Test
     fun `getEnableCancel 默认值为true`() {
-        val factory = LifecycleCallAdapterFactory(Mockito.mock(Context::class.java))
+        val factory = CoroutineLifecycleCallAdapterFactory()
         assertTrue(factory.getEnableCancel())
     }
 
     @Test
     fun `getEnableCancel 传入false时，应该返回false`() {
-        val factory = LifecycleCallAdapterFactory(Mockito.mock(Context::class.java), false)
+        val factory = CoroutineLifecycleCallAdapterFactory(false)
         assertFalse(factory.getEnableCancel())
     }
 
     @Test
     fun `get 未实现ILifecycleCall，应该返回null或者IllegalStateException`() {
-        assertNotNull(lifecycleCallAdapterFactory)
+        assertNotNull(coroutineLifecycleCallAdapterFactory)
 
-        val getResult = lifecycleCallAdapterFactory?.get(String::class.java, null, null)
+        val getResult = coroutineLifecycleCallAdapterFactory?.get(String::class.java, null, null)
         assertTrue(getResult == null)
 
         exception.expect(IllegalStateException::class.java)
-        lifecycleCallAdapterFactory?.get(ILifecycleCall::class.java, null, null)
+        coroutineLifecycleCallAdapterFactory?.get(CoroutineLifecycleCall::class.java, null, null)
     }
 }

@@ -3,6 +3,7 @@ package com.song.example.study.common.network.retrofit
 import com.song.example.study.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -50,11 +51,17 @@ val commonNetworkModule = Kodein.Module(_COMMON_NETWORK_CLIENT_MODULE) {
     }
 
     bind<CallAdapter.Factory>(_HTTP_LIFECYCLE_CALL_ADAPTER) with singleton {
-        LifecycleCallAdapterFactoryCreator.create()
+        CoroutineLifecycleCallAdapterFactory(true)
     }
 
     bind<Interceptor>(_HTTP_DEFAULT_LOG_INTERCEPTOR) with singleton {
-        HttpLoggingInterceptorCreator.create(BuildConfig.DEBUG)
+        HttpLoggingInterceptor().also {
+            it.level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.BASIC
+            }
+        }
     }
 
     bind<Interceptor>(_HTTP_DEFAULT_HEADER_INTERCEPTOR) with singleton {

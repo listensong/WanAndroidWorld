@@ -1,6 +1,6 @@
 package com.song.example.study.wanandroid.network
 
-import com.song.example.study.common.network.retrofit.ILifecycleCall
+import com.song.example.study.common.network.retrofit.CoroutineLifecycleCall
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -17,64 +17,64 @@ interface WanService {
     @GET("article/list/{pageNum}/json")
     fun getArticleList(
             @Path("pageNum") pageNum: Int = 0
-    ): ILifecycleCall<ResponseBody>
+    ): CoroutineLifecycleCall<ResponseBody>
 
     @GET("article/top/json")
-    fun getTopArticles(): ILifecycleCall<ResponseBody>
+    fun getTopArticles(): CoroutineLifecycleCall<ResponseBody>
 
     @GET("banner/json")
-    fun getBannerList(): ILifecycleCall<ResponseBody>
+    fun getBannerList(): CoroutineLifecycleCall<ResponseBody>
 
     //体系
     @GET("tree/json")
-    fun getKnowledgeTreeTags(): ILifecycleCall<ResponseBody>
+    fun getKnowledgeTreeTags(): CoroutineLifecycleCall<ResponseBody>
 
     @GET("article/list/{pageNum}/json")
     fun getKnowledgeArticles(
             @Path("pageNum") pageNum: Int = 0,
             @Query("cid") articlesCid: Int
-    ): ILifecycleCall<ResponseBody>
+    ): CoroutineLifecycleCall<ResponseBody>
 
     @GET("article/list/{pageNum}/json")
     fun searchArticlesByAuthor(
             @Path("pageNum") pageNum: Int = 0,
             @Query("author") articlesAuthor: String
-    ): ILifecycleCall<ResponseBody>
+    ): CoroutineLifecycleCall<ResponseBody>
 
     //项目
     @GET("article/listproject/{pageNum}/json")
     fun getProjectArticles(
             @Path("pageNum") pageNum: Int = 0
-    ): ILifecycleCall<ResponseBody>
+    ): CoroutineLifecycleCall<ResponseBody>
 
     //广场
     @GET("user_article/list/{pageNum}/json")
     fun getSquareArticles(
             @Path("pageNum") pageNum: Int = 0
-    ): ILifecycleCall<ResponseBody>
+    ): CoroutineLifecycleCall<ResponseBody>
 
     //搜索
     @GET("hotkey/json")
-    fun getSearchHotKey(): ILifecycleCall<ResponseBody>
+    fun getSearchHotKey(): CoroutineLifecycleCall<ResponseBody>
 
     @POST("article/query/{pageNum}/json")
     fun queryKeyWord(
             @Path("pageNum") pageNum: Int = 0,
             @Query("k") keyWord: String
-    ): ILifecycleCall<ResponseBody>
+    ): CoroutineLifecycleCall<ResponseBody>
 
     //常用网站
     @GET("friend/json")
-    fun getFriendWebSite(): ILifecycleCall<ResponseBody>
+    fun getFriendWebSite(): CoroutineLifecycleCall<ResponseBody>
 
     //项目分类
     @GET("project/tree/json")
-    fun getProjectCategory(): ILifecycleCall<ResponseBody>
+    fun getProjectCategory(): CoroutineLifecycleCall<ResponseBody>
 
     //项目分类
     @GET("project/list/{pageNum}/json")
     fun getProjectCategoryArticles(
             @Path("pageNum") pageNum: Int = 0,
             @Query("cid") categoryId: Int
-    ): ILifecycleCall<ResponseBody>
+    ): CoroutineLifecycleCall<ResponseBody>
 }

@@ -21,15 +21,15 @@ import retrofit2.Call
  * @email No
  */
 @RunWith(MockitoJUnitRunner::class)
-class LifecycleCallImplTest {
+class CoroutineLifecycleCallImplTest {
 
     @Mock
     var mockCall: Call<String>? = null
 
     @Mock
-    var mockILifecycleCallback: ILifecycleCallback<String>? = null
+    var mockCoroutineLifecycleCallback: CoroutineLifecycleCallback<String>? = null
 
-    private var lifecycleCallImpl: LifecycleCallImpl<String>? = null
+    private var coroutineLifecycleCallImpl: CoroutineLifecycleCallImpl<String>? = null
 
     @Before
     fun setUp() {
@@ -41,17 +41,17 @@ class LifecycleCallImplTest {
 
     @Test
     fun `cancel mockCall的cancel应该被调用`() {
-        lifecycleCallImpl = LifecycleCallImpl(mockCall!!, false)
-        lifecycleCallImpl?.cancel()
+        coroutineLifecycleCallImpl = CoroutineLifecycleCallImpl(mockCall!!, false)
+        coroutineLifecycleCallImpl?.cancel()
         verify(mockCall)?.cancel()
     }
 
     @Test
     fun `enqueue mockCall的enqueue应该被调用`() {
         assertNotNull(mockCall)
-        assertNotNull(mockILifecycleCallback)
-        lifecycleCallImpl = LifecycleCallImpl(mockCall!!, false)
-        lifecycleCallImpl?.enqueue(mockILifecycleCallback!!)
+        assertNotNull(mockCoroutineLifecycleCallback)
+        coroutineLifecycleCallImpl = CoroutineLifecycleCallImpl(mockCall!!, false)
+        coroutineLifecycleCallImpl?.enqueue(mockCoroutineLifecycleCallback!!)
         verify(mockCall)?.enqueue(ArgumentMatchers.any())
     }
 
@@ -59,25 +59,25 @@ class LifecycleCallImplTest {
     var mockCloneCall: Call<String>? = null
     @Test
     fun `clone LifecycleCallImpl的clone应该是复制自己`() {
-        lifecycleCallImpl = LifecycleCallImpl(mockCall!!, false)
+        coroutineLifecycleCallImpl = CoroutineLifecycleCallImpl(mockCall!!, false)
 
         `when`(mockCall?.clone()).thenReturn(mockCloneCall)
-        val cloneResult = lifecycleCallImpl?.clone()
+        val cloneResult = coroutineLifecycleCallImpl?.clone()
         verify(mockCall)?.clone()
-        assertEquals(lifecycleCallImpl?.enableCancel(), cloneResult?.enableCancel())
+        assertEquals(coroutineLifecycleCallImpl?.enableCancel(), cloneResult?.enableCancel())
     }
 
     @Test
     fun `isCanceled mockCall的isCanceled应该被调用`() {
-        lifecycleCallImpl = LifecycleCallImpl(mockCall!!, false)
-        lifecycleCallImpl?.isCanceled()
+        coroutineLifecycleCallImpl = CoroutineLifecycleCallImpl(mockCall!!, false)
+        coroutineLifecycleCallImpl?.isCanceled()
         verify(mockCall)?.isCanceled()
     }
 
     @Test
     fun `enableCancel mockCall的enableCancel应该被调用`() {
-        lifecycleCallImpl = LifecycleCallImpl(mockCall!!, false)
-        val enableCancel = lifecycleCallImpl?.enableCancel()
+        coroutineLifecycleCallImpl = CoroutineLifecycleCallImpl(mockCall!!, false)
+        val enableCancel = coroutineLifecycleCallImpl?.enableCancel()
         assertEquals(false, enableCancel)
     }
 }

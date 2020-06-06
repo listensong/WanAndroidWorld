@@ -8,7 +8,7 @@ import java.lang.Exception
  * @fileName HttpResult
  * @date on 3/29/2020 10:42 AM
  * @author Listensong
- * @desc: TODO
+ * @desc
  * @email No
  */
 data class NetworkError(
@@ -19,8 +19,8 @@ data class NetworkError(
 
 sealed class HttpResult<out T: Any> {
     class Okay<out T: Any> (
-        val value: T,
-        val response: Response
+            val value: T,
+            val response: Response
     ): HttpResult<T>() {
         override fun toString(): String {
             return "HttpResult.Okay{value=$value, response=$response}"
@@ -47,36 +47,18 @@ inline fun <T: Any> HttpResult<T>.onFailure(
     }
 }
 
-inline fun <A: Any, V: Any> HttpResult<A>.onSuccess(
-        action: (HttpResult.Okay<A>) -> HttpResult<V>?
-): HttpResult<V>? {
-    return if (this is HttpResult.Okay) {
+inline fun <T: Any> HttpResult<T>.onSuccess(
+        action: (HttpResult.Okay<T>) -> Unit
+): HttpResult<T>? {
+    if (this is HttpResult.Okay) {
         action(this)
-    } else {
-        this as HttpResult<V>?
     }
+    return this
 }
 
-inline fun <A: Any, V: Any> HttpResult<A>.onOkay(
-        action: (HttpResult.Okay<A>) -> HttpResult<V>?
-): HttpResult<V>? {
-    return if (this is HttpResult.Okay) {
-        action(this)
-    } else {
-        this as HttpResult<V>?
-    }
+inline fun <T: Any> HttpResult<T>?.followDo(
+        action: (HttpResult<T>?) -> Unit
+) : Any {
+    return action(this)
 }
-
-inline fun <T: Any> HttpResult<T>?.doFollow(
-        action: (HttpResult<T>?) -> T
-) : T {
-    return  action(this)
-}
-
-inline fun <S: Any, T: Any> HttpResult<S>?.doSwitchFollow(
-        action: (HttpResult<S>?) -> T
-) : T {
-    return  action(this)
-}
-
 
