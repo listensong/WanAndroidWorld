@@ -9,4 +9,7 @@
     <color name="wanTranslucent">#01000000</color>
     <color name="wanColorWhite">#ffffff</color>
     <color name="wanColorSplashMaskBg">#5BCDF6</color>
+
+    <color name="wanPrimaryTextColor">#ffffff</color>
+    <color name="wanCommonBackground">#ffffff</color>
 </resources>

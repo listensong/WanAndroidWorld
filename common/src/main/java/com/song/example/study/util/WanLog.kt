@@ -2,6 +2,7 @@ package com.song.example.study.util
 
 import android.util.Log
 import com.song.example.study.BuildConfig
+import java.lang.Exception
 
 /**
  * @package com.song.example.study.util
@@ -42,6 +43,10 @@ object WanLog {
 
     fun e(tag: String, message: String) {
         Log.e(tag, message)
+    }
+
+    fun printStackTrace(tag: String, e: Exception) {
+        Log.e(tag, e.message ?: "")
     }
 
     fun i(message: String) {

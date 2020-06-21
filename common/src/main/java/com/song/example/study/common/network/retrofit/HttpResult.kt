@@ -47,18 +47,22 @@ inline fun <T: Any> HttpResult<T>.onFailure(
     }
 }
 
-inline fun <T: Any> HttpResult<T>.onSuccess(
-        action: (HttpResult.Okay<T>) -> Unit
-): HttpResult<T>? {
-    if (this is HttpResult.Okay) {
-        action(this)
+inline fun <A: Any, V: Any> HttpResult<A>.onSuccess(
+        action: (HttpResult.Okay<A>) -> HttpResult<V>?
+): HttpResult<V>? {
+    return when (this) {
+        is HttpResult.Okay -> {
+            action(this)
+        }
+        is HttpResult.Error -> {
+            this
+        }
     }
-    return this
 }
 
-inline fun <T: Any> HttpResult<T>?.followDo(
-        action: (HttpResult<T>?) -> Unit
-) : Any {
+inline fun <T: Any, R: Any> HttpResult<T>?.followDo(
+        action: (HttpResult<T>?) -> R
+) : R {
     return action(this)
 }
 

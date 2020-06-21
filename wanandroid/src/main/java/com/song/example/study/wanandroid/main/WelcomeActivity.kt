@@ -1,8 +1,10 @@
 package com.song.example.study.wanandroid.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -14,6 +16,7 @@ import com.song.example.study.wanandroid.R
 import com.song.example.study.wanandroid.main.home.HomeFragment
 import com.song.example.study.wanandroid.main.home.wanHomeKodeinModule
 import com.song.example.study.base.ui.BaseActivity
+import com.song.example.study.wanandroid.search.SearchActivity
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
 
@@ -48,6 +51,21 @@ class WelcomeActivity : BaseActivity() {
         initViewPager()
         initTabLayoutView()
         initDrawerLayout()
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        val searchIcon = findViewById<ImageView>(R.id.iv_search)
+        searchIcon.setOnClickListener {
+            gotoSearchPage()
+        }
+    }
+
+    private fun gotoSearchPage() {
+        val searchIntent = Intent(this, SearchActivity::class.java)
+        postDelayed(100) {
+            startActivity(searchIntent)
+        }
     }
 
     private fun initDrawerLayout() {

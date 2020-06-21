@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.song.example.study.wanandroid.main.home.article.ArticleDAO
 import com.song.example.study.wanandroid.main.home.banner.BannerDAO
+import com.song.example.study.wanandroid.search.word.HotWordDAO
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -29,6 +30,10 @@ val wanAppDbModule = Kodein.Module(APP_DB_MODULE_DI_TAG) {
 
     bind<BannerDAO>() with singleton {
         instance<WanDataBase>().homeBannersDao()
+    }
+
+    bind<HotWordDAO>() with singleton {
+        instance<WanDataBase>().searchHotWordDao()
     }
 
     bind<WanDataBase>() with singleton {

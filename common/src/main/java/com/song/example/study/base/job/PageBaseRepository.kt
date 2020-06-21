@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.song.example.study.base.job.PageBaseRepository.Companion.BASE_ENABLE_PLACEHOLDER
 
 /**
  * @author: Listensong
@@ -31,7 +32,7 @@ abstract class PageBaseRepository: BaseRepository() {
                 config ?: PagedList.Config
                         .Builder()
                         .setPageSize(pageSize)
-                        .setEnablePlaceholders(false)
+                        .setEnablePlaceholders(BASE_ENABLE_PLACEHOLDER)
                         .setInitialLoadSizeHint(initialLoadSize)
                         .setPrefetchDistance(BASE_PREFETCH_DISTANCE)
                         .build())
@@ -39,4 +40,36 @@ abstract class PageBaseRepository: BaseRepository() {
                 .build()
     }
 
+}
+
+
+fun <Key, Value> DataSource.Factory<Key, Value>.toPagedListLiveData(
+        pageSize: Int = PageBaseRepository.BASE_LOAD_PAGE_SIZE,
+        initialLoadKey: Key? = null,
+        boundaryCallback: PagedList.BoundaryCallback<Value>? =null,
+        config: PagedList.Config? = null
+): LiveData<PagedList<Value>>  {
+    return LivePagedListBuilder(
+            this,
+            config ?: PagedListConfig(pageSize))
+            .setInitialLoadKey(initialLoadKey)
+            .setBoundaryCallback(boundaryCallback)
+            .build()
+}
+
+@Suppress("FunctionName")
+fun PagedListConfig(
+        pageSize: Int,
+        prefetchDistance: Int = pageSize,
+        enablePlaceholder: Boolean = BASE_ENABLE_PLACEHOLDER,
+        initialLoadSizeHint: Int = pageSize * 2,
+        maxSize: Int = PagedList.Config.MAX_SIZE_UNBOUNDED
+): PagedList.Config {
+    return PagedList.Config.Builder()
+            .setPageSize(pageSize)
+            .setPrefetchDistance(prefetchDistance)
+            .setEnablePlaceholders(enablePlaceholder)
+            .setInitialLoadSizeHint(initialLoadSizeHint)
+            .setMaxSize(maxSize)
+            .build()
 }

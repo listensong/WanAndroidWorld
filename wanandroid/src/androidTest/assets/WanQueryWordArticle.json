@@ -1,0 +1,47 @@
+{
+  "data": {
+    "curPage": 1,
+    "datas": [
+      {
+        "apkLink": "",
+        "audit": 1,
+        "author": "anly_jun",
+        "canEdit": false,
+        "chapterId": 78,
+        "chapterName": "性能优化",
+        "collect": false,
+        "courseId": 13,
+        "desc": "",
+        "descMd": "",
+        "envelopePic": "",
+        "fresh": false,
+        "id": 1532,
+        "link": "http://www.jianshu.com/p/c55ef05c0047",
+        "niceDate": "2017-11-17 23:30",
+        "niceShareDate": "未知时间",
+        "origin": "",
+        "prefix": "",
+        "projectLink": "",
+        "publishTime": 1510932649000,
+        "selfVisible": 0,
+        "shareDate": null,
+        "shareUser": "",
+        "superChapterId": 81,
+        "superChapterName": "热门专题",
+        "tags": [],
+        "title": "Android App优化之<em class='highlight'>电池</em>省着用",
+        "type": 0,
+        "userId": -1,
+        "visible": 1,
+        "zan": 0
+      }
+    ],
+    "offset": 0,
+    "over": true,
+    "pageCount": 1,
+    "size": 20,
+    "total": 1
+  },
+  "errorCode": 0,
+  "errorMsg": ""
+}

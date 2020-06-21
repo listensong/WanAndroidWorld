@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:elevation="@dimen/wan_elevation"
+    android:background="@drawable/wan_hot_word_bg">
+
+    <TextView
+        android:id="@+id/tv_hot_word_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/wanPrimaryTextColor"
+        android:layout_margin="4dp">
+    </TextView>
+
+</LinearLayout>

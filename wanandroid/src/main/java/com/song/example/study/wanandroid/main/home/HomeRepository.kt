@@ -37,8 +37,8 @@ class HomeRepository(
                 .getBannerList()
                 .suspendAwaitTimeout(10000)
                 .onFailure {
-                    WanLog.e(TAG, "requestBanners onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)
+                    WanLog.e(TAG, "requestBanners onFailure $it")
                 }
                 .onSuccess {
                     WanLog.d(TAG, "requestBanners onSuccess ")
@@ -66,8 +66,8 @@ class HomeRepository(
                 .getTopArticles()
                 .suspendAwaitTimeout(10000)
                 .onFailure {
-                    WanLog.e(TAG, "requestTopArticles onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)
+                    WanLog.e(TAG, "requestTopArticles onFailure $it")
                 }
                 .onSuccess {
                     requestStatus.value = RequestStatus.Complete()
@@ -99,8 +99,8 @@ class HomeRepository(
                 .getArticleList(pageNum)
                 .suspendAwaitTimeout(10000)
                 .onFailure {
-                    WanLog.e(TAG, "requestArticles onFailure $it")
                     requestStatus.value = RequestStatus.Complete(it.error)
+                    WanLog.e(TAG, "requestArticles onFailure $it")
                 }
                 .onSuccess {
                     WanLog.d(TAG, "requestArticles onSuccess ")
