@@ -10,7 +10,7 @@ import com.song.example.study.common.network.retrofit.onFailure
 import com.song.example.study.common.network.retrofit.onSuccess
 import com.song.example.study.common.network.retrofit.suspendAwaitTimeout
 import com.song.example.study.extension.moshi
-import com.song.example.study.util.WanLog
+import com.song.example.study.wanandroid.util.WanLog
 import com.song.example.study.wanandroid.main.home.article.ArticleVO
 import com.song.example.study.wanandroid.network.WanService
 import com.song.example.study.wanandroid.search.article.ArticleDataSourceFactory

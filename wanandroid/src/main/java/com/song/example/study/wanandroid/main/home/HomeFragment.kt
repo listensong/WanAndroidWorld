@@ -17,7 +17,7 @@ import com.song.example.study.common.router.LinkSwitch
 import com.song.example.study.common.widget.LoadMoreScrollListener
 import com.song.example.study.common.widget.MixedTypeAdapter
 import com.song.example.study.util.DeviceUtil
-import com.song.example.study.util.WanLog
+import com.song.example.study.wanandroid.util.WanLog
 import com.song.example.study.wanandroid.BR
 import com.song.example.study.wanandroid.databinding.WanFragmentHomeBinding
 import com.song.example.study.wanandroid.databinding.WanListItemHomeArticleBinding

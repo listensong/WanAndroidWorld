@@ -1,10 +1,10 @@
 package com.song.example.study.util.image
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.transition.Transition
-import com.song.example.study.util.WanLog
 
 /**
  *
@@ -30,33 +30,33 @@ abstract class ProgressDrawableImageViewTarget : CustomViewTarget<ImageView, Dra
     override fun onResourceReady(resource: Drawable,
                                  transition: Transition<in Drawable>?) {
         progressListener?.onSourceReady(resource)
-        WanLog.e(TAG, "onSourceReady: $transition")
+        Log.e(TAG, "onSourceReady: $transition")
         ProgressInterceptor.removeListener(progressImageViewUrl)
     }
 
     override fun onLoadFailed(errorDrawable: Drawable?) {
         progressListener?.onFail(errorDrawable)
-        WanLog.e(TAG, "onLoadFailed ")
+        Log.e(TAG, "onLoadFailed ")
         ProgressInterceptor.removeListener(progressImageViewUrl)
     }
 
     override fun onStop() {
         super.onStop()
-        WanLog.e(TAG, "onStop: ")
+        Log.e(TAG, "onStop: ")
     }
 
     override fun onStart() {
         super.onStart()
         progressListener?.onStart()
-        WanLog.e(TAG, "onStart: ")
+        Log.e(TAG, "onStart: ")
     }
 
     override fun onResourceCleared(placeholder: Drawable?) {
-        WanLog.e(TAG, "onResourceCleared: ")
+        Log.e(TAG, "onResourceCleared: ")
     }
 
     override fun onResourceLoading(placeholder: Drawable?) {
         super.onResourceLoading(placeholder)
-        WanLog.e(TAG, "onResourceLoading: ")
+        Log.e(TAG, "onResourceLoading: ")
     }
 }

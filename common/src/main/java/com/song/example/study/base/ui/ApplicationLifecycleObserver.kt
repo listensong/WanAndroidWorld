@@ -1,9 +1,9 @@
 package com.song.example.study.base.ui
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.song.example.study.util.WanLog
 
 /**
  *  * @author song
@@ -17,31 +17,31 @@ class ApplicationLifecycleObserver : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        WanLog.e(TAG, "ON_CREATE")
+        Log.e(TAG, "ON_CREATE")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {//Foreground
-        WanLog.e(TAG, "ON_START")
+        Log.e(TAG, "ON_START")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {//Foreground
-        WanLog.e(TAG, "ON_RESUME")
+        Log.e(TAG, "ON_RESUME")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {//Background
-        WanLog.e(TAG, "ON_PAUSE")
+        Log.e(TAG, "ON_PAUSE")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {//Background
-        WanLog.e(TAG, "ON_STOP")
+        Log.e(TAG, "ON_STOP")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestory() {
-        WanLog.e(TAG, "ON_DESTROY")
+        Log.e(TAG, "ON_DESTROY")
     }
 }

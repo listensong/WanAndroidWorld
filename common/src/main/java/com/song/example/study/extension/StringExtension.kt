@@ -1,6 +1,6 @@
 package com.song.example.study.extension
 
-import com.song.example.study.util.WanLog
+import android.util.Log
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
@@ -21,7 +21,7 @@ fun <T> String?.moshi(clz: Class<T>) : T?{
                     .adapter(clz)
                     .fromJson(it)
         } catch (e: Exception) {
-            WanLog.e("moshi", "e:$e")
+            Log.e("moshi", "e:$e")
             println("moshi" + "e:$e")
             null
         }

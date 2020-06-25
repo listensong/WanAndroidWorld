@@ -1,9 +1,10 @@
 package com.song.example.study.util.json;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
-import com.song.example.study.util.WanLog;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ public class FastJsonUtil {
         try {
             t = JSON.parseObject(jsonString, clz);
         } catch (Exception e) {
-            WanLog.INSTANCE.e(TAG, "getObject e:" + e);
+            Log.e(TAG, "getObject e:" + e);
         }
         return  t;
     }
@@ -35,7 +36,7 @@ public class FastJsonUtil {
         try {
             return srcObj instanceof String ? (String) srcObj: JSON.toJSONString(srcObj);
         } catch (Exception e) {
-            WanLog.INSTANCE.e(TAG, "toJson e:" + e);
+            Log.e(TAG, "toJson e:" + e);
         }
         return "";
     }
@@ -49,7 +50,7 @@ public class FastJsonUtil {
         try {
             return JSON.parseArray(jsonString, clz);
         } catch (Exception e) {
-            WanLog.INSTANCE.e(TAG, "json2List e:" + e);
+            Log.e(TAG, "json2List e:" + e);
             return Collections.emptyList();
         }
     }

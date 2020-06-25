@@ -3,13 +3,13 @@ package com.song.example.study.base.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.song.example.study.R
-import com.song.example.study.util.WanLog
 import org.kodein.di.Copy
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -97,9 +97,9 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
         try {
             supportFragmentManager.popBackStackImmediate()
         } catch (e: IllegalStateException) {
-            WanLog.e("", "popFragment: e:$e")
+            Log.e("", "popFragment: e:$e")
         } catch (e: NullPointerException) {
-            WanLog.e("", "popFragment: e:$e")
+            Log.e("", "popFragment: e:$e")
         }
     }
 

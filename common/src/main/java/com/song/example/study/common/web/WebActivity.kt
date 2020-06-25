@@ -6,6 +6,7 @@ import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
 import android.os.Message
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.*
 import com.google.android.material.appbar.AppBarLayout
@@ -15,7 +16,6 @@ import com.song.example.study.extension.getAndroidAttrPX
 import com.song.example.study.extension.getStatusBarHeight
 import com.song.example.study.extension.setFullScreen
 import com.song.example.study.extension.setLayoutHeight
-import com.song.example.study.util.WanLog
 import org.kodein.di.generic.instance
 
 /**
@@ -83,7 +83,7 @@ class WebActivity : BaseActivity() {
         override fun onReceivedError(view: WebView?, errorCode: Int,
                                      description: String?, failingUrl: String?) {
             super.onReceivedError(view, errorCode, description, failingUrl)
-            WanLog.e(WebFragment.TAG, "onReceivedError $description")
+            Log.e(WebFragment.TAG, "onReceivedError $description")
             if (errorCode == -2) {
                 view?.run {
                     stopLoading()
@@ -98,7 +98,7 @@ class WebActivity : BaseActivity() {
         override fun onReceivedHttpError(view: WebView?,
                                          request: WebResourceRequest?,
                                          errorResponse: WebResourceResponse?) {
-            WanLog.e(TAG, "onReceivedHttpError $errorResponse")
+            Log.e(TAG, "onReceivedHttpError $errorResponse")
             super.onReceivedHttpError(view, request, errorResponse)
         }
 
@@ -112,7 +112,7 @@ class WebActivity : BaseActivity() {
 
         override fun shouldOverrideUrlLoading(view: WebView?,
                                               request: WebResourceRequest?): Boolean {
-            WanLog.e(TAG, "shouldOverrideUrlLoading $request")
+            Log.e(TAG, "shouldOverrideUrlLoading $request")
             if (request != null) {
                 view?.loadUrl(request.url.toString())
                 return true
@@ -121,7 +121,7 @@ class WebActivity : BaseActivity() {
         }
 
         override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
-            WanLog.e(TAG, "onReceivedSslError $error")
+            Log.e(TAG, "onReceivedSslError $error")
             super.onReceivedSslError(view, handler, error)
         }
     }
@@ -151,7 +151,7 @@ class WebActivity : BaseActivity() {
 
         override fun onCreateWindow(view: WebView?, isDialog: Boolean,
                                     isUserGesture: Boolean, resultMsg: Message?): Boolean {
-            WanLog.e(TAG, "onCreateWindow $resultMsg")
+            Log.e(TAG, "onCreateWindow $resultMsg")
             return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg)
         }
 

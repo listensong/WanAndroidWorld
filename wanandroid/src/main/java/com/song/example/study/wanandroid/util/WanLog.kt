@@ -1,11 +1,11 @@
-package com.song.example.study.util
+package com.song.example.study.wanandroid.util
 
 import android.util.Log
 import com.song.example.study.BuildConfig
 import java.lang.Exception
 
 /**
- * @package com.song.example.study.util
+ * @package com.song.example.study.wanandroid.util
  * @fileName WanLog
  * @date on 4/12/2020 5:55 PM
  * @author Listensong
@@ -18,12 +18,20 @@ object WanLog {
     private var lineNumber = 0
     private var debuggable = BuildConfig.DEBUG
 
+    const val LOG_SPLIT = "================"
+
     private fun generateLog(log: String): String {
         val buffer = StringBuffer()
-        buffer.append("================")
-        buffer.append(methodName)
-        buffer.append("(").append(className).append(":").append(lineNumber).append(")================:")
-        buffer.append(log)
+                .append(LOG_SPLIT)
+                .append(methodName)
+                .append("(")
+                .append(className)
+                .append(":")
+                .append(lineNumber)
+                .append(")")
+                .append(LOG_SPLIT)
+                .append(":")
+                .append(log)
         return buffer.toString()
     }
 

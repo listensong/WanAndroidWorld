@@ -3,14 +3,13 @@ package com.song.example.study.wanandroid.search.article
 import androidx.paging.PageKeyedDataSource
 import com.song.example.study.common.network.retrofit.*
 import com.song.example.study.extension.moshi
-import com.song.example.study.util.WanLog
+import com.song.example.study.wanandroid.util.WanLog
 import com.song.example.study.wanandroid.main.home.article.ArticleDataDTO
 import com.song.example.study.wanandroid.main.home.article.ArticleVO
 import com.song.example.study.wanandroid.main.home.article.toHighLightVOList
 import com.song.example.study.wanandroid.network.WanService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
 
 /**
  * @package com.song.example.study.wanandroid.search.article

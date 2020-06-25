@@ -8,7 +8,7 @@ import com.song.example.study.base.job.BaseRepository
 import com.song.example.study.common.network.RequestStatus
 import com.song.example.study.common.network.retrofit.*
 import com.song.example.study.extension.moshi
-import com.song.example.study.util.WanLog
+import com.song.example.study.wanandroid.util.WanLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

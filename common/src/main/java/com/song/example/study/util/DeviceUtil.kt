@@ -2,6 +2,7 @@ package com.song.example.study.util
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DimenRes
@@ -27,7 +28,7 @@ object DeviceUtil {
                 imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
         } catch (e: Exception) {
-            WanLog.e("DeviceUtil", "hideKeyboard $e")
+            Log.e("DeviceUtil", "hideKeyboard $e")
         }
     }
 

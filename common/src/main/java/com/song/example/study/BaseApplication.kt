@@ -5,12 +5,12 @@ import android.app.Application
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.song.example.study.base.ui.ApplicationLifecycleObserver
 import com.song.example.study.di.appWideModule
-import com.song.example.study.util.WanLog
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import kotlin.properties.Delegates
@@ -47,7 +47,7 @@ open class BaseApplication: Application(), KodeinAware {
     private val activityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
         override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
             if (activity != null) {
-                WanLog.d(TAG, activity.javaClass.simpleName + " onCreated")
+                Log.d(TAG, activity.javaClass.simpleName + " onCreated")
             }
         }
 
@@ -73,7 +73,7 @@ open class BaseApplication: Application(), KodeinAware {
 
         override fun onActivityDestroyed(activity: Activity?) {
             if (activity != null) {
-                WanLog.d(TAG, activity.javaClass.simpleName + " onDestroyed")
+                Log.d(TAG, activity.javaClass.simpleName + " onDestroyed")
             }
         }
     }
