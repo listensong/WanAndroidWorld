@@ -15,7 +15,7 @@ import org.kodein.di.Kodein
 class WanInitialize private constructor() : ModuleInitialize {
 
     private object Holder {
-         val INSTANCE: ModuleInitialize = WanInitialize()
+        val INSTANCE: ModuleInitialize = WanInitialize()
     }
 
     companion object {
