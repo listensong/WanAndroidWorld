@@ -2,11 +2,11 @@ package com.song.example.study.common.web
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import org.kodein.di.Kodein
+import org.kodein.di.DI
 import org.kodein.di.android.x.AndroidLifecycleScope
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.scoped
-import org.kodein.di.generic.singleton
+import org.kodein.di.bind
+import org.kodein.di.scoped
+import org.kodein.di.singleton
 
 /**
  * @package com.song.example.study.common.web
@@ -19,7 +19,7 @@ import org.kodein.di.generic.singleton
 @Suppress("ObjectPropertyName")
 const val _COMMON_WEB_VIEW_MODULE = "_COMMON_WEB_VIEW_MODULE"
 
-val commonWebViewModule = Kodein.Module(_COMMON_WEB_VIEW_MODULE) {
+val commonWebViewModule = DI.Module(_COMMON_WEB_VIEW_MODULE) {
 
     bind<CommWebView>() with scoped<Fragment>(AndroidLifecycleScope).singleton {
         CommWebView.instance(context.requireActivity())

@@ -1,7 +1,7 @@
 package com.song.example.study.init
 
 import android.app.Application
-import org.kodein.di.Kodein
+import org.kodein.di.DI
 
 /**
  * @package com.song.example.study.init
@@ -13,7 +13,7 @@ import org.kodein.di.Kodein
  */
 interface ModuleInitialize {
 
-    fun moduleDiConfig() = Kodein.Module("BaseModuleInitialize") {
+    fun moduleDiConfig() = DI.Module("BaseModuleInitialize") {
     }
 
     fun onCreate(application: Application)

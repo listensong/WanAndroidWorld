@@ -4,11 +4,7 @@ import com.song.example.study.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
-import org.kodein.di.generic.singleton
+import org.kodein.di.*
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -33,7 +29,7 @@ const val _HTTP_DEFAULT_HEADER_INTERCEPTOR = "_HTTP_DEFAULT_HEADER_INTERCEPTOR"
 const val _HTTP_LIFECYCLE_CALL_ADAPTER = "_HTTP_LIFECYCLE_CALL_ADAPTER"
 
 
-val commonNetworkModule = Kodein.Module(_COMMON_NETWORK_CLIENT_MODULE) {
+val commonNetworkModule = DI.Module(_COMMON_NETWORK_CLIENT_MODULE) {
 
     bind<Retrofit.Builder>() with provider { Retrofit.Builder() }
 

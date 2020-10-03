@@ -14,33 +14,28 @@ import com.song.example.study.base.job.CompositeJob
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Job
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.KodeinContext
-import org.kodein.di.android.closestKodein
-import org.kodein.di.generic.kcontext
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.x.closestDI
 
 /**
  * @author: Listensong
  * @time 19-10-21 下午8:20
  * @desc com.song.example.study.base.ui.BaseFragment
  */
-abstract class BaseFragment : Fragment(), KodeinAware {
+abstract class BaseFragment : Fragment(), DIAware {
 
     protected var TAG = "BaseFragment"
     protected val safeContext = BaseApplication.instance
 
-    private val _parentKodein by closestKodein(safeContext)
+    private val _parentDI by closestDI()
 
-    override val kodeinContext: KodeinContext<Fragment>
-        get() = kcontext(this)
-
-    override val kodein: Kodein = Kodein.lazy {
-        extend(_parentKodein)
+    override val di: DI = DI.lazy {
+        extend(_parentDI)
         import(fragmentCustomDiModule())
     }
 
-    protected open fun fragmentCustomDiModule() = Kodein.Module("fragmentModule") {
+    protected open fun fragmentCustomDiModule() = DI.Module("fragmentModule") {
     }
 
 
@@ -56,23 +51,23 @@ abstract class BaseFragment : Fragment(), KodeinAware {
     private val resumeKtDisposable = CompositeJob()
 
     protected val safeActivity: Activity?
-    get() {
-        val ret = activity
-        return if (ret != null && !ret.isFinishing && !ret.isDestroyed) {
-            ret
-        } else {
-            null
+        get() {
+            val ret = activity
+            return if (ret != null && !ret.isFinishing && !ret.isDestroyed) {
+                ret
+            } else {
+                null
+            }
         }
-    }
 
     val isActivityAvailable: Boolean
-    get() {
-        return !(
-                activity == null
-                        || requireActivity().isFinishing
-                        || requireActivity().isDestroyed
-                )
-    }
+        get() {
+            return !(
+                    activity == null
+                            || requireActivity().isFinishing
+                            || requireActivity().isDestroyed
+                    )
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

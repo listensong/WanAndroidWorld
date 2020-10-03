@@ -5,7 +5,7 @@ import com.song.example.study.BaseApplication
 import com.song.example.study.init.ModuleInitialize
 import com.song.example.study.wanandroid.data.wanAppDbModule
 import com.song.example.study.wanandroid.network.wanAppHttpClientModule
-import org.kodein.di.Kodein
+import org.kodein.di.DI
 
 /**
  * @author song
@@ -34,7 +34,7 @@ class WanInitialize private constructor() : ModuleInitialize {
     override fun onTerminate() {
     }
 
-    override fun moduleDiConfig() = Kodein.Module("WanInitialize") {
+    override fun moduleDiConfig() = DI.Module("WanInitialize") {
         import(wanAppHttpClientModule)
         import(wanAppDbModule)
     }

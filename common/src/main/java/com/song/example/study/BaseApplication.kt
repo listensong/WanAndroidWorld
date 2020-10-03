@@ -11,8 +11,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.song.example.study.base.ui.ApplicationLifecycleObserver
 import com.song.example.study.di.appWideModule
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 import kotlin.properties.Delegates
 
 /**
@@ -20,17 +20,17 @@ import kotlin.properties.Delegates
  * @time 19-8-22 上午10:27
  * @desc com.song.example.study.BaseApplication
  */
-open class BaseApplication: Application(), KodeinAware {
+open class BaseApplication: Application(), DIAware {
 
     @VisibleForTesting
-    var overrideBindings: Kodein.MainBuilder.() -> Unit = {}
+    var overrideBindings: DI.MainBuilder.() -> Unit = {}
 
-    override val kodein = Kodein.lazy {
+    override val di = DI.lazy {
         import(appWideModule(this@BaseApplication))
         import(moduleDiConfig())
     }
 
-    protected open fun moduleDiConfig() = Kodein.Module("baseApplicationModule") {
+    protected open fun moduleDiConfig() = DI.Module("baseApplicationModule") {
 
     }
 

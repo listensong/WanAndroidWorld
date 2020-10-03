@@ -3,7 +3,7 @@ package com.song.example.study.app
 import androidx.annotation.CallSuper
 import com.song.example.study.BaseApplication
 import com.song.example.study.wanandroid.WanInitialize
-import org.kodein.di.Kodein
+import org.kodein.di.DI
 
 /**
  * @author song
@@ -12,7 +12,7 @@ import org.kodein.di.Kodein
  */
 class StudyApplication : BaseApplication() {
 
-    override fun moduleDiConfig() = Kodein.Module("StudyApplication") {
+    override fun moduleDiConfig() = DI.Module("StudyApplication") {
         import(WanInitialize.getInstance().moduleDiConfig())
     }
 

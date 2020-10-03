@@ -12,13 +12,13 @@ import androidx.core.view.forEachIndexed
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.song.example.study.base.ui.BaseActivity
 import com.song.example.study.wanandroid.R
 import com.song.example.study.wanandroid.main.home.HomeFragment
 import com.song.example.study.wanandroid.main.home.wanHomeKodeinModule
-import com.song.example.study.base.ui.BaseActivity
 import com.song.example.study.wanandroid.search.SearchActivity
-import org.kodein.di.Kodein
-import org.kodein.di.generic.instance
+import org.kodein.di.DI
+import org.kodein.di.instance
 
 
 /**
@@ -30,7 +30,7 @@ class WelcomeActivity : BaseActivity() {
         const val TAG = "WelcomeActivity"
     }
 
-    override fun activityCustomDiModule() = Kodein.Module(TAG) {
+    override fun activityCustomDiModule() = DI.Module(TAG) {
         import(wanHomeKodeinModule)
         import(wanMainWelcomeKodeinModule)
     }

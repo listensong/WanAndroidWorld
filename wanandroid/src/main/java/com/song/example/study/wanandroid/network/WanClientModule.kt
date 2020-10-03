@@ -5,10 +5,10 @@ import com.song.example.study.common.network.retrofit._HTTP_DEFAULT_LOG_INTERCEP
 import com.song.example.study.common.network.retrofit._HTTP_LIFECYCLE_CALL_ADAPTER
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
+import org.kodein.di.singleton
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.net.Proxy
@@ -28,7 +28,7 @@ const val WAN_BASE_URL = "https://www.wanandroid.com/"
 const val WAN_CLIENT_WITH_DEFAULT_INTERCEPTOR = "_WAN_CLIENT_WITH_DEFAULT_INTERCEPTOR"
 const val WAN_RETROFIT = "_WAN_RETROFIT"
 
-val wanAppHttpClientModule = Kodein.Module(WAN_CLIENT_MODULE) {
+val wanAppHttpClientModule = DI.Module(WAN_CLIENT_MODULE) {
 
     bind<WanService>() with singleton {
         instance<Retrofit>(WAN_RETROFIT).create(WanService::class.java)

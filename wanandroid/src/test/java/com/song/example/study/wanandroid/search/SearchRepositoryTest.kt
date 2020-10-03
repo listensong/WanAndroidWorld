@@ -1,7 +1,6 @@
 package com.song.example.study.wanandroid.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
 import com.song.example.study.common.network.retrofit.CoroutineLifecycleCallExtensionKtPath
 import com.song.example.study.common.network.retrofit.HttpResult
 import com.song.example.study.common.network.retrofit.suspendAwaitTimeout
@@ -18,16 +17,13 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.*
+import org.junit.After
 import org.junit.Assert.assertEquals
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
-import kotlin.test.assertNotNull
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.kodein.di.*
 import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 /**
  * @author Listensong
@@ -37,7 +33,7 @@ import kotlin.test.assertTrue
  * @desc TODO
  * @email No
  */
-class SearchRepositoryTest: KodeinAware {
+class SearchRepositoryTest : DIAware {
 
     companion object {
         const val SEARCH_KEY_WORD = "HelloWorld"
@@ -54,7 +50,7 @@ class SearchRepositoryTest: KodeinAware {
     private val repository: SearchRepository by instance()
     private val articleDataSourceFactory: ArticleDataSourceFactory = mockk()
 
-    override val kodein = Kodein.lazy {
+    override val di = DI.lazy {
         import(wanAppDbModule)
         import(wanSearchKodeinModule)
         bind<WanService>() with singleton { apiService }
@@ -81,7 +77,7 @@ class SearchRepositoryTest: KodeinAware {
     fun getHotWord() {
         every { hotwordDAO.getHotWord() } returns mockk()
         repository.getHotWord()
-        verify(exactly = 1) { hotwordDAO.getHotWord()}
+        verify(exactly = 1) { hotwordDAO.getHotWord() }
     }
 
     @Test

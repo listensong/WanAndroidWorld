@@ -1,9 +1,8 @@
 package com.song.example.study.wanandroid.search
 
 import androidx.fragment.app.Fragment
-import org.kodein.di.Kodein
+import org.kodein.di.*
 import org.kodein.di.android.x.AndroidLifecycleScope
-import org.kodein.di.generic.*
 
 /**
  * @package com.song.example.study.wanandroid.search
@@ -15,7 +14,7 @@ import org.kodein.di.generic.*
  */
 const val WAN_SEARCH_MODULE_DI_TAG = "WAN_SEARCH_MODULE_DI_TAG"
 
-val wanSearchKodeinModule = Kodein.Module(WAN_SEARCH_MODULE_DI_TAG) {
+val wanSearchKodeinModule = DI.Module(WAN_SEARCH_MODULE_DI_TAG) {
 
     bind<SearchFragment>() with scoped(AndroidLifecycleScope).singleton {
         SearchFragment.newInstance()

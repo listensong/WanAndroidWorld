@@ -30,8 +30,8 @@ import com.song.example.study.wanandroid.main.home.banner.HomeBannerAdapter
 import com.song.example.study.wanandroid.main.wanMainWelcomeKodeinModule
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
-import org.kodein.di.Kodein
-import org.kodein.di.generic.instance
+import org.kodein.di.DI
+import org.kodein.di.*
 
 /**
  * @package com.song.example.study.wanandroid.main.home
@@ -43,7 +43,7 @@ import org.kodein.di.generic.instance
  */
 class HomeFragment : BaseFragment() {
 
-    override fun fragmentCustomDiModule() = Kodein.Module("HomeFragment") {
+    override fun fragmentCustomDiModule() = DI.Module("HomeFragment") {
         import(wanHomeKodeinModule)
         import(wanMainWelcomeKodeinModule)
     }

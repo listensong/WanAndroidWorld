@@ -11,7 +11,7 @@ import androidx.room.*
  * @desc TODO
  * @email No
  */
-const val WAN_HOT_WORD_TABLE_NAME = "WAN_HOT_WORD_TABLE_NAME"
+const val WAN_HOT_WORD_TABLE_NAME = "wan_search_hot_word"
 
 @Dao
 interface HotWordDAO {

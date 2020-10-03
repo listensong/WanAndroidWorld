@@ -28,11 +28,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
+import org.kodein.di.*
 import java.util.concurrent.TimeoutException
 import kotlin.test.assertNull
 
@@ -45,7 +41,7 @@ import kotlin.test.assertNull
  * @email No
  */
 @ExperimentalCoroutinesApi
-class HomeRepositoryTest: KodeinAware {
+class HomeRepositoryTest: DIAware {
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
@@ -58,7 +54,7 @@ class HomeRepositoryTest: KodeinAware {
     private val bannerDAO: BannerDAO = mockk()
     private val repository: HomeRepository by instance()
 
-    override val kodein = Kodein.lazy {
+    override val di = DI.lazy {
         import(wanAppDbModule)
         import(wanHomeKodeinModule)
         bind<WanService>() with singleton { apiService }

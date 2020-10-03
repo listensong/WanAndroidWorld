@@ -11,28 +11,27 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.song.example.study.R
 import org.kodein.di.Copy
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.closestKodein
-import org.kodein.di.android.retainedKodein
-import org.kodein.di.generic.kcontext
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.android.closestDI
+import org.kodein.di.android.retainedDI
 
 /**
  * @author song
  * @time 19-8-21 下午9:14
  * @desc
  */
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
+abstract class BaseActivity : AppCompatActivity(), DIAware {
     protected var toolbar: Toolbar? = null
     protected val handler = Handler(Looper.getMainLooper())
 
-    protected val parentKodein by closestKodein()
-    override val kodeinContext = kcontext<AppCompatActivity>(this)
-    override val kodein: Kodein by retainedKodein {
-        extend(parentKodein, copy = Copy.All)
+    protected val parentDI by closestDI()
+    // override val diContext = diContext<AppCompatActivity>("", this)
+    override val di: DI by retainedDI {
+        extend(parentDI, copy = Copy.All)
         import(activityCustomDiModule())
     }
-    protected open fun activityCustomDiModule() = Kodein.Module("activityModule") {
+    protected open fun activityCustomDiModule() = DI.Module("activityModule") {
     }
 
     @CallSuper

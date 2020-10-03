@@ -22,8 +22,8 @@ import com.song.example.study.wanandroid.databinding.WanFragmentSearchBinding
 import com.song.example.study.wanandroid.databinding.WanListitemCommonArticleBinding
 import com.song.example.study.wanandroid.main.home.article.ArticleVO
 import com.song.example.study.wanandroid.search.word.HotWordVO
-import org.kodein.di.Kodein
-import org.kodein.di.generic.instance
+import org.kodein.di.DI
+import org.kodein.di.instance
 
 /**
  * @package com.song.example.study.wanandroid.search
@@ -35,7 +35,7 @@ import org.kodein.di.generic.instance
  */
 class SearchFragment : BaseFragment() {
 
-    override fun fragmentCustomDiModule() = Kodein.Module(TAG) {
+    override fun fragmentCustomDiModule() = DI.Module(TAG) {
         import(wanSearchKodeinModule)
     }
 
@@ -163,7 +163,7 @@ class SearchFragment : BaseFragment() {
         )
     }
 
-    private class SearchArticleVoDiffCallback: DiffUtil.ItemCallback<ArticleVO>() {
+    private class SearchArticleVoDiffCallback : DiffUtil.ItemCallback<ArticleVO>() {
         override fun areItemsTheSame(oldItem: ArticleVO, newItem: ArticleVO): Boolean {
             return oldItem.link == newItem.link || oldItem.id == newItem.id
         }

@@ -2,9 +2,8 @@ package com.song.example.study.wanandroid.main.home
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import org.kodein.di.Kodein
+import org.kodein.di.*
 import org.kodein.di.android.x.AndroidLifecycleScope
-import org.kodein.di.generic.*
 
 /**
  * @package com.song.example.study.wanandroid.main.home
@@ -16,7 +15,7 @@ import org.kodein.di.generic.*
  */
 const val WAN_HOME_MODULE_DI_TAG = "WAN_HOME_MODULE_DI_TAG"
 
-val wanHomeKodeinModule = Kodein.Module(WAN_HOME_MODULE_DI_TAG) {
+val wanHomeKodeinModule = DI.Module(WAN_HOME_MODULE_DI_TAG) {
 
     bind<HomeFragment>() with scoped(AndroidLifecycleScope).singleton {
         HomeFragment.newInstance()

@@ -16,7 +16,7 @@ import com.song.example.study.extension.getAndroidAttrPX
 import com.song.example.study.extension.getStatusBarHeight
 import com.song.example.study.extension.setFullScreen
 import com.song.example.study.extension.setLayoutHeight
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 
 /**
  * @package com.song.example.study.common.web
