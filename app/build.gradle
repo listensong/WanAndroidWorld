@@ -6,6 +6,25 @@ apply plugin: "kotlin-kapt"
 
 apply plugin: "jacoco"
 
+def keystoreFilepath = ''
+def keystorePSW = ''
+def keystoreAlias = ''
+def keystoreAliasPSW = ''
+// default keystore file, PLZ config file path in local.properties
+def keyfile = file('s.keystore.temp')
+
+Properties properties = new Properties()
+// local.properties file in the root director
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+keystoreFilepath = properties.getProperty("keystore.path")
+
+if (keystoreFilepath) {
+    keystorePSW = properties.getProperty("keystore.password")
+    keystoreAlias = properties.getProperty("keystore.alias")
+    keystoreAliasPSW = properties.getProperty("keystore.alias_password")
+    keyfile = file(keystoreFilepath)
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -29,15 +48,38 @@ android {
         jvmTarget = "1.8"
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreAlias
+            keyPassword keystoreAliasPSW
+            storeFile keyfile
+            storePassword keystorePSW
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            if (keyfile.exists()) {
+                println("WITH -> buildTypes -> release: using jks key")
+                signingConfig signingConfigs.release
+            } else {
+                println("WITH -> buildTypes -> release: using default key")
+            }
         }
         debug {
             testCoverageEnabled true
             debuggable true
+            if (keyfile.exists()) {
+                println("WITH -> buildTypes -> debug: using jks key")
+                signingConfig signingConfigs.release
+            } else {
+                println("WITH -> buildTypes -> debug: using default key")
+            }
         }
     }
 
