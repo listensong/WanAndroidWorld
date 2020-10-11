@@ -1,5 +1,6 @@
 package com.song.example.study.wanandroid.main.home.banner
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,6 +12,7 @@ import androidx.room.PrimaryKey
  * @desc: TODO
  * @email No
  */
+@Keep
 @Entity(tableName = WAN_HOME_BANNER_TABLE_NAME)
 data class BannerPO(
         @PrimaryKey(autoGenerate = true)

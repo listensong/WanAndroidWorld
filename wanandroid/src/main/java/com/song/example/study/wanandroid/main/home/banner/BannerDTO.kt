@@ -1,5 +1,6 @@
 package com.song.example.study.wanandroid.main.home.banner
 
+import androidx.annotation.Keep
 import com.squareup.moshi.JsonClass
 
 /**
@@ -10,6 +11,7 @@ import com.squareup.moshi.JsonClass
  * @desc: TODO
  * @email No
  */
+@Keep
 @JsonClass(generateAdapter = true)
 class BannerDataDTO {
     var data: List<BannerDTO>? = null
@@ -17,6 +19,7 @@ class BannerDataDTO {
     var errorMsg: String = ""
 }
 
+@Keep
 class BannerDTO(
         var desc: String? = "",
         var id: Int = 0,
@@ -36,7 +39,7 @@ fun BannerDataDTO?.toVOList(): List<BannerVO> {
     } ?: emptyList()
 }
 
-fun BannerDTO.toVO() : BannerVO {
+fun BannerDTO.toVO(): BannerVO {
     return BannerVO(
             title = this.title ?: "",
             type = this.type ?: 0,
@@ -53,7 +56,7 @@ fun BannerDataDTO?.toPOList(): List<BannerPO> {
     } ?: emptyList()
 }
 
-fun BannerDTO.toPO() : BannerPO {
+fun BannerDTO.toPO(): BannerPO {
     return BannerPO(
             id = this.id,
             desc = this.desc ?: "",

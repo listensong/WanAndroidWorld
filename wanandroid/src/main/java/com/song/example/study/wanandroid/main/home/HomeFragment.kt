@@ -17,7 +17,6 @@ import com.song.example.study.common.router.LinkSwitch
 import com.song.example.study.common.widget.LoadMoreScrollListener
 import com.song.example.study.common.widget.MixedTypeAdapter
 import com.song.example.study.util.DeviceUtil
-import com.song.example.study.wanandroid.util.WanLog
 import com.song.example.study.wanandroid.BR
 import com.song.example.study.wanandroid.databinding.WanFragmentHomeBinding
 import com.song.example.study.wanandroid.databinding.WanListItemHomeArticleBinding
@@ -27,11 +26,11 @@ import com.song.example.study.wanandroid.main.WelcomeViewModel
 import com.song.example.study.wanandroid.main.home.article.ArticleVO
 import com.song.example.study.wanandroid.main.home.banner.BannerVO
 import com.song.example.study.wanandroid.main.home.banner.HomeBannerAdapter
-import com.song.example.study.wanandroid.main.wanMainWelcomeKodeinModule
+import com.song.example.study.wanandroid.util.WanLog
 import com.youth.banner.Banner
 import com.youth.banner.indicator.CircleIndicator
 import org.kodein.di.DI
-import org.kodein.di.*
+import org.kodein.di.instance
 
 /**
  * @package com.song.example.study.wanandroid.main.home
@@ -44,8 +43,8 @@ import org.kodein.di.*
 class HomeFragment : BaseFragment() {
 
     override fun fragmentCustomDiModule() = DI.Module("HomeFragment") {
-        import(wanHomeKodeinModule)
-        import(wanMainWelcomeKodeinModule)
+        // import(wanHomeKodeinModule)
+        // import(wanMainWelcomeKodeinModule)
     }
 
     private lateinit var binding: WanFragmentHomeBinding
@@ -128,9 +127,9 @@ class HomeFragment : BaseFragment() {
 
     private val loadMoreScrollListener: LoadMoreScrollListener =
             object : LoadMoreScrollListener(callback = { lastPos ->
-        viewModel.loadNextPage(viewModel.viewModelScope,
-                articleAdapter?.getItem(lastPos)?.curPage ?: -1)
-    }) {}
+                viewModel.loadNextPage(viewModel.viewModelScope,
+                        articleAdapter?.getItem(lastPos)?.curPage ?: -1)
+            }) {}
 
     private fun initBanner() {
         val list = listOf(

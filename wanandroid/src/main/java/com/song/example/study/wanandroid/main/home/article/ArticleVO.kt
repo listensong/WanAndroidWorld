@@ -1,5 +1,7 @@
 package com.song.example.study.wanandroid.main.home.article
 
+import androidx.annotation.Keep
+
 /**
  * @package com.song.example.study.wanandroid.main.home.article
  * @fileName ArticleVO
@@ -8,6 +10,7 @@ package com.song.example.study.wanandroid.main.home.article
  * @desc: TODO
  * @email No
  */
+@Keep
 data class ArticleVO(
         var id: Int,
         val curPage: Int,

@@ -1,7 +1,9 @@
 package com.song.example.study.wanandroid.search.word
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class HotWordDataDTO(
 
         @Json(name = "visible")

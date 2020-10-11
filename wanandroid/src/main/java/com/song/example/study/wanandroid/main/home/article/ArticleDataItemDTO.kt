@@ -1,27 +1,29 @@
 package com.song.example.study.wanandroid.main.home.article
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
-data class ArticleDataItemDTO (
+@Keep
+data class ArticleDataItemDTO(
 
-        @Json(name="over")
+        @Json(name = "over")
         val over: Boolean? = null,
 
-        @Json(name="pageCount")
+        @Json(name = "pageCount")
         val pageCount: Int? = null,
 
-        @Json(name="total")
+        @Json(name = "total")
         val total: Int? = null,
 
-        @Json(name="curPage")
+        @Json(name = "curPage")
         val curPage: Int? = null,
 
-        @Json(name="offset")
+        @Json(name = "offset")
         val offset: Int? = null,
 
-        @Json(name="size")
+        @Json(name = "size")
         val size: Int? = null,
 
-        @Json(name="datas")
+        @Json(name = "datas")
         val datas: List<ArticleItemDTO?>? = null
 )

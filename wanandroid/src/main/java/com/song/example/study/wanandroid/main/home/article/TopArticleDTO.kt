@@ -1,5 +1,6 @@
 package com.song.example.study.wanandroid.main.home.article
 
+import androidx.annotation.Keep
 import com.song.example.study.wanandroid.main.home.HomeConst
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -12,17 +13,17 @@ import com.squareup.moshi.JsonClass
  * @desc
  * @email No
  */
-
+@Keep
 @JsonClass(generateAdapter = true)
 data class TopArticleDTO(
 
-        @Json(name="data")
+        @Json(name = "data")
         val data: List<ArticleItemDTO?>? = null,
 
-        @Json(name="errorCode")
+        @Json(name = "errorCode")
         val errorCode: Int? = null,
 
-        @Json(name="errorMsg")
+        @Json(name = "errorMsg")
         val errorMsg: String? = null
 )
 
@@ -48,6 +49,6 @@ fun TopArticleDTO?.toPlaceTopPOList(
 
 fun ArticleItemDTO.toPlaceTopPO(index: Int,
                                 currentPage: Int,
-                                itemType: Int) : ArticlePO {
+                                itemType: Int): ArticlePO {
     return ArticlePO(index, itemType, currentPage, false, this)
 }

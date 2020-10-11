@@ -1,5 +1,6 @@
 package com.song.example.study.wanandroid.common
 
+import androidx.annotation.Keep
 import androidx.room.PrimaryKey
 import com.song.example.study.wanandroid.main.home.article.ArticleItemDTO
 import com.song.example.study.wanandroid.main.home.article.Tag
@@ -12,6 +13,7 @@ import com.song.example.study.wanandroid.main.home.article.Tag
  * @desc TODO
  * @email No
  */
+@Keep
 open class BaseArticlePO {
     @PrimaryKey
     var _index: Int = 0
@@ -53,18 +55,18 @@ open class BaseArticlePO {
 
     fun unpackDTO(dto: ArticleItemDTO, over: Boolean) {
         this.apkLink = dto.apkLink ?: ""
-        this.audit = dto.audit ?:  0
-        this.author = dto.author ?:  ""
-        this.canEdit = dto.canEdit ?:  false
-        this.chapterId =  dto.chapterId ?: 0
-        this.chapterName = dto.chapterName ?:  ""
-        this.collect = dto.collect ?:  false
-        this.courseId = dto.courseId ?:  0
+        this.audit = dto.audit ?: 0
+        this.author = dto.author ?: ""
+        this.canEdit = dto.canEdit ?: false
+        this.chapterId = dto.chapterId ?: 0
+        this.chapterName = dto.chapterName ?: ""
+        this.collect = dto.collect ?: false
+        this.courseId = dto.courseId ?: 0
         this.desc = dto.desc ?: ""
         this.descMd = dto.descMd ?: ""
-        this.envelopePic = dto.envelopePic ?:  ""
-        this.fresh = dto.fresh ?:  false
-        this.id = dto.id ?:  0
+        this.envelopePic = dto.envelopePic ?: ""
+        this.fresh = dto.fresh ?: false
+        this.id = dto.id ?: 0
         this.link = dto.link ?: ""
         this.niceDate = dto.niceDate ?: ""
         this.niceShareDate = dto.niceShareDate ?: ""
@@ -72,8 +74,8 @@ open class BaseArticlePO {
         this.prefix = dto.prefix ?: ""
         this.projectLink = dto.projectLink ?: ""
         this.publishTime = dto.publishTime ?: 0
-        this.selfVisible = dto.selfVisible ?:  0
-        this.shareDate = dto.shareDate ?:  0
+        this.selfVisible = dto.selfVisible ?: 0
+        this.shareDate = dto.shareDate ?: 0
         this.shareUser = dto.shareUser ?: ""
         this.superChapterId = dto.superChapterId ?: 0
         this.superChapterName = dto.superChapterName ?: ""
@@ -82,7 +84,7 @@ open class BaseArticlePO {
         this.type = dto.type ?: 0
         this.userId = dto.userId ?: 0
         this.visible = dto.visible ?: 0
-        this.zan = dto.zan ?:  0
+        this.zan = dto.zan ?: 0
         this.placeTop = false
         this.over = over
     }

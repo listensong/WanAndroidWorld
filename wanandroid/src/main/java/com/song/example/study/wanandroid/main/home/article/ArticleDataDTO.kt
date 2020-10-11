@@ -1,5 +1,6 @@
 package com.song.example.study.wanandroid.main.home.article
 
+import androidx.annotation.Keep
 import com.song.example.study.extension.new
 import com.song.example.study.wanandroid.common.BaseArticlePO
 import com.song.example.study.wanandroid.main.home.HomeConst
@@ -15,15 +16,16 @@ import com.squareup.moshi.JsonClass
  * @desc: TODO
  * @email No
  */
+@Keep
 @JsonClass(generateAdapter = true)
 data class ArticleDataDTO(
-        @Json(name="data")
+        @Json(name = "data")
         val data: ArticleDataItemDTO? = null,
 
-        @Json(name="errorCode")
+        @Json(name = "errorCode")
         val errorCode: Int? = null,
 
-        @Json(name="errorMsg")
+        @Json(name = "errorMsg")
         val errorMsg: String? = null
 )
 
@@ -55,62 +57,62 @@ fun ArticleDataDTO?.toHighLightVOList(): List<ArticleVO> {
     } ?: emptyList()
 }
 
-fun ArticleItemDTO.toVO(currentPage: Int, lastPage: Boolean) : ArticleVO {
+fun ArticleItemDTO.toVO(currentPage: Int, lastPage: Boolean): ArticleVO {
     return ArticleVO(
             curPage = currentPage,
             itemType = HomeConst.ITEM_TYPE_ARTICLE,
             apkLink = this.apkLink ?: "",
-            audit = this.audit ?:  0,
-            author = this.author ?:  "",
-            chapterName = this.chapterName ?:  "",
+            audit = this.audit ?: 0,
+            author = this.author ?: "",
+            chapterName = this.chapterName ?: "",
             desc = this.desc ?: "",
-            descMd =  this.descMd ?: "",
-            envelopePic = this.envelopePic ?:  "",
-            fresh = this.fresh ?:  false,
-            id = this.id ?:  0,
-            link =  this.link ?: "",
-            projectLink =  this.projectLink ?: "",
-            publishTime =  this.publishTime ?: 0,
-            shareDate = this.shareDate ?:  0,
-            shareUser =  this.shareUser ?: "",
-            superChapterId =  this.superChapterId ?: 0,
-            superChapterName =  this.superChapterName ?: "",
-            title =  this.title ?: "",
-            type =  this.type ?: 0,
+            descMd = this.descMd ?: "",
+            envelopePic = this.envelopePic ?: "",
+            fresh = this.fresh ?: false,
+            id = this.id ?: 0,
+            link = this.link ?: "",
+            projectLink = this.projectLink ?: "",
+            publishTime = this.publishTime ?: 0,
+            shareDate = this.shareDate ?: 0,
+            shareUser = this.shareUser ?: "",
+            superChapterId = this.superChapterId ?: 0,
+            superChapterName = this.superChapterName ?: "",
+            title = this.title ?: "",
+            type = this.type ?: 0,
             placeTop = false,
             over = lastPage
     )
 }
 
 
-fun ArticleItemDTO.toHighLightVO(currentPage: Int, lastPage: Boolean) : ArticleVO {
+fun ArticleItemDTO.toHighLightVO(currentPage: Int, lastPage: Boolean): ArticleVO {
     return ArticleVO(
             curPage = currentPage,
             itemType = HomeConst.ITEM_TYPE_ARTICLE,
             apkLink = this.apkLink ?: "",
-            audit = this.audit ?:  0,
-            author = this.author ?:  "",
-            chapterName = this.chapterName ?:  "",
+            audit = this.audit ?: 0,
+            author = this.author ?: "",
+            chapterName = this.chapterName ?: "",
             desc = this.desc ?: "",
-            descMd =  this.descMd ?: "",
-            envelopePic = this.envelopePic ?:  "",
-            fresh = this.fresh ?:  false,
-            id = this.id ?:  0,
-            link =  this.link ?: "",
-            projectLink =  this.projectLink ?: "",
-            publishTime =  this.publishTime ?: 0,
-            shareDate = this.shareDate ?:  0,
-            shareUser =  this.shareUser ?: "",
-            superChapterId =  this.superChapterId ?: 0,
-            superChapterName =  this.superChapterName ?: "",
-            title =  HighLightUtils.replaceHighLight(this.title),
-            type =  this.type ?: 0,
+            descMd = this.descMd ?: "",
+            envelopePic = this.envelopePic ?: "",
+            fresh = this.fresh ?: false,
+            id = this.id ?: 0,
+            link = this.link ?: "",
+            projectLink = this.projectLink ?: "",
+            publishTime = this.publishTime ?: 0,
+            shareDate = this.shareDate ?: 0,
+            shareUser = this.shareUser ?: "",
+            superChapterId = this.superChapterId ?: 0,
+            superChapterName = this.superChapterName ?: "",
+            title = HighLightUtils.replaceHighLight(this.title),
+            type = this.type ?: 0,
             placeTop = false,
             over = lastPage
     )
 }
 
-inline fun <reified PO: BaseArticlePO> ArticleDataDTO?.toPOList(
+inline fun <reified PO : BaseArticlePO> ArticleDataDTO?.toPOList(
         baseIndex: Int,
         pageNum: Int
 ): List<PO> {
@@ -130,11 +132,11 @@ inline fun <reified PO: BaseArticlePO> ArticleDataDTO?.toPOList(
     } ?: emptyList()
 }
 
-inline fun <reified PO: BaseArticlePO> ArticleItemDTO.toPO(
+inline fun <reified PO : BaseArticlePO> ArticleItemDTO.toPO(
         index: Int,
         currentPage: Int,
         over: Boolean
-) : PO {
+): PO {
     //return ArticlePO(index, HomeConst.ITEM_TYPE_ARTICLE, currentPage, this)
     return new<PO>().apply {
         unpackDTO(this@toPO, over)

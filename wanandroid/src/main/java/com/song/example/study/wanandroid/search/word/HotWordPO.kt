@@ -1,8 +1,10 @@
 package com.song.example.study.wanandroid.search.word
 
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Keep
 @Entity(tableName = WAN_HOT_WORD_TABLE_NAME)
 data class HotWordPO(
         @PrimaryKey

@@ -1,5 +1,7 @@
 package com.song.example.study.wanandroid.main.home.banner
 
+import androidx.annotation.Keep
+
 /**
  * @package com.song.example.study.wanandroid.main.home
  * @fileName BannerVO
@@ -8,6 +10,7 @@ package com.song.example.study.wanandroid.main.home.banner
  * @desc: TODO
  * @email No
  */
+@Keep
 data class BannerVO(
         val title: String,
         val type: Int,

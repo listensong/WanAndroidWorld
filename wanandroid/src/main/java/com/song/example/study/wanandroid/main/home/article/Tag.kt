@@ -1,5 +1,6 @@
 package com.song.example.study.wanandroid.main.home.article
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
 /**
@@ -10,11 +11,11 @@ import com.squareup.moshi.Json
  * @desc TODO
  * @email No
  */
-
+@Keep
 data class Tag(
-        @Json(name="name")
+        @Json(name = "name")
         val name: String? = null,
 
-        @Json(name="url")
+        @Json(name = "url")
         val url: String? = null
 )
