@@ -188,6 +188,8 @@ dependencies {
     api "org.kodein.di:kodein-di-framework-android-core:$kodeinVersion"
     api "org.kodein.di:kodein-di-framework-android-x:$kodeinVersion"
 
+    api "com.tencent:mmkv-static:1.2.2"
+
     //api "com.github.pqpo:Log4a:1.5.0"
 
     testImplementation project(path: ":basetest")

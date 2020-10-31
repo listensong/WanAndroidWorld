@@ -10,6 +10,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.song.example.study.base.ui.ApplicationLifecycleObserver
+import com.song.example.study.data.kv.ValueHelper
 import com.song.example.study.di.appWideModule
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -20,7 +21,7 @@ import kotlin.properties.Delegates
  * @time 19-8-22 上午10:27
  * @desc com.song.example.study.BaseApplication
  */
-open class BaseApplication: Application(), DIAware {
+open class BaseApplication : Application(), DIAware {
 
     @VisibleForTesting
     var overrideBindings: DI.MainBuilder.() -> Unit = {}
@@ -52,23 +53,18 @@ open class BaseApplication: Application(), DIAware {
         }
 
         override fun onActivityStarted(activity: Activity) {
-
         }
 
         override fun onActivityResumed(activity: Activity) {
-
         }
 
         override fun onActivityPaused(activity: Activity) {
-
         }
 
         override fun onActivityStopped(activity: Activity) {
-
         }
 
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-
         }
 
         override fun onActivityDestroyed(activity: Activity?) {
@@ -82,6 +78,7 @@ open class BaseApplication: Application(), DIAware {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        ValueHelper.init(this)
         registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
         ProcessLifecycleOwner.get().lifecycle.addObserver(applicationLifecycleObserver)
     }
