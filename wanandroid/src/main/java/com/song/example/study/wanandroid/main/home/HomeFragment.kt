@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.song.example.study.base.ui.BaseFragment
 import com.song.example.study.common.network.RequestStatus
 import com.song.example.study.common.router.LinkSwitch
+import com.song.example.study.common.widget.LinearItemSpaceDecoration
 import com.song.example.study.common.widget.LoadMoreScrollListener
 import com.song.example.study.common.widget.MixedTypeAdapter
 import com.song.example.study.util.DeviceUtil
 import com.song.example.study.wanandroid.BR
+import com.song.example.study.wanandroid.R
 import com.song.example.study.wanandroid.databinding.WanFragmentHomeBinding
 import com.song.example.study.wanandroid.databinding.WanListItemHomeArticleBinding
 import com.song.example.study.wanandroid.databinding.WanListItemHomeBannerBinding
@@ -92,6 +94,9 @@ class HomeFragment : BaseFragment() {
         ).also { mixedAdapter ->
             recyclerView?.apply {
                 hasFixedSize()
+                addItemDecoration(
+                        LinearItemSpaceDecoration(DeviceUtil.dimensionPixelSizeInt(safeContext, R.dimen.wan_item_space_decoration))
+                )
                 //addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
                 layoutManager = GridLayoutManager(context, 2).apply {
                     spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
