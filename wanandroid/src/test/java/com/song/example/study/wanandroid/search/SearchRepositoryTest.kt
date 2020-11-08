@@ -82,35 +82,40 @@ class SearchRepositoryTest : DIAware {
 
     @Test
     fun requestHotWord() = runBlocking {
+        val slotPOList = prepareHotWordMockData()
+
+        repository.requestHotWord()
+        assertEquals(9, slotPOList.captured.size)
+    }
+
+    private fun prepareHotWordMockData(): CapturingSlot<List<HotWordPO>> {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(SearchTestConst.WAN_HOT_WORD_FILE)
         coEvery {
             apiService.getSearchHotKey().suspendAwaitTimeout(10000)
         } returns HttpResult.Okay(mockResponseBody, mockk())
 
         val slotPOList = slot<List<HotWordPO>>()
-        every { hotwordDAO.clearAndInsert(capture(slotPOList)) } just Runs
-
-        repository.requestHotWord()
-        assertEquals(9, slotPOList.captured.size)
+        justRun { hotwordDAO.clearAndInsert(capture(slotPOList)) }
+        return slotPOList
     }
 
     @Test
     fun refreshDataSourceAndUpdateKeyword() {
-        every { articleDataSourceFactory.updateDataSourceKeyword(SEARCH_KEY_WORD_EMPTY) } just Runs
+        justRun { articleDataSourceFactory.updateDataSourceKeyword(SEARCH_KEY_WORD_EMPTY) }
         repository.refreshDataSourceAndUpdateKeyword(SEARCH_KEY_WORD_EMPTY)
         verify(exactly = 0) { articleDataSourceFactory.updateDataSourceKeyword(SEARCH_KEY_WORD_EMPTY) }
     }
 
     @Test
     fun refreshDataSource() {
-        every { articleDataSourceFactory.invalidate() } just Runs
+        justRun { articleDataSourceFactory.invalidate() }
         repository.refreshDataSource()
         verify(exactly = 1) { articleDataSourceFactory.invalidate() }
     }
 
     @Test
     fun searchResultPagedList() {
-        every { articleDataSourceFactory.updateDataSourceKeyword(SEARCH_KEY_WORD) } just Runs
+        justRun { articleDataSourceFactory.updateDataSourceKeyword(SEARCH_KEY_WORD) }
         repository.searchResultPagedList(SEARCH_KEY_WORD)
         verify { articleDataSourceFactory.updateDataSourceKeyword(SEARCH_KEY_WORD) }
     }

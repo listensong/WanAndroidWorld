@@ -23,6 +23,11 @@ import org.junit.Rule
  */
 class ArticleDataSourceFactoryTest {
 
+    companion object {
+        private const val EMPTY_KEY_WORD = ""
+        private const val TEST_KEY_WORD = "HelloWorld"
+    }
+
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
     private val testScope = TestCoroutineScope()
@@ -44,14 +49,14 @@ class ArticleDataSourceFactoryTest {
     @Test
     fun invalidateThenDataSourceInvalidateCalled() {
         prepareArticlePageKeyedDataSource()
+
         articleDataSourceFactory.invalidate()
+
         verify(exactly = 1) { pageKeyedDataSource.invalidate() }
     }
 
     private fun prepareArticlePageKeyedDataSource() {
-        every {
-            articleDataSourceFactory["getSourceDataSourceValue"]()
-        } returns pageKeyedDataSource
+        every { articleDataSourceFactory["getSourceDataSourceValue"]() } returns pageKeyedDataSource
         justRun { pageKeyedDataSource.invalidate() }
         justRun { pageKeyedDataSource.setKeyword(any()) }
     }
@@ -59,7 +64,9 @@ class ArticleDataSourceFactoryTest {
     @Test
     fun updateDataSourceKeywordThenDataSourceNotCalled() {
         prepareArticlePageKeyedDataSource()
-        articleDataSourceFactory.updateDataSourceKeyword("")
+
+        articleDataSourceFactory.updateDataSourceKeyword(EMPTY_KEY_WORD)
+
         assertThatPageKeyedDataSourceShouldBeNotCalled()
     }
 
@@ -71,13 +78,15 @@ class ArticleDataSourceFactoryTest {
     @Test
     fun updateDataSourceKeywordThenDataSourceShouldCalled() {
         prepareArticlePageKeyedDataSource()
-        articleDataSourceFactory.updateDataSourceKeyword("HelloWorld")
+
+        articleDataSourceFactory.updateDataSourceKeyword(TEST_KEY_WORD)
+
         assertThatPageKeyedDataSourceShouldBeCalledWithKeyword()
     }
 
     private fun assertThatPageKeyedDataSourceShouldBeCalledWithKeyword() {
         verify(exactly = 1) { pageKeyedDataSource.invalidate() }
-        verify(exactly = 1) { pageKeyedDataSource.setKeyword("HelloWorld") }
+        verify(exactly = 1) { pageKeyedDataSource.setKeyword(TEST_KEY_WORD) }
     }
 
     @Test

@@ -41,7 +41,7 @@ import kotlin.test.assertNull
  * @email No
  */
 @ExperimentalCoroutinesApi
-class HomeRepositoryTest: DIAware {
+class HomeRepositoryTest : DIAware {
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
@@ -79,13 +79,11 @@ class HomeRepositoryTest: DIAware {
 
     @Test
     fun getBanner_whenRepositoryGetBannerThenBannerDaoGetBannerCalled() {
-        every {
-            bannerDAO.getBanners()
-        } returns mockk()
+        every { bannerDAO.getBanners() } returns mockk()
+
         repository.getBanners()
-        verify(exactly = 1) {
-            bannerDAO.getBanners()
-        }
+
+        verify(exactly = 1) { bannerDAO.getBanners() }
     }
 
     @Test
@@ -93,9 +91,12 @@ class HomeRepositoryTest: DIAware {
         val slotPOList = givenNormalBannerResponseAndCapturingSlot()
 
         repository.requestBanners()
-        verify(exactly = 1) {
-            bannerDAO.clearAndInsert(any())
-        }
+
+        assertFunctionCalledAndRequestStatusValue(slotPOList)
+    }
+
+    private fun assertFunctionCalledAndRequestStatusValue(slotPOList: CapturingSlot<List<BannerPO>>) {
+        verify(exactly = 1) { bannerDAO.clearAndInsert(any()) }
         assertEquals(4, slotPOList.captured.size)
 
         val requestStatusValue = repository.requestStatus.value
@@ -110,9 +111,7 @@ class HomeRepositoryTest: DIAware {
         } returns HttpResult.Okay(mockResponseBody, mockk())
 
         val slotPOList = slot<List<BannerPO>>()
-        every {
-            bannerDAO.clearAndInsert(capture(slotPOList))
-        } just Runs
+        justRun { bannerDAO.clearAndInsert(capture(slotPOList)) }
         return slotPOList
     }
 
@@ -121,6 +120,11 @@ class HomeRepositoryTest: DIAware {
         val timeoutMillis = givenGetBannerListWithTimeoutMillis()
 
         repository.requestBanners()
+
+        assertRequestStatus(timeoutMillis)
+    }
+
+    private fun assertRequestStatus(timeoutMillis: Long) {
         val requestStatusValue = repository.requestStatus.value
         assertTrue(requestStatusValue is RequestStatus.Complete)
         assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
@@ -143,13 +147,11 @@ class HomeRepositoryTest: DIAware {
 
     @Test
     fun getArticles_whenRepositoryGetArticleThenArticleDaoGetArticlesCalled() {
-        every {
-            articleDAO.getArticles()
-        } returns mockk()
+        every { articleDAO.getArticles() } returns mockk()
+
         repository.getArticles()
-        verify(exactly = 1) {
-            articleDAO.getArticles()
-        }
+
+        verify(exactly = 1) { articleDAO.getArticles() }
     }
 
     @Test
@@ -157,14 +159,20 @@ class HomeRepositoryTest: DIAware {
         val (slotPOList, slotStartIndex, slotEndIndex) = givenHomeTopArticlesData()
 
         repository.requestTopArticles()
-        verify(exactly = 1) {
-            articleDAO.clearRangeAndInsert(any(), any(), any())
-        }
+
+        assertTopArticleFuncCalledAndPoData(slotPOList, slotStartIndex, slotEndIndex)
+    }
+
+    private fun assertTopArticleFuncCalledAndPoData(
+            slotPOList: CapturingSlot<List<ArticlePO>>,
+            slotStartIndex: CapturingSlot<Int>,
+            slotEndIndex: CapturingSlot<Int>
+    ) {
+        verify(exactly = 1) { articleDAO.clearRangeAndInsert(any(), any(), any()) }
         // 5 top article + 1 banner
         assertEquals(6, slotPOList.captured.size)
         assertEquals(HomeConst.BASE_INDEX_TOP_ARTICLE, slotStartIndex.captured)
         assertEquals(HomeConst.BASE_INDEX_ARTICLE - 1, slotEndIndex.captured)
-
     }
 
     private fun givenHomeTopArticlesData():
@@ -172,20 +180,14 @@ class HomeRepositoryTest: DIAware {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_TOP_ARTICLE_FILE)
         coEvery {
             apiService.getTopArticles().suspendAwaitTimeout(10000)
-        } returns HttpResult.Okay(
-                mockResponseBody,
-                mockk()
-        )
+        } returns HttpResult.Okay(mockResponseBody, mockk())
 
         val slotPOList = slot<List<ArticlePO>>()
         val slotStartIndex = slot<Int>()
         val slotEndIndex = slot<Int>()
-        every {
-            articleDAO.clearRangeAndInsert(
-                    capture(slotStartIndex),
-                    capture(slotEndIndex),
-                    capture(slotPOList))
-        } just Runs
+        justRun {
+            articleDAO.clearRangeAndInsert(capture(slotStartIndex), capture(slotEndIndex), capture(slotPOList))
+        }
         return Triple(slotPOList, slotStartIndex, slotEndIndex)
     }
 
@@ -194,9 +196,15 @@ class HomeRepositoryTest: DIAware {
         val (slotPOList, slotAboveIndexList) = givenHomeArticleDataWithPageNum0()
 
         repository.requestArticles(0)
-        verify(exactly = 1) {
-            articleDAO.clearAboveAndInsert(any(), any())
-        }
+
+        assertArticleFuncCallAndPoData(slotAboveIndexList, slotPOList)
+    }
+
+    private fun assertArticleFuncCallAndPoData(
+            slotAboveIndexList: CapturingSlot<Int>,
+            slotPOList: CapturingSlot<List<ArticlePO>>
+    ) {
+        verify(exactly = 1) { articleDAO.clearAboveAndInsert(any(), any()) }
         assertEquals(HomeConst.BASE_INDEX_ARTICLE, slotAboveIndexList.captured)
         assertEquals(21, slotPOList.captured.size)
         assertEquals(HomeConst.BASE_INDEX_BANNER, slotPOList.captured[0]._index)
@@ -207,19 +215,13 @@ class HomeRepositoryTest: DIAware {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         coEvery {
             apiService.getArticleList(0).suspendAwaitTimeout(10000)
-        } returns HttpResult.Okay(
-                mockResponseBody,
-                mockk()
-        )
+        } returns HttpResult.Okay(mockResponseBody, mockk())
 
         val slotPOList = slot<List<ArticlePO>>()
         val slotAboveIndexList = slot<Int>()
-        every {
-            articleDAO.clearAboveAndInsert(
-                    capture(slotAboveIndexList),
-                    capture(slotPOList)
-            )
-        } just Runs
+        justRun {
+            articleDAO.clearAboveAndInsert(capture(slotAboveIndexList), capture(slotPOList))
+        }
         return Pair(slotPOList, slotAboveIndexList)
     }
 
@@ -228,43 +230,44 @@ class HomeRepositoryTest: DIAware {
         givenHomeArticleDataWithPageNum1()
 
         repository.requestArticles(1)
-        verify(exactly = 1) {
-            articleDAO.insert(any())
-        }
+
+        verify(exactly = 1) { articleDAO.insert(any()) }
     }
 
     private fun givenHomeArticleDataWithPageNum1() {
         val mockResponseBody = WanAppTestUtils.generateMockResponseBody(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         coEvery {
             apiService.getArticleList(1).suspendAwaitTimeout(10000)
-        } returns HttpResult.Okay(
-                mockResponseBody,
-                mockk()
-        )
+        } returns HttpResult.Okay(mockResponseBody, mockk())
 
-        every {
-            articleDAO.insert(any())
-        } just Runs
+        justRun { articleDAO.insert(any()) }
     }
 
     @Test
     fun requestArticles_whenTimeoutThenReturnEmptyList() = runBlockingTest {
-        coEvery {
-            apiService.getArticleList().suspendAwaitTimeout(10000)
-        } returns  HttpResult.Error(
-                NetworkError(
-                        0, "Timeout: no response within 10000",
-                        TimeoutException("Timeout: no response within 10000")
-                )
-        )
+        prepareTimeoutMock()
 
         repository.requestArticles(0)
+
+        assertArticlesTimeoutStatus()
+    }
+
+    private fun assertArticlesTimeoutStatus() {
         val requestStatusValue = repository.requestStatus.value
         assertTrue(requestStatusValue is RequestStatus.Complete)
         assertTrue((requestStatusValue as RequestStatus.Complete).err is NetworkError)
     }
 
-
+    private fun prepareTimeoutMock() {
+        coEvery {
+            apiService.getArticleList().suspendAwaitTimeout(10000)
+        } returns HttpResult.Error(
+                NetworkError(
+                        0, "Timeout: no response within 10000",
+                        TimeoutException("Timeout: no response within 10000")
+                )
+        )
+    }
 
 
 }

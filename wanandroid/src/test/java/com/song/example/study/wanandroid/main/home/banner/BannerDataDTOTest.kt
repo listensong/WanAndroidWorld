@@ -58,25 +58,26 @@ class BannerDataDTOTest {
 
     @Test
     fun testToVOList_whenDTOListIsNotEmptyThenReturnVOList() {
-        val dto = getTestBannerDataDTO(false)
-        val bannerVOList = dto.toVOList()
-        assertEquals(dto.data?.size, bannerVOList.size)
+        val originalDto = getTestBannerDataDTO(false)
+        val bannerVOList = originalDto.toVOList()
+        assertEquals(originalDto.data?.size, bannerVOList.size)
         bannerVOList.forEachIndexed { index, bannerVO ->
-            assertEquals(dto.data?.get(index)?.title, bannerVO.title)
-            assertEquals(dto.data?.get(index)?.type, bannerVO.type)
-            assertEquals(dto.data?.get(index)?.imagePath, bannerVO.imagePath)
-            assertEquals(dto.data?.get(index)?.url, bannerVO.url)
+            val expectedDto = originalDto.data?.get(index)
+            assertEquals(expectedDto?.title, bannerVO.title)
+            assertEquals(expectedDto?.type, bannerVO.type)
+            assertEquals(expectedDto?.imagePath, bannerVO.imagePath)
+            assertEquals(expectedDto?.url, bannerVO.url)
         }
     }
 
     @Test
     fun testToVO() {
-        val dto = getTestBannerDTO()
-        val vo = dto.toVO()
-        assertEquals(dto.title, vo.title)
-        assertEquals(dto.type, vo.type)
-        assertEquals(dto.imagePath, vo.imagePath)
-        assertEquals(dto.url, vo.url)
+        val originalDto = getTestBannerDTO()
+        val vo = originalDto.toVO()
+        assertEquals(originalDto.title, vo.title)
+        assertEquals(originalDto.type, vo.type)
+        assertEquals(originalDto.imagePath, vo.imagePath)
+        assertEquals(originalDto.url, vo.url)
     }
 
     @Test
@@ -88,32 +89,33 @@ class BannerDataDTOTest {
 
     @Test
     fun testToPOList_whenDTOListIsNotEmptyThenReturnVOList() {
-        val dto = getTestBannerDataDTO(false)
-        val bannerPOList = dto.toPOList()
-        assertEquals(dto.data?.size,bannerPOList.size)
+        val originalDto = getTestBannerDataDTO(false)
+        val bannerPOList = originalDto.toPOList()
+        assertEquals(originalDto.data?.size,bannerPOList.size)
         bannerPOList.forEachIndexed { index, bannerPO ->
-            assertEquals(dto.data?.get(index)?.id, bannerPO.id)
-            assertEquals(dto.data?.get(index)?.desc, bannerPO.desc)
-            assertEquals(dto.data?.get(index)?.imagePath, bannerPO.imagePath)
-            assertEquals(dto.data?.get(index)?.isVisible, bannerPO.isVisible)
-            assertEquals(dto.data?.get(index)?.order, bannerPO.order)
-            assertEquals(dto.data?.get(index)?.title, bannerPO.title)
-            assertEquals(dto.data?.get(index)?.type, bannerPO.type)
-            assertEquals(dto.data?.get(index)?.url, bannerPO.url)
+            val expectedDto = originalDto.data?.get(index)
+            assertEquals(expectedDto?.id, bannerPO.id)
+            assertEquals(expectedDto?.desc, bannerPO.desc)
+            assertEquals(expectedDto?.imagePath, bannerPO.imagePath)
+            assertEquals(expectedDto?.isVisible, bannerPO.isVisible)
+            assertEquals(expectedDto?.order, bannerPO.order)
+            assertEquals(expectedDto?.title, bannerPO.title)
+            assertEquals(expectedDto?.type, bannerPO.type)
+            assertEquals(expectedDto?.url, bannerPO.url)
         }
     }
 
     @Test
     fun testToPO() {
-        val dto = getTestBannerDTO()
-        val po = dto.toPO()
-        assertEquals(dto.id, po.id)
-        assertEquals(dto.desc, po.desc)
-        assertEquals(dto.imagePath, po.imagePath)
-        assertEquals(dto.isVisible, po.isVisible)
-        assertEquals(dto.order, po.order)
-        assertEquals(dto.title, po.title)
-        assertEquals(dto.type, po.type)
-        assertEquals(dto.url, po.url)
+        val originalDto = getTestBannerDTO()
+        val po = originalDto.toPO()
+        assertEquals(originalDto.id, po.id)
+        assertEquals(originalDto.desc, po.desc)
+        assertEquals(originalDto.imagePath, po.imagePath)
+        assertEquals(originalDto.isVisible, po.isVisible)
+        assertEquals(originalDto.order, po.order)
+        assertEquals(originalDto.title, po.title)
+        assertEquals(originalDto.type, po.type)
+        assertEquals(originalDto.url, po.url)
     }
 }

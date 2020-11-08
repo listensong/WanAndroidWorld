@@ -45,10 +45,10 @@ class HomeViewModelTest {
             mockRepository.getArticles()
             mockRepository.requestStatus
         } returns mockk()
+
         HomeViewModel(mockRepository).banners
-        verify {
-            mockRepository.getBanners()
-        }
+
+        verify { mockRepository.getBanners() }
     }
 
     @Test
@@ -60,9 +60,7 @@ class HomeViewModelTest {
             mockRepository.requestStatus
         } returns mockk()
         HomeViewModel(mockRepository).requestState
-        verify {
-            mockRepository.requestStatus
-        }
+        verify { mockRepository.requestStatus }
     }
 
     @Test
@@ -73,16 +71,12 @@ class HomeViewModelTest {
             mockRepository.getArticles()
             mockRepository.requestStatus
         } returns mockk()
+        coJustRun { mockRepository.requestBanners() }
         val homeViewModel = HomeViewModel(mockRepository)
 
-        coEvery {
-            mockRepository.requestBanners()
-        } just Runs
-
         homeViewModel.loadBanner(testScope)
-        coVerify(exactly = 1) {
-            mockRepository.requestBanners()
-        }
+
+        coVerify(exactly = 1) { mockRepository.requestBanners() }
     }
 
     @Test
@@ -95,12 +89,8 @@ class HomeViewModelTest {
         } returns mockk()
         val homeViewModel = HomeViewModel(mockRepository)
 
-        coEvery {
-            mockRepository.requestTopArticles()
-        } just Runs
-        coEvery {
-            mockRepository.requestArticles(any())
-        } just Runs
+        coJustRun { mockRepository.requestTopArticles() }
+        coJustRun { mockRepository.requestArticles(any()) }
 
         homeViewModel.loadArticle(testScope)
         coVerify(exactly = 1) {

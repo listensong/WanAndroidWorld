@@ -41,6 +41,7 @@ class HomePagerAdapterTest {
         assertEquals(0, adapter.count)
 
         adapter.addFragment(mock(), "title")
+
         assertEquals(1, adapter.count)
     }
 
@@ -52,6 +53,7 @@ class HomePagerAdapterTest {
         assertEquals(3, adapter.count)
 
         adapter.release()
+
         assertEquals(0, adapter.count)
     }
 
@@ -60,6 +62,7 @@ class HomePagerAdapterTest {
         assertEquals(0, adapter.count)
 
         adapter.addFragment(mock(), "title")
+
         assertEquals(1, adapter.count)
     }
 

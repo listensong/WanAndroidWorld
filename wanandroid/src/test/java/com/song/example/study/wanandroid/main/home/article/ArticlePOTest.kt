@@ -17,6 +17,14 @@ import org.junit.Test
  */
 class ArticlePOTest {
 
+    companion object {
+        private const val EXPECTED_ID =  -(HomeConst.ITEM_TYPE_BANNER * 10 + 0) + HomeConst.BASE_INDEX_BANNER
+        private const val EXPECTED_CURRENT_PAGE =  0
+        private const val EXPECTED_ITEM_TYPE = HomeConst.ITEM_TYPE_BANNER
+        private const val EXPECTED_TITLE = "MASK_TITLE_BANNER_TITLE_BANNER_LINK_${HomeConst.ITEM_TYPE_BANNER}"
+        private const val EXPECTED_LINK = "MASK_LINK_BANNER_TITLE_BANNER_LINK_${HomeConst.ITEM_TYPE_BANNER}"
+    }
+
     @Before
     fun setUp() {
     }
@@ -27,15 +35,15 @@ class ArticlePOTest {
 
     @Test
     fun testCreateMaskArticlePO() {
-        val maskId = -(HomeConst.ITEM_TYPE_BANNER * 10 + 0) + HomeConst.BASE_INDEX_BANNER
         val po = createMaskArticlePO(
                 HomeConst.BASE_INDEX_BANNER, 0,
-                HomeConst.ITEM_TYPE_BANNER, "BANNER_TITLE", "BANNER_LINK")
+                HomeConst.ITEM_TYPE_BANNER, "BANNER_TITLE", "BANNER_LINK"
+        )
 
-        assertEquals(maskId, po.id)
-        assertEquals(0, po.curPage)
-        assertEquals(HomeConst.ITEM_TYPE_BANNER, po.itemType)
-        assertEquals("MASK_TITLE_BANNER_TITLE_BANNER_LINK_${HomeConst.ITEM_TYPE_BANNER}", po.title)
-        assertEquals("MASK_LINK_BANNER_TITLE_BANNER_LINK_${HomeConst.ITEM_TYPE_BANNER}", po.link)
+        assertEquals(EXPECTED_ID, po.id)
+        assertEquals(EXPECTED_CURRENT_PAGE, po.curPage)
+        assertEquals(EXPECTED_ITEM_TYPE, po.itemType)
+        assertEquals(EXPECTED_TITLE, po.title)
+        assertEquals(EXPECTED_LINK, po.link)
     }
 }

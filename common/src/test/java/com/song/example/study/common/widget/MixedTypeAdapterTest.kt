@@ -53,14 +53,10 @@ class MixedTypeAdapterTest {
     @Test
     fun onBindViewHolder() {
         val mockViewHolder = mockk<MixedTypeAdapter<String>.ViewHolder>()
-        every {
-            mockViewHolder.handleBindView(variableId, any())
-        } just Runs
+        justRun { mockViewHolder.handleBindView(variableId, any()) }
         adapter.setDataList(mutableListOf("1-1"))
         adapter.onBindViewHolder(mockViewHolder, 0)
-        verify(exactly = 1) {
-            mockViewHolder.handleBindView(variableId, any())
-        }
+        verify(exactly = 1) { mockViewHolder.handleBindView(variableId, any()) }
     }
 
     @Test

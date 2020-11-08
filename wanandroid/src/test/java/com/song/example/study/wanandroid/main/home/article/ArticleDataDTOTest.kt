@@ -1,10 +1,9 @@
 package com.song.example.study.wanandroid.main.home.article
 
-import com.song.example.study.wanandroid.WanAppTestUtils
 import com.song.example.study.extension.moshi
+import com.song.example.study.wanandroid.WanAppTestUtils
 import com.song.example.study.wanandroid.main.home.HomeTestConst
 import org.junit.After
-
 import org.junit.Assert.*
 import org.junit.BeforeClass
 import org.junit.Test
@@ -82,9 +81,9 @@ class ArticleDataDTOTest {
 
         private fun getTestArticleDataDTO(emptyCase: Boolean): ArticleDataDTO {
             return ArticleDataDTO(
-                data = getTestArticleDataDTOWrapper(emptyCase),
-                errorCode = 110,
-                errorMsg = "getTestArticleDataDTO"
+                    data = getTestArticleDataDTOWrapper(emptyCase),
+                    errorCode = 110,
+                    errorMsg = "getTestArticleDataDTO"
             )
         }
 
@@ -97,6 +96,12 @@ class ArticleDataDTOTest {
             validTestDTO = getTestArticleDataDTO(false)
             emptyTestDTO = getTestArticleDataDTO(true)
         }
+
+        private const val EXPECTED_CURRENT_PAGE = 2
+        private const val EXPECTED_PAGE_COUNT = 412
+        private const val EXPECTED_SIZE = 20
+        private const val EXPECTED_TOTAL = 8221
+        private const val EXPECTED_ERROR_CODE = 0
     }
 
     @After
@@ -109,11 +114,11 @@ class ArticleDataDTOTest {
         val json = WanAppTestUtils.readLocalJsonFile(HomeTestConst.WAN_HOME_ARTICLE_FILE)
         val list = json.moshi(ArticleDataDTO::class.java)
 
-        assertEquals(2, list?.data?.curPage)
-        assertEquals(412, list?.data?.pageCount)
-        assertEquals(20, list?.data?.size)
-        assertEquals(8221, list?.data?.total)
-        assertEquals(0, list?.errorCode)
+        assertEquals(EXPECTED_CURRENT_PAGE, list?.data?.curPage)
+        assertEquals(EXPECTED_PAGE_COUNT, list?.data?.pageCount)
+        assertEquals(EXPECTED_SIZE, list?.data?.size)
+        assertEquals(EXPECTED_TOTAL, list?.data?.total)
+        assertEquals(EXPECTED_ERROR_CODE, list?.errorCode)
     }
 
     @Test
@@ -132,21 +137,22 @@ class ArticleDataDTOTest {
         val articleVOList = validTestDTO.toVOList()
         assertEquals(dtoSize, articleVOList.size)
         articleVOList.forEachIndexed { index, articleVO ->
-            assertEquals(validTestDTO.data?.datas?.get(index)?.apkLink, articleVO.apkLink)
-            assertEquals(validTestDTO.data?.datas?.get(index)?.chapterName, articleVO.chapterName)
-            assertEquals(validTestDTO.data?.datas?.get(index)?.title, articleVO.title)
-            assertEquals(validTestDTO.data?.datas?.get(index)?.link, articleVO.link)
+            val expectedDTO = validTestDTO.data?.datas?.get(index)
+            assertEquals(expectedDTO?.apkLink, articleVO.apkLink)
+            assertEquals(expectedDTO?.chapterName, articleVO.chapterName)
+            assertEquals(expectedDTO?.title, articleVO.title)
+            assertEquals(expectedDTO?.link, articleVO.link)
         }
     }
 
     @Test
     fun testToVO() {
-        val dto = getTestArticleDTO(1)
-        val vo = dto.toVO(0, false)
+        val originalDTO = getTestArticleDTO(1)
+        val vo = originalDTO.toVO(0, false)
         assertEquals(0, vo.curPage)
-        assertEquals(dto.link, vo.link)
-        assertEquals(dto.title, vo.title)
-        assertEquals(dto.type, vo.type)
+        assertEquals(originalDTO.link, vo.link)
+        assertEquals(originalDTO.title, vo.title)
+        assertEquals(originalDTO.type, vo.type)
     }
 
     @Test
@@ -164,21 +170,22 @@ class ArticleDataDTOTest {
         val articlePOList = validTestDTO.toVOList()
         assertEquals(dtoSize, articlePOList.size)
         articlePOList.forEachIndexed { index, articlePO ->
-            assertEquals(validTestDTO.data?.datas?.get(index)?.apkLink, articlePO.apkLink)
-            assertEquals(validTestDTO.data?.datas?.get(index)?.chapterName, articlePO.chapterName)
-            assertEquals(validTestDTO.data?.datas?.get(index)?.title, articlePO.title)
-            assertEquals(validTestDTO.data?.datas?.get(index)?.link, articlePO.link)
+            val expectedDTO = validTestDTO.data?.datas?.get(index)
+            assertEquals(expectedDTO?.apkLink, articlePO.apkLink)
+            assertEquals(expectedDTO?.chapterName, articlePO.chapterName)
+            assertEquals(expectedDTO?.title, articlePO.title)
+            assertEquals(expectedDTO?.link, articlePO.link)
         }
     }
 
     @Test
     fun testToPO() {
-        val dto = getTestArticleDTO(1)
-        val po = dto.toPO<ArticlePO>(0, 0, false)
+        val originalDTO = getTestArticleDTO(1)
+        val po = originalDTO.toPO<ArticlePO>(0, 0, false)
         assertEquals(0, po.curPage)
-        assertEquals(dto.link, po.link)
-        assertEquals(dto.title, po.title)
-        assertEquals(dto.type, po.type)
+        assertEquals(originalDTO.link, po.link)
+        assertEquals(originalDTO.title, po.title)
+        assertEquals(originalDTO.type, po.type)
     }
 
 }

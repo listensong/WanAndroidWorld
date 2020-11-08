@@ -58,7 +58,9 @@ class ArticlePageKeyedDataSourceTest {
     @Test
     fun loadInitialThenOnResultNextPageKey1() = runBlockingTest {
         val mockCallback: PageKeyedDataSource.LoadInitialCallback<Int, ArticleVO> = prepareLoadInitialCallbackMock()
+
         pageKeyedDataSource.loadInitial(mockk(), mockCallback)
+
         verify(exactly = 1) { mockCallback.onResult(any(),0, 1) }
     }
 
@@ -72,7 +74,9 @@ class ArticlePageKeyedDataSourceTest {
     @Test
     fun loadAfterThenOnResultWithLoadParamsKeyPlus1() = runBlockingTest {
         val (loadParams, mockCallback: PageKeyedDataSource.LoadCallback<Int, ArticleVO>) = prepareLoadCallbackMock()
+
         pageKeyedDataSource.loadAfter(loadParams, mockCallback)
+
         verify(exactly = 1) { mockCallback.onResult(any(), loadParams.key + 1) }
     }
 
@@ -88,7 +92,9 @@ class ArticlePageKeyedDataSourceTest {
     @Test
     fun loadBeforeThenDoNothing() {
         val mockCallback: PageKeyedDataSource.LoadCallback<Int, ArticleVO> = mockk()
+
         pageKeyedDataSource.loadBefore(mockk(), mockCallback)
+
         verify(exactly = 0) { mockCallback.onResult(any(), any()) }
     }
 }
