@@ -1,7 +1,7 @@
 package com.song.example.study.wanandroid.main.home.banner
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @package com.song.example.study.wanandroid.main.home
@@ -22,7 +22,7 @@ interface BannerDAO {
     }
 
     @Query("SELECT * FROM $WAN_HOME_BANNER_TABLE_NAME")
-    fun getBanners(): LiveData<List<BannerVO>>
+    fun getBanners(): Flow<List<BannerVO>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(banners: List<BannerPO>)

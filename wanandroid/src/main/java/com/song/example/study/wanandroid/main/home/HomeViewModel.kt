@@ -3,14 +3,13 @@ package com.song.example.study.wanandroid.main.home
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.song.example.study.wanandroid.main.home.banner.BannerVO
+import androidx.lifecycle.*
 import com.song.example.study.base.job.BaseViewModel
 import com.song.example.study.common.network.RequestStatus
+import com.song.example.study.wanandroid.main.home.article.ArticleVO
+import com.song.example.study.wanandroid.main.home.banner.BannerVO
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
@@ -40,7 +39,7 @@ class HomeViewModel(
         @Suppress("UNCHECKED_CAST")
         class HomeViewModelFactory(
                 private val repository: HomeRepository
-        ): ViewModelProvider.Factory {
+        ) : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
                     return HomeViewModel(repository) as T
@@ -50,8 +49,9 @@ class HomeViewModel(
         }
     }
 
-    val banners:  LiveData<List<BannerVO>>
-            get() = repository.getBanners()
+    val banners: LiveData<List<BannerVO>> = repository.getBanners()
+            .distinctUntilChanged()
+            .asLiveData()
 
     fun loadBanner(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {
@@ -59,7 +59,9 @@ class HomeViewModel(
         }
     }
 
-    val articles = repository.getArticles()
+    val articles: LiveData<List<ArticleVO>> = repository.getArticles()
+            .distinctUntilChanged()
+            .asLiveData()
 
     fun loadArticle(workScope: CoroutineScope = viewModelScope) {
         workScope.launch {

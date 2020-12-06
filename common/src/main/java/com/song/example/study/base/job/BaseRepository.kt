@@ -10,6 +10,7 @@ import com.song.example.study.common.network.RequestStatus
  * @desc: com.song.example.study.base.job.BaseRepository
  */
 abstract class BaseRepository {
+
     var requestStatus: MutableLiveData<RequestStatus> = MutableLiveData(RequestStatus.initial())
         protected set
 }

@@ -3,6 +3,7 @@ package com.song.example.study.wanandroid.main.home.article
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 /**
  * @package com.song.example.study.wanandroid.main.home.article
@@ -35,7 +36,7 @@ interface ArticleDAO {
     }
 
     @Query("SELECT * FROM $WAN_HOME_ARTICLE_TABLE_NAME")
-    fun getArticles(): LiveData<List<ArticleVO>>
+    fun getArticles(): Flow<List<ArticleVO>>
 
 
     @Query("SELECT * FROM $WAN_HOME_ARTICLE_TABLE_NAME order by _index")

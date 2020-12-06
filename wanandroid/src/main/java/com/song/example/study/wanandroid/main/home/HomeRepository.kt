@@ -1,15 +1,18 @@
 package com.song.example.study.wanandroid.main.home
 
-import androidx.lifecycle.LiveData
+import com.song.example.study.base.job.BaseRepository
+import com.song.example.study.common.network.RequestStatus
+import com.song.example.study.common.network.retrofit.HttpResult
+import com.song.example.study.common.network.retrofit.onFailure
+import com.song.example.study.common.network.retrofit.onSuccess
+import com.song.example.study.common.network.retrofit.suspendAwaitTimeout
+import com.song.example.study.extension.moshi
 import com.song.example.study.wanandroid.main.home.article.*
 import com.song.example.study.wanandroid.main.home.banner.*
 import com.song.example.study.wanandroid.network.WanService
-import com.song.example.study.base.job.BaseRepository
-import com.song.example.study.common.network.RequestStatus
-import com.song.example.study.common.network.retrofit.*
-import com.song.example.study.extension.moshi
 import com.song.example.study.wanandroid.util.WanLog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 /**
@@ -25,12 +28,12 @@ class HomeRepository(
         private val bannerDAO: BannerDAO,
         private val articleDAO: ArticleDAO
 ) : BaseRepository() {
-
+    
     companion object {
         const val TAG = "HomeRepository"
     }
 
-    fun getBanners():  LiveData<List<BannerVO>> = bannerDAO.getBanners()
+    fun getBanners(): Flow<List<BannerVO>> = bannerDAO.getBanners()
 
     suspend fun requestBanners() {
         wanApiService
@@ -59,7 +62,7 @@ class HomeRepository(
         }
     }
 
-    fun getArticles():  LiveData<List<ArticleVO>> = articleDAO.getArticles()
+    fun getArticles(): Flow<List<ArticleVO>> = articleDAO.getArticles()
 
     suspend fun requestTopArticles() {
         wanApiService
@@ -112,8 +115,10 @@ class HomeRepository(
                 }
     }
 
-    private suspend fun saveArticles(pageNum: Int = 0,
-                                     articles: List<ArticlePO>) {
+    private suspend fun saveArticles(
+            pageNum: Int = 0,
+            articles: List<ArticlePO>
+    ) {
         if (articles.isEmpty()) {
             return
         }
@@ -127,7 +132,7 @@ class HomeRepository(
         }
     }
 
-    private fun prependBannerPlaceholderItem(articles: List<ArticlePO>): List<ArticlePO>{
+    private fun prependBannerPlaceholderItem(articles: List<ArticlePO>): List<ArticlePO> {
         val newList = mutableListOf(
                 createMaskArticlePO(
                         HomeConst.BASE_INDEX_BANNER, 0,
